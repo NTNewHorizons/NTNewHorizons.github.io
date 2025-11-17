@@ -114,6 +114,34 @@
                 max-width: 350px;
             }
         }
+        
+        /* Fix for the alignment issue in the "Perfect For Players Who Value" section */
+        .value-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .value-item {
+            flex: 1 1 45%;
+            min-width: 250px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .value-item span {
+            margin-right: 0.5rem;
+            margin-top: 0.25rem;
+            color: #ff4500;
+        }
+        
+        @media (max-width: 768px) {
+            .value-item {
+                flex: 1 1 100%;
+                min-width: auto;
+            }
+        }
     </style>
 </head>
 <body class="text-white overflow-x-hidden">
@@ -296,21 +324,21 @@
                 <h3 class="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
                     Perfect For Players Who Value
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
-                    <div class="flex items-start">
-                        <span class="text-red-400 mr-3 mt-1">•</span>
+                <div class="value-list">
+                    <div class="value-item">
+                        <span>•</span>
                         <span>Deep gameplay and strategic planning</span>
                     </div>
-                    <div class="flex items-start">
-                        <span class="text-red-400 mr-3 mt-1">•</span>
+                    <div class="value-item">
+                        <span>•</span>
                         <span>Real achievements and tangible progression</span>
                     </div>
-                    <div class="flex items-start">
-                        <span class="text-red-400 mr-3 mt-1">•</span>
+                    <div class="value-item">
+                        <span>•</span>
                         <span>Hardcore experiences with meaningful difficulty</span>
                     </div>
-                    <div class="flex items-start">
-                        <span class="text-red-400 mr-3 mt-1">•</span>
+                    <div class="value-item">
+                        <span>•</span>
                         <span>Active community and constant development</span>
                     </div>
                 </div>
@@ -352,35 +380,32 @@
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-gray-800/40 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                        <h4 class="text-lg font-bold text-red-400 mb-2">Quick Links</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li><a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fas fa-bug mr-2"></i> Report Issues
-                            </a></li>
-                            <li><a href="https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3ANTNewHorizons+archived%3Afalse+draft%3Afalse" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fas fa-code-branch mr-2"></i> Open PRs
-                            </a></li>
-                            <li><a href="https://crowdin.com/project/ntnh" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fas fa-language mr-2"></i> Translation Project
-                            </a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-gray-800/40 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                        <h4 class="text-lg font-bold text-red-400 mb-2">Development</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li><a href="https://github.com/GTNewHorizons/GTNH-Dev-Doc/blob/master/developer's%20code%20of%20conduct.md" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fas fa-book mr-2"></i> Code of Conduct
-                            </a></li>
-                            <li><a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fab fa-github mr-2"></i> GitHub Org
-                            </a></li>
-                            <li><a href="https://ntnewhorizons.github.io" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                <i class="fas fa-globe mr-2"></i> Website (Under Construction)
-                            </a></li>
-                        </ul>
+                <div class="bg-gray-800/40 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                    <h4 class="text-lg font-bold text-red-400 mb-4">Quick Links</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <ul class="space-y-2 text-sm">
+                                <li><a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                                    <i class="fas fa-bug mr-2"></i> Report Issues
+                                </a></li>
+                                <li><a href="https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3ANTNewHorizons+archived%3Afalse+draft%3Afalse" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                                    <i class="fas fa-code-branch mr-2"></i> Open PRs
+                                </a></li>
+                                <li><a href="https://crowdin.com/project/ntnh" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                                    <i class="fas fa-language mr-2"></i> Translation Project
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="space-y-2 text-sm">
+                                <li><a href="https://github.com/GTNewHorizons/GTNH-Dev-Doc/blob/master/developer's%20code%20of%20conduct.md" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                                    <i class="fas fa-book mr-2"></i> Code of Conduct
+                                </a></li>
+                                <li><a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                                    <i class="fab fa-github mr-2"></i> GitHub Org
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
