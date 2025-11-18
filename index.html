@@ -1,13 +1,366 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuclear Tech: New Horizons</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
+import React, { useEffect } from 'react';
+import { Github, MessageCircle, Download, Server, Bug, Code, Book, Globe, FileText, Zap, Skull, Calendar, Microchip, Rocket, Fire } from 'lucide-react';
+
+const App = () => {
+  useEffect(() => {
+    // Set current year
+    const currentYear = new Date().getFullYear();
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+      yearElement.textContent = currentYear.toString();
+    }
+
+    // Smooth scrolling for anchor links
+    const handleAnchorClick = (e) => {
+      const target = e.target;
+      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const element = document.querySelector(target.getAttribute('href'));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+    return () => document.removeEventListener('click', handleAnchorClick);
+  }, []);
+
+  return (
+    <div className="text-white overflow-x-hidden">
+      {/* Background with black hole GIF */}
+      <div 
+        className="fixed inset-0 overflow-hidden pointer-events-none z-0"
+        style={{
+          backgroundImage: `url('https://placehold.co/1920x1080/000000/333333?text=Black+Hole+GIF')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          opacity: 0.7
+        }}
+      />
+      
+      {/* Additional background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-1">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm z-20">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <div className="bg-gradient-to-r from-red-500 to-orange-400 w-10 h-10 rounded-lg flex items-center justify-center">
+              <Fire className="text-black w-5 h-5" />
+            </div>
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 font-orbitron">
+              NT:NH
+            </span>
+          </div>
+          <div className="hidden md:flex space-x-8">
+            <a href="#features" className="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+              Features
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            </a>
+            <a href="#download" className="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+              Download
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            </a>
+            <a href="#community" className="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+              Community
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            </a>
+          </div>
+          <div className="flex space-x-4">
+            <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-gray-800/50 border border-orange-500/30 hover:bg-orange-500/10 transition-colors hover:scale-105 duration-300">
+              <MessageCircle className="text-orange-400 w-5 h-5" />
+            </a>
+            <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-gray-800/50 border border-red-500/30 hover:bg-red-500/10 transition-colors hover:scale-105 duration-300">
+              <Github className="text-red-400 w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="py-24 px-4 text-center relative overflow-hidden">
+        <div className="absolute inset-0 radial-fire opacity-40"></div>
+        
+        <div className="max-w-4xl mx-auto relative z-10">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-glow bg-clip-text text-transparent fire-glow">
+            Nuclear Tech: New Horizons
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+            A hardcore quest-based modpack for Minecraft 1.7.10, inspired by the legendary GTNH but with a unique nuclear-powered progression path.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105">
+              <MessageCircle className="mr-2 w-5 h-5" />
+              Join Our Community
+            </a>
+            <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" className="bg-gray-800/80 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center border border-gray-700 hover:border-red-500 transition-all duration-300 hover:bg-gray-800">
+              <Download className="mr-2 w-5 h-5" />
+              Download Now
+            </a>
+          </div>
+          <div className="mt-12 flex flex-wrap justify-center gap-4 text-sm">
+            <span className="px-4 py-1 bg-red-900/30 text-red-400 rounded-full border border-red-500/20">Minecraft 1.7.10</span>
+            <span className="px-4 py-1 bg-orange-900/30 text-orange-400 rounded-full border border-orange-500/20">Hardcore Mode</span>
+            <span className="px-4 py-1 bg-yellow-900/30 text-yellow-400 rounded-full border border-yellow-500/20">Quest-Driven</span>
+            <span className="px-4 py-1 bg-amber-900/30 text-amber-400 rounded-full border border-amber-500/20">20+ Languages</span>
+          </div>
+        </div>
+        
+        <div className="mt-20 relative z-10">
+          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center animate-pulse">
+            <Fire className="h-8 w-8 text-black" />
+          </div>
+          <div className="mt-4 text-gray-400 italic">
+            Inspired by the spirit of GTNH, but with a unique NTM style! 🔥
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 relative">
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 69, 0, 0.1) 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }}></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow font-orbitron">
+              Core Features
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Experience a meticulously crafted journey where every advancement requires strategic thinking and mastery of nuclear technology.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Feature 1 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <FileText className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                300+ Deep Quests
+              </h3>
+              <p className="text-gray-300">Guide you from stone tools to interstellar technologies with logical progression paths and meaningful rewards at every stage.</p>
+            </div>
+            
+            {/* Feature 2 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Zap className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                Full NTM Integration
+              </h3>
+              <p className="text-gray-300">Nearly all recipes reworked to align with Nuclear Tech philosophy, creating a cohesive and balanced technological journey.</p>
+            </div>
+            
+            {/* Feature 3 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Skull className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                True Challenge
+              </h3>
+              <p className="text-gray-300">Revised hunger system requiring varied nutrition, smarter mobs, deadlier mechanics, and epic boss battles that test your limits.</p>
+            </div>
+            
+            {/* Feature 4 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Calendar className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                Monthly Updates
+              </h3>
+              <p className="text-gray-300">Continuous development with new content, balance improvements, and bug fixes to keep the experience fresh and engaging.</p>
+            </div>
+            
+            {/* Feature 5 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Globe className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                20+ Languages
+              </h3>
+              <p className="text-gray-300">Community-driven translations via Crowdin platform ensuring accessibility for players worldwide.</p>
+            </div>
+            
+            {/* Feature 6 */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Microchip className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                Optimized Performance
+              </h3>
+              <p className="text-gray-300">Angelica + ArchaicFix integration delivering smooth gameplay even on low-end systems without sacrificing visual quality.</p>
+            </div>
+            
+            {/* Feature 7 (Space Exploration) - Centered in last row */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 mx-auto lg:col-span-3 lg:max-w-xs">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
+                <Rocket className="text-red-400 w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                Space Exploration
+              </h3>
+              <p className="text-gray-300">New dimensions, celestial mechanics, and advanced technologies to conquer the cosmos and unlock humanity's future.</p>
+            </div>
+          </div>
+          
+          <div className="mt-20 text-center max-w-4xl mx-auto p-8 bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700/50">
+            <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow font-orbitron">
+              Perfect For Players Who Value
+            </h3>
+            <div className="flex flex-wrap justify-between gap-8">
+              <div className="flex items-start min-w-[250px]">
+                <span className="text-red-400 mr-2 mt-0.5">•</span>
+                <span>Deep gameplay and strategic planning</span>
+              </div>
+              <div className="flex items-start min-w-[250px]">
+                <span className="text-red-400 mr-2 mt-0.5">•</span>
+                <span>Real achievements and tangible progression</span>
+              </div>
+              <div className="flex items-start min-w-[250px]">
+                <span className="text-red-400 mr-2 mt-0.5">•</span>
+                <span>Hardcore experiences with meaningful difficulty</span>
+              </div>
+              <div className="flex items-start min-w-[250px]">
+                <span className="text-red-400 mr-2 mt-0.5">•</span>
+                <span>Active community and constant development</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Download Section */}
+      <section id="download" className="py-20 px-4 bg-gray-900/50 border-t border-b border-red-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow font-orbitron">
+              Get Started
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Download the modpack and begin your nuclear-powered journey today
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-xl p-8 mb-8 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl z-0"></div>
+              <div className="absolute inset-0 bg-gray-900 rounded-xl z-10"></div>
+              <div className="relative z-20 bg-gray-900 rounded-lg p-8 border border-red-800/50">
+                <h3 className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                  Latest Release
+                </h3>
+                <p className="text-gray-300 text-center mb-6">
+                  Get the most recent version of Nuclear Tech: New Horizons
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105">
+                    <Download className="mr-2 w-5 h-5" />
+                    Download Client
+                  </a>
+                  <a href="https://github.com/NTNewHorizons/NTNH/tree/server" target="_blank" rel="noopener noreferrer" className="bg-gray-800/80 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center border border-gray-700 hover:border-red-500 transition-all duration-300 hover:bg-gray-800">
+                    <Server className="mr-2 w-5 h-5" />
+                    Server Downloads
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+              <h4 className="text-lg font-bold text-red-400 mb-4">Quick Links</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                      <Bug className="mr-2 w-4 h-4" /> Report Issues
+                    </a></li>
+                    <li><a href="https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3ANTNewHorizons+archived%3Afalse+draft%3Afalse" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                      <Code className="mr-2 w-4 h-4" /> Open PRs
+                    </a></li>
+                    <li><a href="https://crowdin.com/project/ntnh" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                      <Globe className="mr-2 w-4 h-4" /> Translation Project
+                    </a></li>
+                  </ul>
+                </div>
+                <div>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="https://github.com/GTNewHorizons/GTNH-Dev-Doc/blob/master/developer's%20code%20of%20conduct.md" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                      <Book className="mr-2 w-4 h-4" /> Code of Conduct
+                    </a></li>
+                    <li><a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
+                      <Github className="mr-2 w-4 h-4" /> GitHub Org
+                    </a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="community" className="py-24 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/30 via-transparent to-black opacity-70"></div>
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow font-orbitron">
+            Are you ready to take on the New Horizons challenge?
+          </h2>
+          <p className="text-xl text-gray-300 mb-10">
+            Join thousands of players exploring the nuclear-powered future of Minecraft
+          </p>
+          
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-10 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105 text-lg">
+              <MessageCircle className="mr-2 w-5 h-5" />
+              Join Discord Community
+            </a>
+          </div>
+          
+          <div className="mt-12 flex justify-center space-x-8 text-gray-400">
+            <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-105">
+              <Github className="h-8 w-8" />
+            </a>
+            <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-105">
+              <MessageCircle className="h-8 w-8" />
+            </a>
+            <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:scale-105">
+              <Download className="h-8 w-8" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-4 border-t border-red-900">
+        <div className="max-w-7xl mx-auto text-center text-gray-400">
+          <p className="mb-2">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
+          <p className="text-sm opacity-80">
+            Inspired by the spirit of GTNH, but with a unique NTM style! 🔥
+          </p>
+          <p className="mt-4 text-xs opacity-60">
+            This is a fan project not affiliated with Mojang Studios, Minecraft, or any other trademark holders.
+          </p>
+        </div>
+      </footer>
+
+      <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
         
         body {
@@ -17,7 +370,7 @@
             color: #ffffff;
         }
         
-        .orbitron {
+        .font-orbitron {
             font-family: 'Orbitron', sans-serif;
         }
         
@@ -33,456 +386,16 @@
             100% { background-position: 0% 50%; }
         }
         
-        .bg-grid {
-            background-image: radial-gradient(circle at 1px 1px, rgba(255, 69, 0, 0.1) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 69, 0, 0.5);
-            box-shadow: 0 20px 25px -5px rgba(255, 69, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .btn-hover:hover {
-            transform: translateY(-2px);
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .flame-effect {
-            position: relative;
-        }
-        
-        .flame-effect::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff4500, #ff8c00, #ffd700, #ff4500);
-            background-size: 400% 400%;
-            animation: gradient 3s ease infinite;
-            border-radius: 12px;
-            z-index: -1;
-        }
-        
-        .flame-effect::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 10px;
-            background: #0a0a0a;
-            z-index: -1;
+        .radial-fire {
+            background: radial-gradient(circle at center, rgba(255, 69, 0, 0.2) 0%, transparent 70%);
         }
         
         .fire-glow {
             text-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
         }
-        
-        .radial-fire {
-            background: radial-gradient(circle at center, rgba(255, 69, 0, 0.2) 0%, transparent 70%);
-        }
-        
-        /* Custom grid layout for features section */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        @media (min-width: 1024px) {
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .features-grid > div:last-child {
-                grid-column: span 3;
-                justify-self: center;
-                max-width: 350px;
-            }
-        }
-        
-        /* Fix for the alignment issue in the "Perfect For Players Who Value" section */
-        .value-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-        
-        .value-item {
-            flex: 1 1 45%;
-            min-width: 250px;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .value-item span {
-            margin-right: 0.5rem;
-            margin-top: 0.25rem;
-            color: #ff4500;
-        }
-        
-        @media (max-width: 768px) {
-            .value-item {
-                flex: 1 1 100%;
-                min-width: auto;
-            }
-        }
-    </style>
-</head>
-<body class="text-white overflow-x-hidden">
-    <!-- Background elements -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-20 right-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
+      `}</style>
     </div>
+  );
+};
 
-    <!-- Navigation -->
-    <nav class="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="bg-gradient-to-r from-red-500 to-orange-400 w-10 h-10 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-fire text-black"></i>
-                </div>
-                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 orbitron">
-                    NT:NH
-                </span>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#features" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
-                    Features
-                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-                <a href="#download" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
-                    Download
-                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-                <a href="#community" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
-                    Community
-                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-            </div>
-            <div class="flex space-x-4">
-                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-gray-800/50 border border-orange-500/30 hover:bg-orange-500/10 transition-colors hover:scale-105 duration-300">
-                    <i class="fas fa-comment-dots text-orange-400"></i>
-                </a>
-                <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-gray-800/50 border border-red-500/30 hover:bg-red-500/10 transition-colors hover:scale-105 duration-300">
-                    <i class="fab fa-github text-red-400"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="py-24 px-4 text-center relative overflow-hidden">
-        <div class="absolute inset-0 radial-fire opacity-40"></div>
-        
-        <div class="max-w-4xl mx-auto relative z-10">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-glow bg-clip-text text-transparent fire-glow">
-                Nuclear Tech: New Horizons
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
-                A hardcore quest-based modpack for Minecraft 1.7.10, inspired by the legendary GTNH but with a unique nuclear-powered progression path.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105 btn-hover">
-                    <i class="fas fa-comment-dots mr-2"></i>
-                    Join Our Community
-                </a>
-                <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" class="bg-gray-800/80 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center border border-gray-700 hover:border-red-500 transition-all duration-300 hover:bg-gray-800 btn-hover">
-                    <i class="fas fa-download mr-2"></i>
-                    Download Now
-                </a>
-            </div>
-            <div class="mt-12 flex flex-wrap justify-center gap-4 text-sm">
-                <span class="px-4 py-1 bg-red-900/30 text-red-400 rounded-full border border-red-500/20">Minecraft 1.7.10</span>
-                <span class="px-4 py-1 bg-orange-900/30 text-orange-400 rounded-full border border-orange-500/20">Hardcore Mode</span>
-                <span class="px-4 py-1 bg-yellow-900/30 text-yellow-400 rounded-full border border-yellow-500/20">Quest-Driven</span>
-                <span class="px-4 py-1 bg-amber-900/30 text-amber-400 rounded-full border border-amber-500/20">20+ Languages</span>
-            </div>
-        </div>
-        
-        <div class="mt-20 relative z-10">
-            <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center animate-pulse">
-                <i class="fas fa-fire h-8 w-8 text-black"></i>
-            </div>
-            <div class="mt-4 text-gray-400 italic">
-                Inspired by the spirit of GTNH, but with a unique NTM style! 🔥
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-20 px-4 relative">
-        <div class="absolute inset-0 bg-grid opacity-10"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
-                    Core Features
-                </h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Experience a meticulously crafted journey where every advancement requires strategic thinking and mastery of nuclear technology.
-                </p>
-            </div>
-            
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-file-alt text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        300+ Deep Quests
-                    </h3>
-                    <p class="text-gray-300">Guide you from stone tools to interstellar technologies with logical progression paths and meaningful rewards at every stage.</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-bolt text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        Full NTM Integration
-                    </h3>
-                    <p class="text-gray-300">Nearly all recipes reworked to align with Nuclear Tech philosophy, creating a cohesive and balanced technological journey.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-skull-crossbones text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        True Challenge
-                    </h3>
-                    <p class="text-gray-300">Revised hunger system requiring varied nutrition, smarter mobs, deadlier mechanics, and epic boss battles that test your limits.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-calendar-alt text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        Monthly Updates
-                    </h3>
-                    <p class="text-gray-300">Continuous development with new content, balance improvements, and bug fixes to keep the experience fresh and engaging.</p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-globe text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        20+ Languages
-                    </h3>
-                    <p class="text-gray-300">Community-driven translations via Crowdin platform ensuring accessibility for players worldwide.</p>
-                </div>
-                
-                <!-- Feature 6 -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-microchip text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        Optimized Performance
-                    </h3>
-                    <p class="text-gray-300">Angelica + ArchaicFix integration delivering smooth gameplay even on low-end systems without sacrificing visual quality.</p>
-                </div>
-                
-                <!-- Feature 7 (Space Exploration) - Centered in last row -->
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5 card-hover">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-rocket text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                        Space Exploration
-                    </h3>
-                    <p class="text-gray-300">New dimensions, celestial mechanics, and advanced technologies to conquer the cosmos and unlock humanity's future.</p>
-                </div>
-            </div>
-            
-            <div class="mt-20 text-center max-w-4xl mx-auto p-8 bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700/50">
-                <h3 class="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
-                    Perfect For Players Who Value
-                </h3>
-                <div class="value-list">
-                    <div class="value-item">
-                        <span>•</span>
-                        <span>Deep gameplay and strategic planning</span>
-                    </div>
-                    <div class="value-item">
-                        <span>•</span>
-                        <span>Real achievements and tangible progression</span>
-                    </div>
-                    <div class="value-item">
-                        <span>•</span>
-                        <span>Hardcore experiences with meaningful difficulty</span>
-                    </div>
-                    <div class="value-item">
-                        <span>•</span>
-                        <span>Active community and constant development</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="py-20 px-4 bg-gray-900/50 border-t border-b border-red-900">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
-                    Get Started
-                </h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Download the modpack and begin your nuclear-powered journey today
-                </p>
-            </div>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="flame-effect rounded-xl p-8 mb-8">
-                    <div class="bg-gray-900 rounded-lg p-8 border border-red-800/50">
-                        <h3 class="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
-                            Latest Release
-                        </h3>
-                        <p class="text-gray-300 text-center mb-6">
-                            Get the most recent version of Nuclear Tech: New Horizons
-                        </p>
-                        <div class="flex flex-col sm:flex-row justify-center gap-4">
-                            <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105 btn-hover">
-                                <i class="fas fa-download mr-2"></i>
-                                Download Client
-                            </a>
-                            <a href="https://github.com/NTNewHorizons/NTNH/tree/server" target="_blank" rel="noopener noreferrer" class="bg-gray-800/80 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center border border-gray-700 hover:border-red-500 transition-all duration-300 hover:bg-gray-800 btn-hover">
-                                <i class="fas fa-server mr-2"></i>
-                                Server Downloads
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800/40 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                    <h4 class="text-lg font-bold text-red-400 mb-4">Quick Links</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <ul class="space-y-2 text-sm">
-                                <li><a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                    <i class="fas fa-bug mr-2"></i> Report Issues
-                                </a></li>
-                                <li><a href="https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3ANTNewHorizons+archived%3Afalse+draft%3Afalse" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                    <i class="fas fa-code-branch mr-2"></i> Open PRs
-                                </a></li>
-                                <li><a href="https://crowdin.com/project/ntnh" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                    <i class="fas fa-language mr-2"></i> Translation Project
-                                </a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <ul class="space-y-2 text-sm">
-                                <li><a href="https://github.com/GTNewHorizons/GTNH-Dev-Doc/blob/master/developer's%20code%20of%20conduct.md" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                    <i class="fas fa-book mr-2"></i> Code of Conduct
-                                </a></li>
-                                <li><a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-colors flex items-center">
-                                    <i class="fab fa-github mr-2"></i> GitHub Org
-                                </a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section id="community" class="py-24 px-4 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/30 via-transparent to-black opacity-70"></div>
-        
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
-                Are you ready to take on the New Horizons challenge?
-            </h2>
-            <p class="text-xl text-gray-300 mb-10">
-                Join thousands of players exploring the nuclear-powered future of Minecraft
-            </p>
-            
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-red-600 to-orange-700 hover:from-red-700 hover:to-orange-800 text-white font-bold py-4 px-10 rounded-full inline-flex items-center justify-center shadow-lg shadow-red-500/30 transition-all duration-300 hover:scale-105 text-lg btn-hover">
-                    <i class="fas fa-comment-dots mr-2"></i>
-                    Join Discord Community
-                </a>
-            </div>
-            
-            <div class="mt-12 flex justify-center space-x-8 text-gray-400">
-                <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors hover:scale-105">
-                    <i class="fab fa-github h-8 w-8"></i>
-                </a>
-                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors hover:scale-105">
-                    <i class="fas fa-comment-dots h-8 w-8"></i>
-                </a>
-                <a href="https://ntnewhorizons.github.io/download" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors hover:scale-105">
-                    <i class="fas fa-download h-8 w-8"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-red-900">
-        <div class="max-w-7xl mx-auto text-center text-gray-400">
-            <p class="mb-2">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
-            <p class="text-sm opacity-80">
-                Inspired by the spirit of GTNH, but with a unique NTM style! 🔥
-            </p>
-            <p class="mt-4 text-xs opacity-60">
-                This is a fan project not affiliated with Mojang Studios, Minecraft, or any other trademark holders.
-            </p>
-        </div>
-    </footer>
-
-    <script>
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // Simple scroll animation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-        
-        // Add scroll animation for elements
-        window.addEventListener('scroll', function() {
-            const elements = document.querySelectorAll('.card-hover');
-            elements.forEach(element => {
-                const rect = element.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.75) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+export default App;
