@@ -95,34 +95,6 @@
         </div>
     </section>
 
-    <!-- Screenshot Slider Section -->
-    <section class="py-16 px-4 relative content-layer">
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex items-center justify-center mb-8">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center">
-                    <i class="fas fa-camera text-black"></i>
-                </div>
-            </div>
-            
-            <div class="relative max-w-5xl mx-auto">
-                <!-- Previous Button -->
-                <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-gray-800/70 rounded-full hover:bg-red-500/20 transition-colors duration-300">
-                    <i class="fas fa-chevron-left text-white text-xl"></i>
-                </button>
-                
-                <!-- Next Button -->
-                <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-gray-800/70 rounded-full hover:bg-red-500/20 transition-colors duration-300">
-                    <i class="fas fa-chevron-right text-white text-xl"></i>
-                </button>
-                
-                <!-- Slider Container -->
-                <div id="sliderContainer" class="overflow-hidden rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 shadow-lg">
-                    <!-- Slide will be dynamically inserted here -->
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Features Section -->
     <section id="features" class="py-20 px-4 relative content-layer">
         <div class="absolute inset-0 bg-grid opacity-10"></div>
@@ -354,100 +326,6 @@
         </div>
     </footer>
 
-    <script>
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Simple scroll animation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Add scroll animation for elements
-        window.addEventListener('scroll', function() {
-            const elements = document.querySelectorAll('.card-hover');
-            elements.forEach(element => {
-                const rect = element.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.75) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        // Screenshot Slider Implementation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mock data for screenshots (in a real implementation, this would be dynamically loaded)
-            const screenshots = [
-                {
-                    id: 1,
-                    image: './resources/screenshots/screenshot_1.png',
-                    title: 'THIS IS A TITLE',
-                    description: 'This is a description.'
-                },
-                {
-                    id: 2,
-                    image: './resources/screenshots/screenshot_2.png',
-                    title: 'ANOTHER SCREENSHOT',
-                    description: 'Another description for the second screenshot.'
-                },
-                {
-                    id: 3,
-                    image: './resources/screenshots/screenshot_3.png',
-                    title: 'THIRD SCREENSHOT',
-                    description: 'Description for the third screenshot in the series.'
-                }
-            ];
-
-            let currentIndex = 0;
-            const sliderContainer = document.getElementById('sliderContainer');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-
-            // Function to update slide
-            function updateSlide(index) {
-                if (index < 0) index = screenshots.length - 1;
-                if (index >= screenshots.length) index = 0;
-                
-                currentIndex = index;
-                
-                const currentScreenshot = screenshots[currentIndex];
-                
-                sliderContainer.innerHTML = `
-                    <div class="relative">
-                        <img src="${currentScreenshot.image}" alt="${currentScreenshot.title}" class="w-full h-auto object-cover rounded-t-xl">
-                        <div class="p-6 bg-gray-900 rounded-b-xl">
-                            <h3 class="text-xl font-bold mb-2 text-white">${currentScreenshot.title}</h3>
-                            <p class="text-gray-300">${currentScreenshot.description}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Initialize slider
-            updateSlide(currentIndex);
-
-            // Previous button click
-            prevBtn.addEventListener('click', function() {
-                updateSlide(currentIndex - 1);
-            });
-
-            // Next button click
-            nextBtn.addEventListener('click', function() {
-                updateSlide(currentIndex + 1);
-            });
-
-            // Auto-advance every 5 seconds
-            setInterval(function() {
-                updateSlide(currentIndex + 1);
-            }, 5000);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
