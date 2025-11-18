@@ -12,9 +12,19 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(to bottom, #0a0a0a, #000000, #1a0000);
-            background-attachment: fixed;
             color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        #shader-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
         
         .orbitron {
@@ -142,15 +152,28 @@
                 min-width: auto;
             }
         }
+        
+        /* Make content more readable over the shader background */
+        section {
+            position: relative;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body class="text-white overflow-x-hidden">
-    <!-- Background elements -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-20 right-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
-    </div>
+    <!-- Shader Background Canvas -->
+    <canvas id="shader-background"></canvas>
 
     <!-- Navigation -->
     <nav class="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm">
@@ -483,7 +506,254 @@
                 }
             });
         });
+
+        // Shader Background Implementation
+        function initShaderBackground() {
+            const canvas = document.getElementById('shader-background');
+            const gl = canvas.getContext('webgl', { 
+                preserveDrawingBuffer: true,
+                alpha: false
+            });
+            
+            if (!gl) {
+                console.error('WebGL not supported');
+                return;
+            }
+            
+            // Set canvas size to match window
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Vertex shader for fullscreen quad
+            const vertexShaderSource = `
+                attribute vec2 position;
+                varying vec2 uv;
+                void main() {
+                    uv = position * 0.5 + 0.5;
+                    uv.y = 1.0 - uv.y;
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+            
+            // Fragment shader - adapted from Shadertoy code
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float time;
+                uniform vec2 resolution;
+                uniform vec2 mouse;
+                varying vec2 uv;
+                
+                const float pi = 3.1415927;
+                
+                float hash13(vec3 p) {
+                    p = fract(p * vec3(0.16532, 0.17369, 0.15787));
+                    p += dot(p.xyz, p.yzx + 19.19);
+                    return fract(p.x * p.y * p.z);
+                }
+                
+                float hash(float x) { 
+                    return fract(cos(x * 124.123) * 412.0); 
+                }
+                
+                float hash(vec2 x) { 
+                    return fract(cos(dot(x.xy, vec2(2.31, 53.21)) * 124.123) * 412.0); 
+                }
+                
+                float hash(vec3 x) { 
+                    return fract(cos(dot(x.xyz, vec3(2.31, 53.21, 17.7)) * 124.123) * 412.0); 
+                }
+                
+                float sdSphere(vec3 p, float s) {
+                    return length(p) - s;
+                }
+                
+                float sdCappedCylinder(vec3 p, vec2 h) {
+                    vec2 d = abs(vec2(length(p.xz), p.y)) - h;
+                    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+                }
+                
+                float sdTorus(vec3 p, vec2 t) {
+                    vec2 q = vec2(length(p.xz) - t.x, p.y);
+                    return length(q) - t.y;
+                }
+                
+                void main() {
+                    // iResolution equivalent
+                    vec2 iResolution = resolution;
+                    float iTime = time;
+                    
+                    // iMouse equivalent (normalized from 0-1)
+                    vec2 iMouse = mouse / resolution;
+                    
+                    vec2 pp = gl_FragCoord.xy / iResolution.xy;
+                    pp = -1.0 + 2.0 * pp;
+                    pp.x *= iResolution.x / iResolution.y;
+
+                    vec3 lookAt = vec3(0.0, -0.1, 0.0);
+
+                    float eyer = 2.0;
+                    float eyea = 0.0;
+                    float eyea2 = -0.22 * pi * 2.0;
+
+                    vec3 ro = vec3(
+                        eyer * cos(eyea) * sin(eyea2),
+                        eyer * cos(eyea2),
+                        eyer * sin(eyea) * sin(eyea2)
+                    );
+
+                    vec3 front = normalize(lookAt - ro);
+                    vec3 left = normalize(cross(normalize(vec3(0.0, 1.0, -0.1)), front));
+                    vec3 up = normalize(cross(front, left));
+                    vec3 rd = normalize(front * 1.5 + left * pp.x + up * pp.y);
+
+                    vec3 bh = vec3(0.0, 0.0, 0.0);
+                    float bhr = 0.3;
+                    float bhmass = 5.0;
+                    bhmass *= 0.001; // premul G
+
+                    vec3 p = ro;
+                    vec3 pv = rd;
+
+                    p += pv * hash13(rd + vec3(iTime)) * 0.02;
+
+                    float dt = 0.02;
+                    vec3 col = vec3(0.0);
+                    float alpha = 1.0;
+                    float noncaptured = 1.0;
+
+                    vec3 c1 = vec3(0.5, 0.35, 0.1);
+                    vec3 c2 = vec3(1.0, 0.8, 0.6);
+
+                    for(float t = 0.0; t < 1.0; t += 0.005) {
+                        p += pv * dt * noncaptured;
+
+                        vec3 bhv = bh - p;
+                        float r = dot(bhv, bhv);
+                        pv += normalize(bhv) * ((bhmass) / r);
+
+                        noncaptured = smoothstep(0.0, 0.01, sdSphere(p - bh, bhr));
+
+                        float dr = length(bhv.xz);
+                        float da = atan(bhv.x, bhv.z);
+                        vec2 ra = vec2(dr, da * (0.01 + (dr - bhr) * 0.002) + 2.0 * pi + iTime * 0.002);
+                        ra *= vec2(10.0, 20.0);
+
+                        // Use hash function instead of texture since we don't have iChannel1
+                        float noiseValue = hash(vec3(ra * 0.1, ra * 0.5)) * 0.5 + 0.5;
+                        vec3 dcol = mix(c2, c1, pow(length(bhv) - bhr, 2.0)) * max(0.0, noiseValue + 0.15) * (4.0 / ((0.001 + (length(bhv) - bhr) * 50.0)));
+
+                        col += max(vec3(0.0), dcol * step(0.0, -sdTorus((p * vec3(1.0, 50.0, 1.0)) - bh, vec2(0.8, 0.99))) * noncaptured);
+
+                        // glow
+                        col += vec3(1.0, 0.9, 0.7) * (3.0 / vec3(dot(bhv, bhv))) * 0.0008 * noncaptured * clamp(r, 0.8, 0.9);
+                        col -= 0.0004;
+
+                        if(r < 0.5) {
+                            alpha = 1.0;
+                        } else {
+                            alpha = col.r;
+                        }
+                    }
+
+                    fragColor = vec4(
+                        smoothstep(0.1, 0.6, col.r),
+                        smoothstep(0.5, 0.9, col.g),
+                        smoothstep(0.1, 0.9, col.b),
+                        alpha
+                    );
+                }
+            `;
+            
+            // Compile shaders
+            function createShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+            
+            const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+            
+            if (!vertexShader || !fragmentShader) {
+                return;
+            }
+            
+            // Create program
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program linking error:', gl.getProgramInfoLog(program));
+                return;
+            }
+            
+            gl.useProgram(program);
+            
+            // Create buffer for vertex positions
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1,
+                 1, -1,
+                -1,  1,
+                 1,  1
+            ]), gl.STATIC_DRAW);
+            
+            // Set up vertex attributes
+            const positionLocation = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            
+            // Get uniform locations
+            const timeLocation = gl.getUniformLocation(program, 'time');
+            const resolutionLocation = gl.getUniformLocation(program, 'resolution');
+            const mouseLocation = gl.getUniformLocation(program, 'mouse');
+            
+            // Track mouse position
+            let mouseX = 0.5;
+            let mouseY = 0.5;
+            
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+            });
+            
+            // Animation loop
+            let startTime = Date.now() / 1000;
+            
+            function render() {
+                const currentTime = (Date.now() / 1000 - startTime) % 1000; // Prevent time overflow
+                
+                gl.uniform1f(timeLocation, currentTime);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.uniform2f(mouseLocation, mouseX, mouseY);
+                
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                
+                requestAnimationFrame(render);
+            }
+            
+            // Start rendering
+            render();
+        }
+        
+        // Initialize shader background when page loads
+        window.addEventListener('load', initShaderBackground);
     </script>
 </body>
 </html>
-
