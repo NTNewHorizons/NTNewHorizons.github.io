@@ -3,849 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuclear Tech: New Horizons - Downloads</title>
-    <link rel="icon" type="image/x-icon" href="/resources/favicon.ico">
+    <title>Downloads - Nuclear Tech: New Horizons</title>
+    <link rel="icon" type="image/x-icon" href="./resources/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(to bottom, #0a0a0a, #000000, #1a0000);
-            background-attachment: fixed;
-            color: #ffffff;
-        }
-        
-        .orbitron {
-            font-family: 'Orbitron', sans-serif;
-        }
-        
-        .animate-glow {
-            background: linear-gradient(90deg, #ff4500, #ff8c00, #ffd700);
-            background-size: 200% 200%;
-            animation: gradient 3s ease infinite;
-        }
-        
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .bg-grid {
-            background-image: radial-gradient(circle at 1px 1px, rgba(255, 69, 0, 0.1) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 69, 0, 0.5);
-            box-shadow: 0 20px 25px -5px rgba(255, 69, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .btn-hover:hover {
-            transform: translateY(-2px);
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .flame-effect {
-            position: relative;
-        }
-        
-        .flame-effect::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff4500, #ff8c00, #ffd700, #ff4500);
-            background-size: 400% 400%;
-            animation: gradient 3s ease infinite;
-            border-radius: 12px;
-            z-index: -1;
-        }
-        
-        .flame-effect::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 10px;
-            background: #0a0a0a;
-            z-index: -1;
-        }
-        
-        .fire-glow {
-            text-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
-        }
-        
-        .radial-fire {
-            background: radial-gradient(circle at center, rgba(255, 69, 0, 0.2) 0%, transparent 70%);
-        }
-        
-        /* Custom styles for release page */
-        .release-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .release-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin-top: 0.5rem;
-        }
-        
-        .release-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .release-content {
-            margin-bottom: 2rem;
-        }
-        
-        .release-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-        
-        .release-content h3 {
-            font-size: 1.25rem;
-            margin: 1rem 0 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-content p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .assets-section {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .assets-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .assets-list {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        
-        .asset-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .asset-item:last-child {
-            border-bottom: none;
-        }
-        
-        .asset-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex: 1;
-        }
-        
-        .asset-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-        
-        .asset-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .asset-actions button {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 0.25rem;
-            transition: color 0.2s;
-        }
-        
-        .asset-actions button:hover {
-            color: #ffffff;
-        }
-        
-        .markdown-content {
-            line-height: 1.6;
-        }
-        
-        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .markdown-content h1 {
-            font-size: 1.5rem;
-        }
-        
-        .markdown-content h2 {
-            font-size: 1.25rem;
-        }
-        
-        .markdown-content h3 {
-            font-size: 1rem;
-        }
-        
-        .markdown-content ul, .markdown-content ol {
-            margin: 0.5rem 0 0.5rem 1.5rem;
-            padding: 0;
-        }
-        
-        .markdown-content li {
-            margin-bottom: 0.25rem;
-        }
-        
-        .markdown-content a {
-            color: #ff8c00;
-            text-decoration: underline;
-            transition: color 0.2s;
-        }
-        
-        .markdown-content a:hover {
-            color: #ffd700;
-        }
-        
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #ff8c00;
-            text-decoration: none;
-            margin-bottom: 1rem;
-            transition: color 0.2s;
-        }
-        
-        .back-link:hover {
-            color: #ffd700;
-        }
-        
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-        
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            color: #ef4444;
-        }
-        
-        .release-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 0.5rem;
-        }
-        
-        .release-navigation button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .release-navigation button:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .release-navigation button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .release-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-        
-        .release-date {
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .badge-primary {
-            background: rgba(255, 69, 0, 0.2);
-            color: #ff4500;
-            border: 1px solid rgba(255, 69, 0, 0.3);
-        }
-        
-        .badge-secondary {
-            background: rgba(255, 140, 0, 0.2);
-            color: #ff8c00;
-            border: 1px solid rgba(255, 140, 0, 0.3);
-        }
-        
-        .badge-success {
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        
-        .badge-info {
-            background: rgba(59, 130, 246, 0.2);
-            color: #3b82f6;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        
-        .badge-warning {
-            background: rgba(234, 179, 8, 0.2);
-            color: #eab308;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-        }
-        
-        .badge-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-        
-        .release-notes {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .release-notes h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-        
-        .release-notes p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .release-notes ul {
-            margin: 0.5rem 0 0.5rem 1.5rem;
-            padding: 0;
-        }
-        
-        .release-notes li {
-            margin-bottom: 0.25rem;
-        }
-        
-        .release-notes a {
-            color: #ff8c00;
-            text-decoration: underline;
-            transition: color 0.2s;
-        }
-        
-        .release-notes a:hover {
-            color: #ffd700;
-        }
-        
-        .release-notes code {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes pre {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes blockquote {
-            border-left: 3px solid #ff8c00;
-            padding: 0.5rem 1rem;
-            margin: 1rem 0;
-            color: #9ca3af;
-        }
-        
-        .release-notes table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .release-notes th,
-        .release-notes td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.5rem;
-            text-align: left;
-        }
-        
-        .release-notes th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-        }
-        
-        .release-notes tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .release-notes img {
-            max-width: 100%;
-            height: auto;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .release-notes hr {
-            border: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-        }
-        
-        .release-notes h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h2 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h4 {
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h5 {
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h6 {
-            font-size: 0.625rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes strong {
-            font-weight: 600;
-        }
-        
-        .release-notes em {
-            font-style: italic;
-        }
-        
-        .release-notes del {
-            text-decoration: line-through;
-        }
-        
-        .release-notes ins {
-            text-decoration: underline;
-        }
-        
-        .release-notes sup {
-            font-size: 0.75rem;
-            vertical-align: super;
-        }
-        
-        .release-notes sub {
-            font-size: 0.75rem;
-            vertical-align: sub;
-        }
-        
-        .release-notes small {
-            font-size: 0.75rem;
-        }
-        
-        .release-notes cite {
-            font-style: italic;
-        }
-        
-        .release-notes q {
-            quotes: "“" "”" "‘" "’";
-        }
-        
-        .release-notes q:before {
-            content: open-quote;
-        }
-        
-        .release-notes q:after {
-            content: close-quote;
-        }
-        
-        .release-notes dfn {
-            font-style: italic;
-        }
-        
-        .release-notes abbr {
-            border-bottom: 1px dotted #9ca3af;
-            cursor: help;
-        }
-        
-        .release-notes time {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .release-notes mark {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-        }
-        
-        .release-notes kbd {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes samp {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .release-notes var {
-            font-style: italic;
-        }
-        
-        .release-notes pre {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes code {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes pre code {
-            background: transparent;
-            border: none;
-            padding: 0;
-        }
-        
-        .release-notes blockquote {
-            border-left: 3px solid #ff8c00;
-            padding: 0.5rem 1rem;
-            margin: 1rem 0;
-            color: #9ca3af;
-        }
-        
-        .release-notes table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .release-notes th,
-        .release-notes td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.5rem;
-            text-align: left;
-        }
-        
-        .release-notes th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-        }
-        
-        .release-notes tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .release-notes img {
-            max-width: 100%;
-            height: auto;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .release-notes hr {
-            border: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-        }
-        
-        .release-notes h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h2 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h4 {
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h5 {
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes h6 {
-            font-size: 0.625rem;
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .release-notes strong {
-            font-weight: 600;
-        }
-        
-        .release-notes em {
-            font-style: italic;
-        }
-        
-        .release-notes del {
-            text-decoration: line-through;
-        }
-        
-        .release-notes ins {
-            text-decoration: underline;
-        }
-        
-        .release-notes sup {
-            font-size: 0.75rem;
-            vertical-align: super;
-        }
-        
-        .release-notes sub {
-            font-size: 0.75rem;
-            vertical-align: sub;
-        }
-        
-        .release-notes small {
-            font-size: 0.75rem;
-        }
-        
-        .release-notes cite {
-            font-style: italic;
-        }
-        
-        .release-notes q {
-            quotes: "“" "”" "‘" "’";
-        }
-        
-        .release-notes q:before {
-            content: open-quote;
-        }
-        
-        .release-notes q:after {
-            content: close-quote;
-        }
-        
-        .release-notes dfn {
-            font-style: italic;
-        }
-        
-        .release-notes abbr {
-            border-bottom: 1px dotted #9ca3af;
-            cursor: help;
-        }
-        
-        .release-notes time {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .release-notes mark {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-        }
-        
-        .release-notes kbd {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes samp {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .release-notes var {
-            font-style: italic;
-        }
-        
-        .release-notes pre {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes code {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.25rem;
-            padding: 0.25rem 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.875rem;
-        }
-        
-        .release-notes pre code {
-            background: transparent;
-            border: none;
-            padding: 0;
-        }
-        
-        .release-notes blockquote {
-            border-left: 3px solid #ff8c00;
-            padding: 0.5rem 1rem;
-            margin: 1rem 0;
-            color: #9ca3af;
-        }
-        
-        .release-notes table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .release-notes th,
-        .release-notes td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.5rem;
-            text-align: left;
-        }
-        
-        .release-notes th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-        }
-        
-        .release-notes tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .release-notes img {
-            max-width: 100%;
-            height: auto;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .release-notes hr {
-            border: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1.5rem 0;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body class="text-white overflow-x-hidden">
+<body class="text-white">
+    <!-- Black hole background -->
+    <div class="blackhole-bg"></div>
+
     <!-- Background elements -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="absolute top-20 right-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
     </div>
 
     <!-- Navigation -->
-    <nav class="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm">
+    <nav class="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm content-layer">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <div class="bg-gradient-to-r from-red-500 to-orange-400 w-10 h-10 rounded-lg flex items-center justify-center">
@@ -856,19 +33,15 @@
                 </span>
             </div>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+                <a href="./index.html" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
                     Home
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="index.html#features" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
-                    Features
+                <a href="#releases" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+                    Releases
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
-                <a href="download.html" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
-                    Downloads
-                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </a>
-                <a href="index.html#community" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
+                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group">
                     Community
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
@@ -884,66 +57,100 @@
         </div>
     </nav>
 
+    <!-- Downloads Hero Section -->
+    <section class="py-16 px-4 text-center relative overflow-hidden content-layer">
+        <div class="absolute inset-0 radial-fire opacity-40"></div>
+        
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-glow bg-clip-text text-transparent fire-glow">
+                Download Nuclear Tech: New Horizons
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Get the latest releases and server files for Nuclear Tech: New Horizons
+            </p>
+        </div>
+    </section>
+
     <!-- Main Content -->
-    <main class="py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- Back Link -->
-            <a href="index.html" class="back-link mb-6">
-                <i class="fas fa-arrow-left mr-1"></i> Back to Home
-            </a>
-            
-            <!-- Release Header -->
-            <div id="release-header" class="release-header">
-                <h1 id="release-title" class="release-title">Loading...</h1>
-                <div id="release-meta" class="release-meta">
-                    <span><i class="fas fa-user mr-1"></i> <span id="release-author">Loading...</span></span>
-                    <span><i class="far fa-calendar mr-1"></i> <span id="release-date">Loading...</span></span>
-                    <span><i class="fas fa-code-branch mr-1"></i> <span id="release-tag">Loading...</span></span>
-                    <span><i class="fas fa-hashtag mr-1"></i> <span id="release-commit">Loading...</span></span>
+    <section id="releases" class="py-12 px-4 relative content-layer">
+        <div class="absolute inset-0 bg-grid opacity-10"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Main Content Area -->
+                <div class="lg:w-2/3">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 mb-8">
+                        <h2 class="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                            <i class="fas fa-download mr-2"></i>Available Releases
+                        </h2>
+                        <p class="text-gray-300 mb-6">
+                            Browse and download all available releases of Nuclear Tech: New Horizons. 
+                            Select a version from the sidebar to view its details and download assets.
+                        </p>
+                        
+                        <div id="loading" class="text-center py-12">
+                            <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center animate-spin">
+                                <i class="fas fa-sync h-8 w-8 text-black"></i>
+                            </div>
+                            <p class="mt-4 text-gray-300">Loading releases...</p>
+                        </div>
+                        
+                        <div id="releases-content" class="hidden">
+                            <div id="release-details" class="prose prose-invert max-w-none">
+                                <!-- Release details will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Release Navigation -->
-            <div id="release-navigation" class="release-navigation">
-                <button id="prev-release" disabled>
-                    <i class="fas fa-chevron-left mr-1"></i> Previous
-                </button>
-                <div id="release-count" class="text-sm">Loading releases...</div>
-                <button id="next-release" disabled>
-                    Next <i class="fas fa-chevron-right ml-1"></i>
-                </button>
-            </div>
-            
-            <!-- Release Content -->
-            <div id="release-content" class="release-content">
-                <div id="loading-spinner" class="loading-spinner">
-                    <div class="w-12 h-12 rounded-full border-4 border-t-orange-500 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-                </div>
-                
-                <div id="error-message" class="error-message hidden">
-                    <i class="fas fa-exclamation-triangle mr-2"></i> Failed to load release information. Please try again later.
-                </div>
-                
-                <div id="release-notes" class="release-notes hidden">
-                    <h2>Release Notes</h2>
-                    <div id="release-body" class="markdown-content"></div>
-                </div>
-            </div>
-            
-            <!-- Assets Section -->
-            <div id="assets-section" class="assets-section hidden">
-                <div class="assets-header">
-                    <h3>Assets <span id="assets-count" class="badge badge-secondary ml-1">0</span></h3>
-                </div>
-                <div id="assets-list" class="assets-list">
-                    <!-- Assets will be populated here -->
+
+                <!-- Sidebar -->
+                <div class="lg:w-1/3">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 sticky top-4">
+                        <h3 class="text-xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                            <i class="fas fa-list mr-2"></i>Version Selection
+                        </h3>
+                        
+                        <div id="version-loading" class="text-center py-8">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center animate-spin">
+                                <i class="fas fa-sync h-6 w-6 text-black"></i>
+                            </div>
+                            <p class="mt-2 text-gray-300">Loading versions...</p>
+                        </div>
+                        
+                        <div id="versions-list" class="hidden">
+                            <div class="space-y-3 max-h-96 overflow-y-auto">
+                                <!-- Versions will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="mt-6 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                        <h3 class="text-xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                            <i class="fas fa-external-link-alt mr-2"></i>Quick Links
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="https://github.com/NTNewHorizons/NTNH/releases/latest" target="_blank" rel="noopener noreferrer" class="block bg-gray-700/50 hover:bg-gray-600/50 p-3 rounded-lg transition-colors border border-gray-600 hover:border-red-500">
+                                <i class="fas fa-star mr-2 text-yellow-400"></i>
+                                Latest Release
+                            </a>
+                            <a href="https://github.com/NTNewHorizons/NTNH/releases" target="_blank" rel="noopener noreferrer" class="block bg-gray-700/50 hover:bg-gray-600/50 p-3 rounded-lg transition-colors border border-gray-600 hover:border-red-500">
+                                <i class="fab fa-github mr-2 text-red-400"></i>
+                                GitHub Releases
+                            </a>
+                            <a href="https://github.com/NTNewHorizons/NTNH/tree/server" target="_blank" rel="noopener noreferrer" class="block bg-gray-700/50 hover:bg-gray-600/50 p-3 rounded-lg transition-colors border border-gray-600 hover:border-red-500">
+                                <i class="fas fa-server mr-2 text-orange-400"></i>
+                                Server Files
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-red-900 mt-12">
+    <footer class="py-12 px-4 border-t border-red-900 content-layer">
         <div class="max-w-7xl mx-auto text-center text-gray-400">
             <p class="mb-2">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
             <p class="text-sm opacity-80">
@@ -955,231 +162,6 @@
         </div>
     </footer>
 
-    <script>
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // Get release tag from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const releaseTag = urlParams.get('tag') || 'latest';
-        
-        // DOM elements
-        const releaseTitleEl = document.getElementById('release-title');
-        const releaseAuthorEl = document.getElementById('release-author');
-        const releaseDateEl = document.getElementById('release-date');
-        const releaseTagEl = document.getElementById('release-tag');
-        const releaseCommitEl = document.getElementById('release-commit');
-        const releaseBodyEl = document.getElementById('release-body');
-        const assetsListEl = document.getElementById('assets-list');
-        const assetsCountEl = document.getElementById('assets-count');
-        const loadingSpinnerEl = document.getElementById('loading-spinner');
-        const errorMessageEl = document.getElementById('error-message');
-        const releaseNotesEl = document.getElementById('release-notes');
-        const assetsSectionEl = document.getElementById('assets-section');
-        const prevReleaseBtn = document.getElementById('prev-release');
-        const nextReleaseBtn = document.getElementById('next-release');
-        const releaseCountEl = document.getElementById('release-count');
-        
-        // Global variables
-        let releases = [];
-        let currentReleaseIndex = 0;
-        
-        // Function to format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-        
-        // Function to format file size
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        // Function to create asset item
-        function createAssetItem(asset) {
-            const assetItem = document.createElement('div');
-            assetItem.className = 'asset-item';
-            
-            // Asset name with icon
-            const assetName = document.createElement('div');
-            assetName.className = 'asset-name';
-            
-            const icon = document.createElement('i');
-            icon.className = 'fas fa-download text-gray-400';
-            
-            const nameLink = document.createElement('a');
-            nameLink.href = asset.browser_download_url;
-            nameLink.textContent = asset.name;
-            nameLink.className = 'text-blue-400 hover:text-blue-300 transition-colors';
-            nameLink.target = '_blank';
-            nameLink.rel = 'noopener noreferrer';
-            
-            assetName.appendChild(icon);
-            assetName.appendChild(nameLink);
-            
-            // Asset info
-            const assetInfo = document.createElement('div');
-            assetInfo.className = 'asset-info';
-            
-            const sha256 = document.createElement('span');
-            sha256.textContent = `sha256: ${asset.sha256}`;
-            sha256.title = 'SHA256 Checksum';
-            
-            const size = document.createElement('span');
-            size.textContent = formatFileSize(asset.size);
-            
-            const date = document.createElement('span');
-            date.textContent = formatDate(asset.updated_at);
-            
-            assetInfo.appendChild(sha256);
-            assetInfo.appendChild(size);
-            assetInfo.appendChild(date);
-            
-            // Asset actions
-            const assetActions = document.createElement('div');
-            assetActions.className = 'asset-actions';
-            
-            const copyBtn = document.createElement('button');
-            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-            copyBtn.title = 'Copy download link';
-            copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(asset.browser_download_url).then(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                    setTimeout(() => {
-                        copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-                    }, 2000);
-                });
-            });
-            
-            const downloadBtn = document.createElement('button');
-            downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
-            downloadBtn.title = 'Download';
-            downloadBtn.addEventListener('click', () => {
-                window.open(asset.browser_download_url, '_blank');
-            });
-            
-            assetActions.appendChild(copyBtn);
-            assetActions.appendChild(downloadBtn);
-            
-            // Assemble asset item
-            assetItem.appendChild(assetName);
-            assetItem.appendChild(assetInfo);
-            assetItem.appendChild(assetActions);
-            
-            return assetItem;
-        }
-        
-        // Function to render release
-        function renderRelease(release) {
-            // Update header
-            releaseTitleEl.textContent = release.tag_name;
-            releaseAuthorEl.textContent = release.author.login;
-            releaseDateEl.textContent = formatDate(release.published_at);
-            releaseTagEl.textContent = release.tag_name;
-            releaseCommitEl.textContent = release.target_commitish.substring(0, 7);
-            
-            // Update body
-            releaseBodyEl.innerHTML = release.body ? release.body.replace(/\n/g, '<br>') : 'No release notes available.';
-            
-            // Update assets
-            assetsListEl.innerHTML = '';
-            if (release.assets && release.assets.length > 0) {
-                release.assets.forEach(asset => {
-                    const assetItem = createAssetItem(asset);
-                    assetsListEl.appendChild(assetItem);
-                });
-                assetsCountEl.textContent = release.assets.length;
-                assetsSectionEl.classList.remove('hidden');
-            } else {
-                assetsSectionEl.classList.add('hidden');
-            }
-            
-            // Show/hide elements
-            loadingSpinnerEl.classList.add('hidden');
-            errorMessageEl.classList.add('hidden');
-            releaseNotesEl.classList.remove('hidden');
-            
-            // Update navigation buttons
-            prevReleaseBtn.disabled = currentReleaseIndex === 0;
-            nextReleaseBtn.disabled = currentReleaseIndex === releases.length - 1;
-            
-            // Update release count
-            releaseCountEl.textContent = `${currentReleaseIndex + 1} of ${releases.length}`;
-        }
-        
-        // Function to fetch releases
-        async function fetchReleases() {
-            try {
-                const response = await fetch('https://api.github.com/repos/NTNewHorizons/NTNH/releases');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch releases');
-                }
-                
-                releases = await response.json();
-                
-                // Find the current release index
-                if (releaseTag === 'latest') {
-                    currentReleaseIndex = 0;
-                } else {
-                    const index = releases.findIndex(r => r.tag_name === releaseTag);
-                    currentReleaseIndex = index >= 0 ? index : 0;
-                }
-                
-                // Render the current release
-                renderRelease(releases[currentReleaseIndex]);
-                
-                // Add event listeners for navigation
-                prevReleaseBtn.addEventListener('click', () => {
-                    if (currentReleaseIndex > 0) {
-                        currentReleaseIndex--;
-                        renderRelease(releases[currentReleaseIndex]);
-                        history.pushState(null, '', `?tag=${releases[currentReleaseIndex].tag_name}`);
-                    }
-                });
-                
-                nextReleaseBtn.addEventListener('click', () => {
-                    if (currentReleaseIndex < releases.length - 1) {
-                        currentReleaseIndex++;
-                        renderRelease(releases[currentReleaseIndex]);
-                        history.pushState(null, '', `?tag=${releases[currentReleaseIndex].tag_name}`);
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error fetching releases:', error);
-                loadingSpinnerEl.classList.add('hidden');
-                errorMessageEl.classList.remove('hidden');
-            }
-        }
-        
-        // Initialize
-        fetchReleases();
-        
-        // Handle browser back/forward buttons
-        window.addEventListener('popstate', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const newTag = urlParams.get('tag') || 'latest';
-            
-            if (newTag !== 'latest') {
-                const index = releases.findIndex(r => r.tag_name === newTag);
-                if (index >= 0) {
-                    currentReleaseIndex = index;
-                    renderRelease(releases[currentReleaseIndex]);
-                }
-            } else {
-                currentReleaseIndex = 0;
-                renderRelease(releases[currentReleaseIndex]);
-            }
-        });
-    </script>
+    <script src="download.js"></script>
 </body>
 </html>
-
