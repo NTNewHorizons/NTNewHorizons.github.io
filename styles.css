@@ -155,3 +155,67 @@ body {
     position: relative;
     z-index: 10;
 }
+
+/* Rhombus shape for screenshots */
+.rhombus {
+    width: 500px;
+    height: 500px;
+    transform: rotate(45deg);
+    overflow: hidden;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.rhombus img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: rotate(-45deg) scale(1.4);
+    display: block;
+}
+
+/* Swiper customization */
+.swiper-container {
+    width: 100vw;
+    padding: 0 120px;
+    position: relative;
+}
+
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: #ff4500;
+    font-size: 2.5rem;
+    opacity: 0.8;
+    transition: all 0.3s;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: rgba(0,0,0,0.4);
+}
+
+.swiper-button-prev {
+    left: 20px;
+}
+
+.swiper-button-next {
+    right: 20px;
+}
