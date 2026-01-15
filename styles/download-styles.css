@@ -14,10 +14,6 @@ body {
     text-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
 }
 
-.btn-hover:hover {
-    transform: translateY(-2px);
-}
-
 .card-hover {
      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
      opacity: 0;
