@@ -40,7 +40,45 @@
              opacity: 1;
              transform: translateY(0);
         }
-
+        /* Custom styles for Markdown content to fix list rendering */
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .markdown-content ol {
+            list-style-type: decimal;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+            color: #e5e7eb;
+        }
+        .markdown-content strong {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        .markdown-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .markdown-content a:hover {
+            color: #60a5fa;
+        }
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .markdown-content h1 { font-size: 1.875rem; }
+        .markdown-content h2 { font-size: 1.5rem; }
+        .markdown-content h3 { font-size: 1.25rem; }
     </style>
 </head>
 <body class="text-white">
@@ -190,7 +228,7 @@
                             </div>
                         </div>
                         <p class="text-sm text-gray-400 mb-4">Published on ${publishDate}</p>
-                        <div class="prose prose-invert max-w-none mb-6">
+                        <div class="markdown-content max-w-none mb-6">
                             ${descriptionHTML}
                         </div>
                         <div class="mb-4">
@@ -264,7 +302,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetchReleases();
         });
-
     </script>
 </body>
 </html>
