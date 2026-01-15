@@ -11,14 +11,34 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add scroll animation for elements
-window.addEventListener('scroll', function() {
-    const elements = document.querySelectorAll('.card-hover');
-    elements.forEach(element => {
-        const rect = element.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.75) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
+// Optimize scroll animation using Intersection Observer API
+if ('IntersectionObserver' in window) {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -75px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.card-hover').forEach(element => {
+        observer.observe(element);
     });
-});
+} else {
+    // Fallback for older browsers
+    window.addEventListener('scroll', function() {
+        const elements = document.querySelectorAll('.card-hover');
+        elements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.75) {
+                element.classList.add('visible');
+            }
+        });
+    });
+}

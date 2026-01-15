@@ -1,16 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(to bottom, #0a0a0a, #000000, #1a0000);
-    background-attachment: fixed;
-    color: #ffffff;
-    overflow-x: hidden;
-}
-
-.orbitron {
-    font-family: 'Orbitron', sans-serif;
-}
+@import url('shared-styles.css');
 
 .animate-glow {
     background: linear-gradient(90deg, #ff4500, #ff8c00, #ffd700);
@@ -67,10 +55,6 @@ body {
     border-radius: 10px;
     background: #0a0a0a;
     z-index: -1;
-}
-
-.fire-glow {
-    text-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
 }
 
 .radial-fire {
