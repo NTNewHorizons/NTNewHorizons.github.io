@@ -123,6 +123,15 @@
         // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+        // Configure marked.js to preserve line breaks
+        marked.setOptions({
+            breaks: true, // Convert line breaks to <br> tags
+            gfm: true,    // Enable GitHub Flavored Markdown
+            pedantic: false,
+            smartLists: true,
+            smartypants: true
+        });
+
         // Fetch releases from GitHub API
         async function fetchReleases() {
             const releasesContainer = document.getElementById('releases-container');
@@ -156,7 +165,7 @@
                     releaseCard.className = 'card-hover bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5';
 
                     // Parse markdown description
-                    const descriptionHTML = release.body ? marked.parse(release.body) : '<p>No description provided.</p>';
+                    const descriptionHTML = release.body ? marked.parse(release.body) : '<p class="text-gray-400">No description provided.</p>';
 
                     // Format published date
                     const publishDate = new Date(release.published_at).toLocaleDateString('en-US', {
