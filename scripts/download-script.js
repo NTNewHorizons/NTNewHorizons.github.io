@@ -1,163 +1,130 @@
-// Set current year in footer
+// Set footer year
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-// Configure marked.js to preserve line breaks
-marked.setOptions({
-    breaks: true, // Convert line breaks to <br> tags
-    gfm: true,    // Enable GitHub Flavored Markdown
-    pedantic: false,
-    smartLists: true,
-    smartypants: true
-});
+// Configure marked
+marked.setOptions({ breaks: true, gfm: true, smartypants: true });
 
-// Helper function to format bytes into human-readable units
-function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+function formatBytes(bytes, decimals = 1) {
+  if (!bytes) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
 }
 
-// Create release card HTML
-function createReleaseCard(release) {
-    const descriptionHTML = release.body ? marked.parse(release.body) : '<p class="text-gray-400">No description provided.</p>';
-    
-    const publishDate = new Date(release.published_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    
-    const isPreRelease = release.prerelease;
-    const tagTypeClass = isPreRelease ? 'bg-purple-900/30 text-purple-400 border-purple-500/20' : 'bg-green-900/30 text-green-400 border-green-500/20';
-    const tagText = isPreRelease ? 'Pre-release' : 'Stable';
-    
-    const assetsHTML = release.assets && release.assets.length > 0 
-        ? release.assets.map(asset => `
-            <a href="${asset.browser_download_url}" target="_blank" rel="noopener noreferrer"
-               class="block p-3 bg-gray-700/50 rounded-lg border border-gray-600 hover:border-orange-500 transition-colors break-words">
-                <div class="flex items-center">
-                    <i class="fas fa-file-download text-orange-400 mr-2 flex-shrink-0"></i>
-                    <span class="text-sm truncate">${asset.name}</span>
-                </div>
-                <p class="text-xs text-gray-400 mt-1">${formatBytes(asset.size)}</p>
-            </a>
-        `).join('')
-        : '<p class="text-gray-400 text-sm">No assets attached to this release.</p>';
-    
-    const sourceCodeHTML = `
-        ${release.zipball_url ? `<a href="${release.zipball_url}" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-md transition-colors text-sm">
-            <i class="fas fa-file-archive mr-2"></i> Source Code (Zip)
-        </a>` : ''}
-        ${release.tarball_url ? `<a href="${release.tarball_url}" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-md transition-colors text-sm">
-            <i class="fas fa-file-archive mr-2"></i> Source Code (Tar.gz)
-        </a>` : ''}
-    `;
-
-    const releaseCard = document.createElement('div');
-    releaseCard.className = 'card-hover bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-300 shadow-lg shadow-red-500/5';
-    releaseCard.innerHTML = `
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">${release.name}</h3>
-            <div class="flex gap-2">
-                <span class="px-3 py-1 ${tagTypeClass} rounded-full border text-sm">
-                    ${tagText}
-                </span>
-                ${release.draft ? `<span class="px-3 py-1 bg-gray-700/30 text-gray-300 rounded-full border border-gray-500/20 text-sm">Draft</span>` : ''}
-            </div>
-        </div>
-        <p class="text-sm text-gray-400 mb-4">Published on ${publishDate}</p>
-        <div class="markdown-content max-w-none mb-6">
-            ${descriptionHTML}
-        </div>
-        <div class="mb-4">
-            <h4 class="text-lg font-semibold mb-2 text-gray-200">Assets:</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                ${assetsHTML}
-            </div>
-        </div>
-        <div class="flex flex-wrap gap-3">
-             <a href="${release.html_url}" target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-sm">
-                <i class="fas fa-external-link-alt mr-2"></i> View on GitHub
-            </a>
-             ${sourceCodeHTML}
-        </div>
-    `;
-    return releaseCard;
+function formatDate(isoStr) {
+  return new Date(isoStr).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
 }
 
-// Setup Intersection Observer for scroll animations
-function setupScrollObserver() {
-    if ('IntersectionObserver' in window) {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -75px 0px'
-        };
+function buildReleaseCard(release) {
+  const card = document.createElement('article');
+  card.className = 'release-card reveal';
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+  const isPreRelease = release.prerelease;
+  const tagHtml = isPreRelease
+    ? '<span class="tag tag-purple">Pre-release</span>'
+    : '<span class="tag tag-green">Stable</span>';
+  const draftHtml = release.draft
+    ? '<span class="tag tag-amber">Draft</span>'
+    : '';
 
-        document.querySelectorAll('.card-hover:not(.visible)').forEach(element => {
-            observer.observe(element);
-        });
-    }
+  const bodyHtml = release.body
+    ? marked.parse(release.body)
+    : '<p style="color:var(--text-muted)">No release notes provided.</p>';
+
+  const assetsHtml = release.assets?.length
+    ? release.assets.map(a => `
+        <a href="${a.browser_download_url}" target="_blank" rel="noopener noreferrer" class="asset-item">
+          <i class="fas fa-file-arrow-down"></i>
+          <span class="asset-name" title="${a.name}">${a.name}</span>
+          <span class="asset-size">${formatBytes(a.size)}</span>
+        </a>
+      `).join('')
+    : '<p style="color:var(--text-muted);font-size:0.82rem">No assets attached.</p>';
+
+  const srcBtns = [
+    release.zipball_url
+      ? `<a href="${release.zipball_url}" target="_blank" rel="noopener noreferrer" class="release-btn release-btn-blue"><i class="fas fa-file-zipper"></i> Zip</a>`
+      : '',
+    release.tarball_url
+      ? `<a href="${release.tarball_url}" target="_blank" rel="noopener noreferrer" class="release-btn release-btn-blue"><i class="fas fa-file-archive"></i> Tar.gz</a>`
+      : ''
+  ].join('');
+
+  card.innerHTML = `
+    <div class="release-header">
+      <span class="release-name">${release.name || release.tag_name}</span>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">${tagHtml}${draftHtml}</div>
+    </div>
+    <p class="release-meta">
+      <i class="fas fa-calendar-alt" style="margin-right:0.4rem;color:var(--orange)"></i>
+      Published ${formatDate(release.published_at)}
+      &nbsp;·&nbsp;
+      <i class="fas fa-tag" style="margin-right:0.4rem;color:var(--orange)"></i>
+      ${release.tag_name}
+    </p>
+    <div class="release-body markdown-body">${bodyHtml}</div>
+    <div class="assets-section" style="margin-bottom:1.25rem;">
+      <h4><i class="fas fa-cube" style="margin-right:0.5rem;color:var(--orange)"></i>Assets</h4>
+      <div class="assets-grid">${assetsHtml}</div>
+    </div>
+    <div class="release-actions">
+      <a href="${release.html_url}" target="_blank" rel="noopener noreferrer" class="release-btn release-btn-ghost">
+        <i class="fab fa-github"></i> View on GitHub
+      </a>
+      ${srcBtns}
+    </div>
+  `;
+
+  return card;
 }
 
-// Fetch releases from GitHub API
 async function fetchReleases() {
-    const releasesContainer = document.getElementById('releases-container');
-    const loadingElement = document.getElementById('loading');
-    const errorMessage = document.getElementById('error-message');
+  const container = document.getElementById('releasesContainer');
+  const loading   = document.getElementById('loadingState');
+  const error     = document.getElementById('errorState');
 
-    try {
-        // Show loading state
-        loadingElement.classList.remove('hidden');
-        errorMessage.classList.add('hidden');
+  try {
+    loading.style.display = 'block';
+    error.style.display   = 'none';
 
-        // Fetch releases
-        const response = await fetch('https://api.github.com/repos/NTNewHorizons/NTNH/releases');
-        if (!response.ok) {
-            throw new Error(`GitHub API request failed with status ${response.status}`);
-        }
-        const releases = await response.json();
+    // Fetch up to 100 releases (GitHub max per page), sorted newest-first by published_at
+    const res = await fetch('https://api.github.com/repos/NTNewHorizons/NTNH/releases?per_page=100');
+    if (!res.ok) throw new Error(`GitHub API error ${res.status}`);
+    const releases = await res.json();
 
-        // Clear container and hide loading
-        releasesContainer.innerHTML = '';
-        loadingElement.classList.add('hidden');
+    // Always sort by published_at descending so the newest release is first,
+    // regardless of the order GitHub returns them
+    releases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
 
-        if (releases.length === 0) {
-            releasesContainer.innerHTML = '<p class="text-center text-gray-400 py-10">No releases found.</p>';
-            return;
-        }
+    loading.style.display = 'none';
 
-        // Process and display releases
-        releases.forEach(release => {
-            releasesContainer.appendChild(createReleaseCard(release));
-        });
-
-        // Setup scroll animation for newly added cards
-        setupScrollObserver();
-
-    } catch (error) {
-        console.error('Error fetching releases:', error);
-        // Hide loading and show error message
-        loadingElement.classList.add('hidden');
-        errorMessage.classList.remove('hidden');
+    if (!releases.length) {
+      container.innerHTML = '<p class="state-center" style="display:block"><i class="fas fa-inbox"></i>No releases found.</p>';
+      return;
     }
+
+    releases.forEach(r => container.appendChild(buildReleaseCard(r)));
+
+    // Trigger reveal animations
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.release-card.reveal').forEach(c => observer.observe(c));
+
+  } catch (err) {
+    console.error(err);
+    loading.style.display = 'none';
+    error.style.display   = 'block';
+  }
 }
 
-// Initial fetch when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    fetchReleases();
-});
+document.addEventListener('DOMContentLoaded', fetchReleases);

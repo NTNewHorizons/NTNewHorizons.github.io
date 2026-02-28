@@ -1,99 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Downloads - Nuclear Tech: New Horizons</title>
-    <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Orbitron Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Marked.js for Markdown parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- Download Styles -->
-    <link rel="stylesheet" href="styles/download-styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downloads - Nuclear Tech: New Horizons</title>
+  <meta name="description" content="Download Nuclear Tech: New Horizons - all official releases, changelogs, and assets.">
+  <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/shared-styles.css">
+  <link rel="stylesheet" href="styles/download-styles.css">
 </head>
-<body class="text-white">
-    <!-- Background elements similar to index.html -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-20 right-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
+<body class="bg-grid scanlines">
+
+  <!-- Black hole background -->
+  <div class="blackhole-bg" aria-hidden="true"></div>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <header>
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">⚛</div>
+        <span class="nav-logo-text">NT:NH</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#community">Community</a></li>
+      </ul>
+
+      <div class="nav-icons">
+        <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <main>
+    <div class="dl-hero">
+      <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">All Releases</p>
+      <h1 class="dl-hero-title">Downloads</h1>
+      <p class="dl-hero-sub">
+        Official releases pulled live from GitHub. Always up to date. Pick a version and dive in.
+      </p>
     </div>
 
-    <!-- Navigation -->
-    <nav class="relative py-6 px-4 border-b border-red-900/80 backdrop-blur-sm z-10">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="bg-gradient-to-r from-red-500 to-orange-400 w-10 h-10 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-fire text-black"></i>
-                </div>
-                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 orbitron">
-                    NT:NH
-                </span>
-            </div>
-            <div class="flex space-x-4">
-                 <a href="index.html" class="text-gray-300 hover:text-orange-400 font-medium transition-colors relative group px-3 py-1 rounded">
-                     Home
-                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                 </a>
-                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-gray-800/50 border border-orange-500/30 hover:bg-orange-500/10 transition-colors hover:scale-105 duration-300">
-                    <i class="fa-brands fa-discord text-orange-400"></i>
-                </a>
-                <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full bg-gray-800/50 border border-red-500/30 hover:bg-red-500/10 transition-colors hover:scale-105 duration-300">
-                    <i class="fab fa-github text-red-400"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
+    <!-- ═══ RELEASES ═══ -->
+    <div class="releases-wrap">
 
-    <!-- Main Content -->
-    <main class="py-12 px-4 relative z-10">
-        <div class="max-w-7xl mx-auto">
-            <section class="mb-16 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 fire-glow orbitron">
-                    Download Nuclear Tech: New Horizons
-                </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Get the latest official releases of the modpack directly from GitHub.
-                </p>
-            </section>
+      <!-- Loading state -->
+      <div id="loadingState" class="state-center">
+        <i class="fas fa-circle-notch spin" style="color:var(--orange)"></i>
+        <p>Fetching releases from GitHub…</p>
+      </div>
 
-            <section id="releases-section">
-                <h2 class="text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">Releases</h2>
-                <div id="releases-container" class="space-y-6">
-                    <!-- Releases will be dynamically inserted here -->
-                    <div id="loading" class="text-center py-10">
-                        <i class="fas fa-spinner fa-spin text-4xl text-orange-400"></i>
-                        <p class="mt-4 text-gray-300">Fetching releases...</p>
-                    </div>
-                    <div id="error-message" class="hidden text-center py-10">
-                        <i class="fas fa-exclamation-triangle text-4xl text-red-500"></i>
-                        <p class="mt-4 text-gray-300">Failed to load releases. Please check the console for details and try again later.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
+      <!-- Error state (hidden by default) -->
+      <div id="errorState" class="state-center" style="display:none;">
+        <i class="fas fa-triangle-exclamation" style="color:var(--crimson)"></i>
+        <p>Failed to load releases.<br>Check the console for details and try again later.</p>
+      </div>
 
-    <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-red-900 relative z-10">
-        <div class="max-w-7xl mx-auto text-center text-gray-400">
-            <p class="mb-2">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
-            <p class="text-sm opacity-80">
-                Inspired by the spirit of GTNH, but with a unique NTM style! 🔥
-            </p>
-            <p class="mt-4 text-xs opacity-60">
-                This is a fan project not affiliated with Mojang Studios, Minecraft, or any other trademark holders.
-            </p>
-        </div>
-    </footer>
+      <!-- Releases inserted here -->
+      <div id="releasesContainer"></div>
+    </div>
+  </main>
 
-    <script src="scripts/download-script.js"></script>
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <p style="margin-bottom:0.4rem;">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
+    <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
+    <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
+  </footer>
+
+  <script src="scripts/download-script.js"></script>
 </body>
 </html>
