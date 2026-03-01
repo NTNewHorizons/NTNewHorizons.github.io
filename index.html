@@ -17,7 +17,12 @@
 <body class="bg-grid scanlines">
 
   <!-- Black hole background -->
-  <div class="blackhole-bg" aria-hidden="true"></div>
+  <div class="blackhole-bg" aria-hidden="true">
+    <video autoplay muted loop playsinline>
+      <source src="../resources/blackhole.webm" type="video/webm">
+      <source src="../resources/blackhole_web.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Background orbs -->
   <div class="orb orb-1" aria-hidden="true"></div>
@@ -27,8 +32,8 @@
   <!-- ═══ NAVIGATION ═══ -->
   <header>
     <nav class="nav-bar">
-      <a href="index.html" class="nav-logo">
-        <div class="nav-logo-icon">⚛</div>
+      <a href="index" class="nav-logo">
+        <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
         <span class="nav-logo-text">NT:NH</span>
       </a>
 
@@ -66,7 +71,7 @@
       </p>
 
       <div class="hero-actions">
-        <a href="download.html" class="btn btn-primary">
+        <a href="download" class="btn btn-primary">
           <i class="fas fa-download"></i> Download
         </a>
         <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
@@ -82,7 +87,7 @@
         <span class="tag tag-amber">GTNH-Inspired</span>
       </div>
 
-      <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-hint" aria-hidden="true" style="color: var(--text-mid);">
         <span>Scroll</span>
         <span class="arrow">↓</span>
       </div>
@@ -264,7 +269,7 @@
               Download the most recent build of NT:NH. The client pack includes everything you need to play. For multiplayer, grab the server download from GitHub.
             </p>
             <div style="display:flex;flex-wrap:wrap;gap:0.85rem;">
-              <a href="download.html" class="btn btn-primary">
+              <a href="download" class="btn btn-primary">
                 <i class="fas fa-download"></i> Client Download
               </a>
               <a href="https://github.com/NTNewHorizons/NTNH/tree/server" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
@@ -309,7 +314,7 @@
           <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">
             <i class="fab fa-discord"></i> Join Discord
           </a>
-          <a href="download.html" class="btn btn-secondary" style="font-size:1rem;padding:1rem 2.5rem;">
+          <a href="download" class="btn btn-secondary" style="font-size:1rem;padding:1rem 2.5rem;">
             <i class="fas fa-download"></i> Download Now
           </a>
         </div>
