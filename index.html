@@ -337,6 +337,39 @@
     <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
   </footer>
 
+  <!-- ═══ COOKIE BANNER ═══ -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie notice">
+    <div class="cookie-banner-header">
+      <span class="cookie-banner-title">🍪 Cookies</span>
+      <button class="cookie-banner-close" id="cookieClose" aria-label="Close">&times;</button>
+    </div>
+    <p class="cookie-banner-body">
+      This site uses cookies.
+    </p>
+    <div class="cookie-banner-actions">
+      <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept</button>
+      <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Decline</button>
+    </div>
+  </div>
+
   <script src="scripts/index-script.js"></script>
+  <script>
+    (function () {
+      const banner  = document.getElementById('cookieBanner');
+      const dismiss = () => {
+        banner.classList.add('hiding');
+        banner.addEventListener('animationend', () => banner.remove(), { once: true });
+      };
+      document.getElementById('cookieClose').addEventListener('click', dismiss);
+      document.getElementById('cookieAccept').addEventListener('click', () => {
+        window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
+        dismiss();
+      });
+      document.getElementById('cookieDecline').addEventListener('click', () => {
+        window.location.href = 'https://en.wikipedia.org/wiki/Diabetes';
+        dismiss();
+      });
+    })();
+  </script>
 </body>
 </html>
