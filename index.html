@@ -17,8 +17,8 @@
 <body class="bg-grid scanlines">
 
   <!-- Black hole background -->
-  <div class="blackhole-bg" aria-hidden="true">
-    <video autoplay muted loop playsinline>
+  <div class="blackhole-bg" aria-hidden="true" id="blackholeContainer">
+    <video muted playsinline id="blackholeVideo">
       <source src="../resources/blackhole.webm" type="video/webm">
       <source src="../resources/blackhole_web.mp4" type="video/mp4">
     </video>
@@ -353,6 +353,58 @@
   </div>
 
   <script src="scripts/index-script.js"></script>
+  <script>
+    // Blackhole cycling animation
+    (function () {
+      const video = document.getElementById('blackholeVideo');
+      const videoElement = document.querySelector('.blackhole-bg video');
+      
+      if (!video || !videoElement) return;
+
+      // Start with video hidden
+      videoElement.style.opacity = '0';
+      videoElement.classList.add('blackhole-hidden');
+
+      function startCycle() {
+        // Start playing video immediately (while hidden)
+        video.currentTime = 0;
+        video.play().catch(err => console.log('Video play error:', err));
+
+        // Fade in over 1.5 seconds
+        videoElement.classList.remove('blackhole-hidden', 'blackhole-fading-out');
+        videoElement.classList.add('blackhole-fading-in');
+
+        // Calculate when to start fade out (1.5 seconds before video ends)
+        const fadeOutTime = video.duration - 1.5;
+
+        // Listen for time update to trigger fade out at the right moment
+        const handleTimeUpdate = () => {
+          if (video.currentTime >= fadeOutTime) {
+            video.removeEventListener('timeupdate', handleTimeUpdate);
+            fadeOut();
+          }
+        };
+
+        video.addEventListener('timeupdate', handleTimeUpdate);
+      }
+
+      function fadeOut() {
+        videoElement.classList.remove('blackhole-fading-in');
+        videoElement.classList.add('blackhole-fading-out');
+
+        // After fade-out animation completes, wait 10 seconds and restart
+        setTimeout(() => {
+          videoElement.classList.remove('blackhole-fading-out');
+          videoElement.classList.add('blackhole-hidden');
+          video.pause();
+          setTimeout(startCycle, 10000); // Wait 10 seconds before next cycle
+        }, 1500);
+      }
+
+      // Start the first cycle
+      startCycle();
+    })();
+  </script>
   <script>
     (function () {
       const banner  = document.getElementById('cookieBanner');

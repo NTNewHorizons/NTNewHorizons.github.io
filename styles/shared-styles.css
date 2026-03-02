@@ -103,6 +103,29 @@ body {
   50%       { opacity: 1;   transform: scale(1.1); }
 }
 
+/* ─── Blackhole fade animations ─── */
+@keyframes blackholeFadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.75; }
+}
+
+@keyframes blackholeFadeOut {
+  from { opacity: 0.75; }
+  to { opacity: 0; }
+}
+
+.blackhole-fading-in {
+  animation: blackholeFadeIn 1.5s ease-in forwards !important;
+}
+
+.blackhole-fading-out {
+  animation: blackholeFadeOut 1.5s ease-out forwards !important;
+}
+
+.blackhole-hidden {
+  opacity: 0 !important;
+}
+
 /* ─── Nav ─── */
 .nav-bar {
   position: sticky;
