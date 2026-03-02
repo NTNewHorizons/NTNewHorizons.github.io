@@ -40,19 +40,33 @@
 
 .hero-title .line-1 {
   display: block;
-  background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.5));
+  background: linear-gradient(90deg, #fff8f0 0%, rgba(255,255,255,0.5) 25%, #fff 50%, rgba(255,255,255,0.5) 75%, #fff8f0 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: titleShimmer1 8s linear infinite;
+}
+
+@keyframes titleShimmer1 {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .hero-title .line-2 {
   display: block;
-  background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow));
+  background: linear-gradient(90deg, var(--red) 0%, var(--orange) 25%, var(--yellow) 50%, var(--orange) 75%, var(--red) 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   filter: drop-shadow(0 0 28px rgba(255,80,0,0.55));
+  animation: titleShimmer2 7s linear infinite;
+}
+
+@keyframes titleShimmer2 {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .hero-subtitle {
@@ -61,6 +75,21 @@
   color: var(--text-mid);
   line-height: 1.7;
   margin-bottom: 2.5rem;
+}
+
+.shimmer-name {
+  background: linear-gradient(90deg, var(--orange) 0%, var(--yellow) 25%, #fff 50%, var(--yellow) 75%, var(--orange) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nameShimmer 6s linear infinite;
+  font-weight: 600;
+}
+
+@keyframes nameShimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .hero-actions {
