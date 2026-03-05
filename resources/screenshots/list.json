@@ -2,5 +2,9 @@
   "Modern textures support": {
     "desc": "NTNH-Vanilled resourcepack brings back modern textures!",
     "file": "screenshot1.png"
+  },
+  "Complex oil refining": {
+    "desc": "Build massive oil refineries and share your designs with others!",
+    "file": "screenshot2.png"
   }
 }
