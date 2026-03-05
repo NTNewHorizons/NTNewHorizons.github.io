@@ -396,3 +396,257 @@
 
 .link-item:hover { background: var(--red-glow); border-color: var(--border-hot); color: var(--orange); }
 .link-item i { width: 16px; text-align: center; flex-shrink: 0; }
+
+/* ═══ Screenshot Slider ═══ */
+.screenshot-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  min-height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #050100;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 60px rgba(255,60,0,0.08), 0 24px 64px rgba(0,0,0,0.6);
+  outline: none;
+  cursor: grab;
+}
+
+.screenshot-slider:active { cursor: grabbing; }
+
+.screenshot-slider:focus-visible {
+  border-color: var(--border-hot);
+  box-shadow: 0 0 0 2px var(--orange), 0 24px 64px rgba(0,0,0,0.6);
+}
+
+/* Viewport — clips the sliding track */
+.slider-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.slider-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* Track that actually slides */
+.slider-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+
+/* Individual slides */
+.slider-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.slider-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Vignette: darkens bottom + sides for readability */
+.slider-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,  rgba(0,0,0,0.72) 0%, transparent 48%),
+    linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 28%);
+  pointer-events: none;
+}
+
+/* ─── Arrows ─── */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-hot);
+  background: rgba(0,0,0,0.55);
+  color: var(--orange);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.25s;
+  opacity: 0;
+}
+
+.screenshot-slider:hover .slider-arrow,
+.screenshot-slider:focus-visible .slider-arrow { opacity: 1; }
+
+.slider-arrow:hover {
+  background: var(--red-glow);
+  border-color: var(--orange);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-arrow-prev { left: 1.25rem; }
+.slider-arrow-next { right: 1.25rem; }
+
+/* ─── Info card — bottom-right overlay ─── */
+.slider-info-card {
+  position: absolute;
+  bottom: 2.75rem;
+  right: 1.75rem;
+  z-index: 10;
+  background: rgba(5,1,0,0.88);
+  border: 1px solid var(--border-hot);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  min-width: 170px;
+  max-width: min(300px, 45%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 24px rgba(255,80,0,0.18);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.slider-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+}
+
+/* Flicker during slide transition */
+.slider-info-card.transitioning {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.slider-info-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slider-info-desc {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+
+/* ─── Dot indicators ─── */
+.slider-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.slider-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  background: var(--orange);
+  width: 18px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(255,106,0,0.6);
+}
+
+.slider-dot:hover:not(.active) { background: rgba(255,255,255,0.5); }
+
+/* ─── Auto-advance progress bar ─── */
+.slider-progress-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.05);
+  z-index: 10;
+}
+
+.slider-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+  box-shadow: 0 0 6px rgba(255,106,0,0.5);
+}
+
+/* ─── Counter badge (top-left) ─── */
+.slider-counter {
+  position: absolute;
+  top: 1rem;
+  left: 1.25rem;
+  z-index: 10;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.45);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* ─── Error / empty state ─── */
+.slider-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  line-height: 1.7;
+}
+
+.slider-error i { font-size: 2rem; color: var(--red); display: block; }
+.slider-error code {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--orange);
+  font-size: 0.7rem;
+}
+
+@media (max-width: 560px) {
+  .screenshot-slider { aspect-ratio: 16 / 9; }
+  .slider-info-card  { right: 0.75rem; bottom: 2.25rem; min-width: 140px; }
+  .slider-info-title { font-size: 0.78rem; }
+  .slider-info-desc  { font-size: 0.62rem; }
+  .slider-counter    { display: none; }
+}

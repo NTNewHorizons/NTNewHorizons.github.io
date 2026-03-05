@@ -39,6 +39,7 @@
 
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
         <li><a href="#progression">Progression</a></li>
         <li><a href="#download">Download</a></li>
         <li><a href="#community">Community</a></li>
@@ -184,6 +185,66 @@
             <p class="feature-desc">Monthly releases, community-driven bug reports, and an open GitHub organization. The modpack grows with its players and their feedback.</p>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══ SCREENSHOT SLIDER ═══ -->
+    <section id="screenshots" class="section" style="padding-top:4rem;padding-bottom:4rem;">
+      <div class="section-inner">
+        <div class="section-header reveal">
+          <p class="section-label">In-Game Screenshots</p>
+          <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">See It In Action</h2>
+          <p style="margin-top:0.75rem;color:var(--text-mid);">
+            Real builds, real reactors, real megabases — from our community.
+          </p>
+        </div>
+
+        <div
+          class="screenshot-slider reveal"
+          id="screenshotSlider"
+          style="transition-delay:0.15s"
+          tabindex="0"
+          role="region"
+          aria-label="Screenshot gallery"
+          aria-roledescription="carousel"
+        >
+          <!-- Slides are injected here by JS -->
+          <div class="slider-viewport" id="sliderViewport">
+            <div class="slider-loading" id="sliderLoading">
+              <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;color:var(--orange);"></i>
+              <p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-mid);margin-top:0.75rem;letter-spacing:0.08em;">
+                Loading screenshots…
+              </p>
+            </div>
+          </div>
+
+          <!-- Prev / Next arrows -->
+          <button class="slider-arrow slider-arrow-prev" id="sliderPrev" aria-label="Previous screenshot">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="slider-arrow slider-arrow-next" id="sliderNext" aria-label="Next screenshot">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+
+          <!-- Counter badge -->
+          <div class="slider-counter" id="sliderCounter" aria-hidden="true"></div>
+
+          <!-- Title / desc card -->
+          <div class="slider-info-card" id="sliderInfoCard" aria-live="polite">
+            <p class="slider-info-title" id="sliderInfoTitle"></p>
+            <p class="slider-info-desc"  id="sliderInfoDesc"></p>
+          </div>
+
+          <!-- Dot nav -->
+          <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Screenshots"></div>
+
+          <!-- Progress bar -->
+          <div class="slider-progress-bar" aria-hidden="true">
+            <div class="slider-progress-fill" id="sliderProgressFill"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -361,23 +422,18 @@
       
       if (!video || !videoElement) return;
 
-      // Start with video hidden
       videoElement.style.opacity = '0';
       videoElement.classList.add('blackhole-hidden');
 
       function startCycle() {
-        // Start playing video immediately (while hidden)
         video.currentTime = 0;
         video.play().catch(err => console.log('Video play error:', err));
 
-        // Fade in over 1.5 seconds
         videoElement.classList.remove('blackhole-hidden', 'blackhole-fading-out');
         videoElement.classList.add('blackhole-fading-in');
 
-        // Calculate when to start fade out (1.5 seconds before video ends)
         const fadeOutTime = video.duration - 1.5;
 
-        // Listen for time update to trigger fade out at the right moment
         const handleTimeUpdate = () => {
           if (video.currentTime >= fadeOutTime) {
             video.removeEventListener('timeupdate', handleTimeUpdate);
@@ -392,16 +448,14 @@
         videoElement.classList.remove('blackhole-fading-in');
         videoElement.classList.add('blackhole-fading-out');
 
-        // After fade-out animation completes, wait 10 seconds and restart
         setTimeout(() => {
           videoElement.classList.remove('blackhole-fading-out');
           videoElement.classList.add('blackhole-hidden');
           video.pause();
-          setTimeout(startCycle, 10000); // Wait 10 seconds before next cycle
+          setTimeout(startCycle, 10000);
         }, 1500);
       }
 
-      // Start the first cycle
       startCycle();
     })();
   </script>

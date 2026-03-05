@@ -81,3 +81,221 @@ if (subtitleEl) {
     }
   }, 22);
 }
+
+// ═══ Screenshot Slider ═══
+(function () {
+  const DURATION      = 5000; // ms per slide
+  const SLIDE_TIME_MS = 550;  // must match CSS transition duration
+
+  const sliderEl     = document.getElementById('screenshotSlider');
+  const viewport     = document.getElementById('sliderViewport');
+  const infoCard     = document.getElementById('sliderInfoCard');
+  const infoTitle    = document.getElementById('sliderInfoTitle');
+  const infoDesc     = document.getElementById('sliderInfoDesc');
+  const dotsWrap     = document.getElementById('sliderDots');
+  const counterEl    = document.getElementById('sliderCounter');
+  const prevBtn      = document.getElementById('sliderPrev');
+  const nextBtn      = document.getElementById('sliderNext');
+  const progressFill = document.getElementById('sliderProgressFill');
+
+  if (!sliderEl) return;
+
+  let slides    = [];
+  let current   = 0;
+  let autoTimer = null;
+  let paused    = false;
+  let busy      = false; // block overlapping transitions
+  let track     = null;
+
+  // ── Parse both JSON formats ──
+  function parse(data) {
+    if (Array.isArray(data)) return data;
+    return Object.entries(data).map(([title, v]) => ({
+      title,
+      desc: v.desc || '',
+      file: v.file || ''
+    }));
+  }
+
+  // ── Build DOM once data is ready ──
+  function build(screenshots) {
+    viewport.innerHTML = '';
+    dotsWrap.innerHTML = '';
+    slides = screenshots;
+
+    // Create sliding track
+    track = document.createElement('div');
+    track.className = 'slider-track';
+
+    screenshots.forEach((s, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slider-slide';
+
+      const img = document.createElement('img');
+      img.src       = 'resources/screenshots/' + s.file;
+      img.alt       = s.title || 'Screenshot ' + (i + 1);
+      img.loading   = i === 0 ? 'eager' : 'lazy';
+      img.draggable = false;
+      slide.appendChild(img);
+      track.appendChild(slide);
+
+      // Dot
+      const dot = document.createElement('button');
+      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to screenshot ' + (i + 1) + (s.title ? ': ' + s.title : ''));
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    viewport.appendChild(track);
+    updateTrack(0, false);
+    updateMeta(0);
+    startAuto();
+  }
+
+  // ── Move track (instant or animated) ──
+  function updateTrack(idx, animate) {
+    if (!track) return;
+    track.style.transition = animate
+      ? `transform ${SLIDE_TIME_MS}ms cubic-bezier(0.77,0,0.175,1)`
+      : 'none';
+    track.style.transform = `translateX(-${idx * 100}%)`;
+  }
+
+  // ── Update info card, dots, counter ──
+  function updateMeta(idx) {
+    const s = slides[idx];
+
+    // Flicker card out, update text, flicker back in
+    infoCard.classList.add('transitioning');
+    setTimeout(() => {
+      infoTitle.textContent = s.title || '';
+      infoDesc.textContent  = s.desc  || '';
+      infoCard.classList.remove('transitioning');
+    }, 200);
+
+    // Counter
+    if (counterEl) counterEl.textContent = (idx + 1) + ' / ' + slides.length;
+
+    // Dots
+    dotsWrap.querySelectorAll('.slider-dot').forEach((el, i) =>
+      el.classList.toggle('active', i === idx));
+  }
+
+  // ── Navigate to a specific slide ──
+  function goTo(idx, keepAuto) {
+    if (busy || slides.length < 2) return;
+    const target = ((idx % slides.length) + slides.length) % slides.length;
+    if (target === current) return;
+
+    busy = true;
+    current = target;
+
+    updateTrack(current, true);
+    updateMeta(current);
+
+    setTimeout(() => { busy = false; }, SLIDE_TIME_MS);
+    if (!keepAuto) restartAuto();
+  }
+
+  // ── Auto-advance with glowing progress bar ──
+  function startAuto() {
+    clearTimeout(autoTimer);
+
+    progressFill.style.transition = 'none';
+    progressFill.style.width = '0%';
+    void progressFill.offsetWidth; // force reflow
+
+    progressFill.style.transition = `width ${DURATION}ms linear`;
+    progressFill.style.width = '100%';
+
+    autoTimer = setTimeout(() => {
+      goTo(current + 1, true);
+      startAuto();
+    }, DURATION);
+  }
+
+  function restartAuto() {
+    if (!paused) startAuto();
+  }
+
+  // ── Pause on hover (freeze progress bar at current position) ──
+  sliderEl.addEventListener('mouseenter', () => {
+    paused = true;
+    clearTimeout(autoTimer);
+    const pct = (
+      parseFloat(getComputedStyle(progressFill).width) /
+      parseFloat(getComputedStyle(progressFill.parentElement).width) * 100
+    ).toFixed(2);
+    progressFill.style.transition = 'none';
+    progressFill.style.width = pct + '%';
+  });
+
+  sliderEl.addEventListener('mouseleave', () => {
+    paused = false;
+    restartAuto();
+  });
+
+  // ── Arrow buttons ──
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // ── Keyboard (when slider is focused) ──
+  sliderEl.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+  });
+
+  // ── Touch / swipe (horizontal only, won't fight page scroll) ──
+  let touchStartX = 0;
+  let touchStartY = 0;
+  sliderEl.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  sliderEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      goTo(current + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+
+  // ── Drag to slide (mouse) ──
+  let dragStartX  = 0;
+  let isDragging  = false;
+
+  sliderEl.addEventListener('mousedown', e => {
+    dragStartX = e.clientX;
+    isDragging = true;
+  });
+
+  window.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dx = e.clientX - dragStartX;
+    if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+  });
+
+  // ── Fetch list.json and initialise ──
+  fetch('resources/screenshots/list.json')
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      const items = parse(data);
+      if (!items.length) throw new Error('empty list');
+      build(items);
+    })
+    .catch(err => {
+      console.warn('[Slider] Could not load screenshots:', err);
+      viewport.innerHTML = `
+        <div class="slider-error">
+          <i class="fas fa-image"></i>
+          No screenshots found.<br>
+          <span style="opacity:0.55;">
+            Add PNG files to <code>resources/screenshots/</code>
+            and list them in <code>resources/screenshots/list.json</code>.
+          </span>
+        </div>`;
+    });
+})();
