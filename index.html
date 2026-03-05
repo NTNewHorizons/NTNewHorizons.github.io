@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nuclear Tech: New Horizons - Minecraft Modpack</title>
-  <meta name="description" content="A deep tech Minecraft 1.7.10 modpack centered on HBM's Nuclear Tech Mod. Build complex machines, harness atomic energy, and engineer your way from stone to the stars.">
+  <meta name="description" content="A deep tech Minecraft 1.7.10 modpack built on HBM's Nuclear Tech Mod. Design automated factories, master complex machine chains, and build your way from stone to the stars.">
   <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
   <!-- Font Awesome -->
@@ -68,7 +68,7 @@
 
       <p class="hero-subtitle"
          id="heroSubtitle"
-         data-text="A deep-tech modpack built around HBM's Nuclear Tech Mod by Bufka2011">
+         data-text="A factory-building modpack built on HBM's Nuclear Tech Mod by Bufka2011">
       </p>
 
       <div class="hero-actions">
@@ -82,10 +82,11 @@
 
       <div class="hero-badges">
         <span class="tag tag-cyan">Minecraft 1.7.10</span>
-        <span class="tag tag-amber">Hardcore Mode</span>
+        <span class="tag tag-amber">Hardcore</span>
         <span class="tag tag-red">Quest-Driven</span>
-        <span class="tag tag-cyan">HBM's NTM Core</span>
+        <span class="tag tag-cyan">HBM's NTM</span>
         <span class="tag tag-amber">GTNH-Inspired</span>
+        <span class="tag tag-green">Newcomer-friendly</span>
       </div>
 
       <div class="scroll-hint" aria-hidden="true" style="color: var(--text-mid);">
@@ -125,7 +126,8 @@
           <p class="section-label">What awaits</p>
           <h2 class="section-title" style="font-size:clamp(2rem,4vw,3rem);">Core Features</h2>
           <p style="margin-top:1rem;color:var(--text-mid);max-width:580px;margin-left:auto;margin-right:auto;line-height:1.65;">
-            NT:NH is not just about explosions. It's a comprehensive engineering challenge that demands systems thinking, resource management, and careful progression.
+            NT:NH is about building factories. Complex ones. The kind where you trace a production line back through a dozen machines and realize you need to redesign three of them.
+            Built first for <strong style="color:var(--orange)">newcomers to HBM's Nuclear Tech Mod</strong>, the questbook guides you through every system step by step. Veterans will find enough depth to stay engaged.
           </p>
         </div>
 
@@ -139,8 +141,8 @@
 
           <div class="card reveal-child" style="transition-delay:0.06s">
             <div class="feature-icon"><i class="fas fa-atom"></i></div>
-            <p class="feature-title">Atomic Energy Systems</p>
-            <p class="feature-desc">Progress from basic steam turbines to RBMK fission reactors and plasma fusion. Manage fuel cycles, coolant loops, and reactor control rods to keep your base powered.</p>
+            <p class="feature-title">Power Systems</p>
+            <p class="feature-desc">Scale your energy production as your factory grows. Steam turbines get you started. Later you move into fission and fusion. Each tier demands more planning and infrastructure than the last.</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.12s">
@@ -151,8 +153,8 @@
 
           <div class="card reveal-child" style="transition-delay:0.18s">
             <div class="feature-icon"><i class="fas fa-radiation"></i></div>
-            <p class="feature-title">Radiation Mechanics</p>
-            <p class="feature-desc">Radiation is real and dangerous. Suit up with proper protection, manage contaminated materials carefully, and turn hazardous isotopes into fuel rather than waste.</p>
+            <p class="feature-title">Hazard Management</p>
+            <p class="feature-desc">Some materials are dangerous. Suit up, handle them correctly, and route them into the right machines. Mismanage them and you'll feel it. Handle them well and they become valuable factory inputs.</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.24s">
@@ -170,7 +172,7 @@
           <div class="card reveal-child" style="transition-delay:0.36s">
             <div class="feature-icon"><i class="fas fa-rocket"></i></div>
             <p class="feature-title">Space Exploration</p>
-            <p class="feature-desc">The endgame reaches beyond Minecraft's sky. New dimensions and celestial challenges await those who have mastered terrestrial atomic engineering.</p>
+            <p class="feature-desc">The endgame reaches beyond Minecraft's sky. New dimensions and challenges wait for players who have built and automated their way through everything below.</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.42s">
@@ -198,7 +200,7 @@
           <p class="section-label">In-Game Screenshots</p>
           <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">See It In Action</h2>
           <p style="margin-top:0.75rem;color:var(--text-mid);">
-            Here is what you can find in our modpack!
+            A look at what we are offering
           </p>
         </div>
 
@@ -211,7 +213,6 @@
           aria-label="Screenshot gallery"
           aria-roledescription="carousel"
         >
-          <!-- Slides are injected here by JS -->
           <div class="slider-viewport" id="sliderViewport">
             <div class="slider-loading" id="sliderLoading">
               <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;color:var(--orange);"></i>
@@ -221,7 +222,6 @@
             </div>
           </div>
 
-          <!-- Prev / Next arrows -->
           <button class="slider-arrow slider-arrow-prev" id="sliderPrev" aria-label="Previous screenshot">
             <i class="fas fa-chevron-left"></i>
           </button>
@@ -229,19 +229,15 @@
             <i class="fas fa-chevron-right"></i>
           </button>
 
-          <!-- Counter badge -->
           <div class="slider-counter" id="sliderCounter" aria-hidden="true"></div>
 
-          <!-- Title / desc card -->
           <div class="slider-info-card" id="sliderInfoCard" aria-live="polite">
             <p class="slider-info-title" id="sliderInfoTitle"></p>
             <p class="slider-info-desc"  id="sliderInfoDesc"></p>
           </div>
 
-          <!-- Dot nav -->
           <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Screenshots"></div>
 
-          <!-- Progress bar -->
           <div class="slider-progress-bar" aria-hidden="true">
             <div class="slider-progress-fill" id="sliderProgressFill"></div>
           </div>
@@ -282,7 +278,7 @@
             <div class="tech-stage">
               <span class="tech-stage-icon">☢️</span>
               <p class="tech-stage-name">Atomic</p>
-              <p class="tech-stage-sub">Fission · Radiation · Isotopes</p>
+              <p class="tech-stage-sub">Fission · Fuel Processing · High Voltage</p>
             </div>
             <div class="tech-stage">
               <span class="tech-stage-icon">🔬</span>
@@ -301,13 +297,29 @@
         <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="reveal">
           <div class="card" style="transition-delay:0.1s">
             <p class="feature-title" style="margin-bottom:0.75rem;">⚗️ Built for Engineers</p>
-            <p class="feature-desc">NT:NH rewards players who think in systems. Your reactor needs fuel. Your fuel needs enrichment. Enrichment needs power. Power needs a reactor. Plan or perish.</p>
+            <p class="feature-desc">NT:NH rewards players who think in systems. Your assembly line needs parts. Parts need refined materials. Refining needs power. Power needs fuel. Fuel needs its own production line. Plan the whole chain or fall behind.</p>
           </div>
+          <!-- MODIFIED: expanded to explain the name origin explicitly -->
           <div class="card" style="transition-delay:0.2s">
             <p class="feature-title" style="margin-bottom:0.75rem;">🧬 Inspired by GTNH</p>
-            <p class="feature-desc">Taking cues from GregTech New Horizons' philosophy of deep, meaningful progression - but built around NTM's unique aesthetic and atomic-age machinery.</p>
+            <p class="feature-desc">
+              The name is no coincidence. <strong style="color:var(--yellow)">GregTech: New Horizons</strong> (GT:NH) built its identity around GregTech.
+              <strong style="color:var(--yellow)">Nuclear Tech: New Horizons</strong> (NT:NH) does the same for HBM's Nuclear Tech Mod. Same philosophy of deep, structured progression. Entirely different mod at its core.
+            </p>
           </div>
         </div>
+
+        <!-- NEW: Who is this for? card -->
+        <div style="margin-top:1.25rem;" class="reveal">
+          <div class="card" style="transition-delay:0.15s">
+            <p class="feature-title" style="margin-bottom:0.75rem;">🎯 Who Is This For?</p>
+            <p class="feature-desc">
+              NT:NH is primarily built for <strong style="color:var(--yellow)">newcomers to HBM's Nuclear Tech Mod</strong>. The 300+ quest questbook walks you through every system step by step, so you're never left guessing what to build next.
+              Veteran NTM players will also find plenty to work through: deep automation layers, late-game machine chains, and a demanding progression that holds up even if you already know the mod well.
+            </p>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -318,7 +330,7 @@
       <div class="section-inner">
         <div class="section-header reveal">
           <p class="section-label">Get the pack</p>
-          <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">Start Your Journey</h2>
+          <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">Download and Play</h2>
         </div>
 
         <div style="max-width:700px;margin:0 auto;">
@@ -367,9 +379,9 @@
       <div class="cta-glow" aria-hidden="true"></div>
       <div class="cta-inner reveal">
         <p class="section-label" style="justify-content:center;">Join the community</p>
-        <h2 class="cta-title">Ready to Engineer the Future?</h2>
+        <h2 class="cta-title">Come Build With Us</h2>
         <p class="cta-sub">
-          Hundreds of engineers are already in the lab. Share builds, ask questions, report bugs, and follow development as it happens - all in our Discord server.
+          Hundreds of players are already on the server. Share builds, ask questions, report bugs, and follow development as it happens. All on Discord.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2.5rem;">
           <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">
