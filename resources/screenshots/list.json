@@ -4,7 +4,15 @@
     "file": "screenshot1.png"
   },
   "Complex oil refining": {
-    "desc": "Build massive oil refineries and share your designs with others!",
+    "desc": "Build massive oil refineries and share your designs with others.",
     "file": "screenshot2.png"
+  },
+  "Updated loading screen": {
+    "desc": "No more boring hammer smashing the anvil.",
+    "file": "screenshot3.png"
+  },
+  "Updated main menu": {
+    "desc": "Hand-crafted main menu with interesting music!",
+    "file": "screenshot4.png"
   }
 }
