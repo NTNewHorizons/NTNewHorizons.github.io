@@ -360,8 +360,17 @@
   font-size: 0.73rem;
   color: var(--orange);
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 0.6rem;
+}
+
+.code-note-text {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .code-note i { color: var(--yellow); margin-top: 0.05rem; flex-shrink: 0; }
