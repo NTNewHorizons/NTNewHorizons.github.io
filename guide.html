@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started - Nuclear Tech: New Horizons</title>
+  <meta name="description" content="Learn how to install and start playing Nuclear Tech: New Horizons. Step-by-step guides for every launcher - CurseForge, Prism, Modrinth, and more.">
+  <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/shared-styles.css">
+  <link rel="stylesheet" href="styles/guide-styles.css">
+</head>
+<body class="bg-grid scanlines">
+
+  <!-- Background orbs -->
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <header>
+    <nav class="nav-bar">
+      <a href="index" class="nav-logo">
+        <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
+        <span class="nav-logo-text">NT:NH</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#community">Community</a></li>
+        <li><a href="/download">Downloads</a></li>
+        <li><a href="/guide" style="color: var(--orange);">Guide</a></li>
+      </ul>
+
+      <div class="nav-icons">
+        <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main>
+
+    <!-- ─── Hero ─── -->
+    <div class="guide-hero">
+      <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Documentation</p>
+      <h1 class="guide-hero-title">Getting Started</h1>
+      <p class="guide-hero-sub">
+        Everything you need to go from zero to a running factory - finding the community,
+        picking a launcher, and getting the modpack installed.
+      </p>
+
+      <!-- Jump-to nav -->
+      <nav class="jump-nav" aria-label="Page sections">
+        <a href="#community"    class="jump-link"><i class="fab fa-discord"></i> Community</a>
+        <a href="#requirements" class="jump-link"><i class="fas fa-microchip"></i> Requirements</a>
+        <a href="#install"      class="jump-link"><i class="fas fa-download"></i> Install Guide</a>
+        <a href="#launchers"    class="jump-link"><i class="fas fa-table"></i> Launcher Comparison</a>
+        <a href="#faq"          class="jump-link"><i class="fas fa-circle-question"></i> FAQ</a>
+      </nav>
+    </div>
+
+    <div class="guide-wrap">
+
+      <!-- ═══ SECTION 1 - Community ═══ -->
+      <section id="community" class="guide-section reveal">
+        <p class="section-label">Step 0</p>
+        <h2 class="guide-section-title">
+          <span class="title-icon"><i class="fab fa-discord"></i></span>
+          Find the Community
+        </h2>
+        <p class="guide-desc">
+          Before you even install the modpack, join our Discord. It's where bug reports happen,
+          new releases get announced, players share builds, and the team answers questions in real time.
+          Everything else in this guide assumes you have a place to ask for help when you need it.
+        </p>
+
+        <div class="community-grid">
+          <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer"
+             class="community-card"
+             style="--card-accent: linear-gradient(90deg, #5865f2, #7289da);">
+            <div class="card-icon" style="color:#7289da;border-color:rgba(114,137,218,0.35);background:rgba(114,137,218,0.08);">
+              <i class="fab fa-discord"></i>
+            </div>
+            <div class="card-text">
+              <h4>Discord Server</h4>
+              <p>Announcements · Support · Chat</p>
+            </div>
+          </a>
+
+          <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer"
+             class="community-card"
+             style="--card-accent: linear-gradient(90deg, #6e7681, #adbac7);">
+            <div class="card-icon" style="color:#adbac7;border-color:rgba(173,186,199,0.25);background:rgba(173,186,199,0.05);">
+              <i class="fab fa-github"></i>
+            </div>
+            <div class="card-text">
+              <h4>GitHub Org</h4>
+              <p>Releases · Issues · PRs</p>
+            </div>
+          </a>
+
+          <a href="https://github.com/NTNewHorizons/NTNH/releases" target="_blank" rel="noopener noreferrer"
+             class="community-card"
+             style="--card-accent: linear-gradient(90deg, var(--red), var(--orange));">
+            <div class="card-icon"><i class="fas fa-tags"></i></div>
+            <div class="card-text">
+              <h4>Releases</h4>
+              <p>All versions · Changelogs</p>
+            </div>
+          </a>
+
+          <a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer"
+             class="community-card"
+             style="--card-accent: linear-gradient(90deg, var(--red), #ff6060);">
+            <div class="card-icon" style="color:var(--red);border-color:rgba(255,34,0,0.3);background:rgba(255,34,0,0.08);">
+              <i class="fas fa-bug"></i>
+            </div>
+            <div class="card-text">
+              <h4>Bug Reports</h4>
+              <p>GitHub Issues · Templates</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <div class="divider" style="margin-bottom:3rem;"></div>
+
+      <!-- ═══ SECTION 2 - Requirements ═══ -->
+      <section id="requirements" class="guide-section reveal">
+        <p class="section-label">Step 1</p>
+        <h2 class="guide-section-title">
+          <span class="title-icon"><i class="fas fa-microchip"></i></span>
+          System Requirements
+        </h2>
+        <p class="guide-desc">
+          NT:NH is a 1.7.10 modpack. It runs on most hardware - but it benefits from a
+          dedicated RAM allocation and a modern JVM. Below are the recommended specs.
+        </p>
+
+        <div class="req-bar">
+          <div class="req-grid">
+            <div class="req-item">
+              <span class="req-label">Minecraft Version</span>
+              <span class="req-value"><span>1.7.10</span></span>
+            </div>
+            <div class="req-item">
+              <span class="req-label">Java Version</span>
+              <span class="req-value">Java <span>8</span> (64-bit)</span>
+            </div>
+            <div class="req-item">
+              <span class="req-label">Recommended RAM</span>
+              <span class="req-value"><span>4–6 GB</span> allocated</span>
+            </div>
+            <div class="req-item">
+              <span class="req-label">Mod Loader</span>
+              <span class="req-value"><span>Forge</span> (included)</span>
+            </div>
+            <div class="req-item">
+              <span class="req-label">OS</span>
+              <span class="req-value">Windows · macOS · <span>Linux</span></span>
+            </div>
+            <div class="req-item">
+              <span class="req-label">Disk Space</span>
+              <span class="req-value">~<span>2 GB</span> free</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice notice-warn">
+          <i class="fas fa-triangle-exclamation"></i>
+          <div class="notice-content">
+            <strong>Java 8 Required</strong>
+            Minecraft 1.7.10 with Forge requires Java 8 specifically. Java 17 or 21 will not work.
+            Make sure your launcher points to a 64-bit Java 8 installation - some launchers bundle their own.
+          </div>
+        </div>
+      </section>
+
+      <div class="divider" style="margin-bottom:3rem;"></div>
+
+      <!-- ═══ SECTION 3 - Install ═══ -->
+      <section id="install" class="guide-section reveal">
+        <p class="section-label">Step 2</p>
+        <h2 class="guide-section-title">
+          <span class="title-icon"><i class="fas fa-download"></i></span>
+          Download &amp; Install
+        </h2>
+        <p class="guide-desc">
+          Each GitHub release ships four archive formats. Pick the one that matches your launcher,
+          or grab the Native archive if you want to manage things yourself.
+          Click a tab below to see the step-by-step guide for that method.
+        </p>
+
+        <!-- ── Tabs ── -->
+        <div class="dl-tabs" role="tablist" aria-label="Installer methods">
+          <button class="dl-tab active" role="tab" aria-selected="true" data-tab="prism">
+            <i class="fas fa-layer-group"></i> Prism / MMC
+            <span class="pill pill-green" style="margin-left:0.25rem;">Recommended</span>
+          </button>
+          <button class="dl-tab" role="tab" aria-selected="false" data-tab="curseforge">
+            <i class="fas fa-fire-flame-curved"></i> CurseForge
+          </button>
+          <button class="dl-tab" role="tab" aria-selected="false" data-tab="modrinth">
+            <i class="fas fa-leaf"></i> Modrinth
+          </button>
+          <button class="dl-tab" role="tab" aria-selected="false" data-tab="native">
+            <i class="fas fa-folder-open"></i> Native
+          </button>
+        </div>
+
+        <!-- ── Prism / MMC ── -->
+        <div class="method-panel active" id="tab-prism">
+          <div class="notice notice-tip">
+            <i class="fas fa-circle-check"></i>
+            <div class="notice-content">
+              <strong>Recommended Method</strong>
+              Prism Launcher is free, open-source, and supports all major archive formats including
+              MMC/Prism, CurseForge, and Modrinth packs. Use the <strong>MMC_Prism</strong> archive for
+              best compatibility. Download Prism at
+              <a href="https://prismlauncher.org" target="_blank" rel="noopener noreferrer" style="color:#4ade80;">prismlauncher.org</a>.
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p class="step-title">Install Prism Launcher</p>
+                <p class="step-desc">
+                  Download and install <a href="https://prismlauncher.org/download/" target="_blank" rel="noopener noreferrer">Prism Launcher</a>
+                  for your operating system (Windows, macOS, Linux). During first launch Prism will ask you to
+                  log in to a Microsoft account. A valid, paid Minecraft account is required.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p class="step-title">Download the MMC_Prism Archive</p>
+                <p class="step-desc">
+                  Head to the <a href="/download">Downloads page</a> and find the latest release.
+                  Under <strong>Assets</strong>, download the file ending in <span class="ic">_MMC_Prism.zip</span>.
+                  Save it somewhere accessible - your Downloads folder is fine.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p class="step-title">Import into Prism</p>
+                <p class="step-desc">
+                  Open Prism Launcher. Click <strong>Add Instance</strong> in the top-left toolbar,
+                  then select the <strong>Import</strong> tab. Click <strong>Browse</strong>, select
+                  the ZIP you just downloaded, then click <strong>OK</strong>. Prism will download all
+                  required mods automatically.
+                </p>
+                <div class="code-note">
+                  <i class="fas fa-lightbulb"></i>
+                  Prism also accepts CurseForge and Modrinth archives via the same Import dialog -
+                  use whichever zip you have. MMC_Prism is always the preferred format.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p class="step-title">Allocate RAM &amp; Launch</p>
+                <p class="step-desc">
+                  Right-click the NT:NH instance → <strong>Edit</strong> → <strong>Settings</strong> →
+                  <strong>Java</strong>. Set maximum memory to at least <strong>4096 MB</strong> (4 GB),
+                  ideally 5–6 GB. Hit <strong>Launch</strong> and wait for the first load -
+                  it takes a minute or two.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CurseForge ── -->
+        <div class="method-panel" id="tab-curseforge">
+          <div class="notice notice-info">
+            <i class="fas fa-circle-info"></i>
+            <div class="notice-content">
+              <strong>CurseForge Launcher Required</strong>
+              This method uses the official CurseForge desktop app. Requires a free CurseForge account
+              and a valid, paid Minecraft account. Download it at
+              <a href="https://www.curseforge.com/download/app" target="_blank" rel="noopener noreferrer">curseforge.com/download/app</a>.
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p class="step-title">Install CurseForge Launcher</p>
+                <p class="step-desc">
+                  Download and install the <a href="https://www.curseforge.com/download/app" target="_blank" rel="noopener noreferrer">CurseForge App</a>.
+                  Sign in with your CurseForge account and make sure Minecraft is set up under the Games section.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p class="step-title">Download the CurseForge Archive</p>
+                <p class="step-desc">
+                  Go to the <a href="/download">Downloads page</a>, find the latest release, and download
+                  the file ending in <span class="ic">_CurseForge.zip</span>.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p class="step-title">Import via the "Import" Button</p>
+                <p class="step-desc">
+                  In the CurseForge app, go to <strong>Minecraft → Create Custom Profile</strong>,
+                  then click the <strong>Import</strong> button (it may appear as a folder icon near
+                  the top of the My Modpacks section). Select the downloaded ZIP.
+                  CurseForge will install all mods automatically.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p class="step-title">Adjust RAM &amp; Play</p>
+                <p class="step-desc">
+                  Click the three-dot menu on the NT:NH profile → <strong>Profile Options</strong>.
+                  Enable custom memory settings and set at least <strong>4096 MB</strong>. Then click Play.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Modrinth ── -->
+        <div class="method-panel" id="tab-modrinth">
+          <div class="notice notice-info">
+            <i class="fas fa-circle-info"></i>
+            <div class="notice-content">
+              <strong>Modrinth App Required</strong>
+              This method uses the Modrinth launcher - free and open-source. Requires a paid Minecraft account.
+              Download it at <a href="https://modrinth.com/app" target="_blank" rel="noopener noreferrer">modrinth.com/app</a>.
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p class="step-title">Install the Modrinth App</p>
+                <p class="step-desc">
+                  Download the <a href="https://modrinth.com/app" target="_blank" rel="noopener noreferrer">Modrinth App</a>
+                  for your platform and sign in with your Microsoft account during setup.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p class="step-title">Download the Modrinth Archive</p>
+                <p class="step-desc">
+                  Visit the <a href="/download">Downloads page</a> and grab the file ending in
+                  <span class="ic">_Modrinth.mrpack</span> from the latest release.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p class="step-title">Import the .mrpack File</p>
+                <p class="step-desc">
+                  In the Modrinth App, click the <strong>+</strong> button and choose
+                  <strong>Import from file</strong>. Select the <span class="ic">.mrpack</span> file.
+                  All mods will be downloaded automatically.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p class="step-title">Set RAM &amp; Launch</p>
+                <p class="step-desc">
+                  Click the NT:NH instance → <strong>Edit</strong> → <strong>Java Settings</strong>
+                  and allocate at least <strong>4 GB</strong>. Then press <strong>Play</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Native ── -->
+        <div class="method-panel" id="tab-native">
+          <div class="notice notice-warn">
+            <i class="fas fa-triangle-exclamation"></i>
+            <div class="notice-content">
+              <strong>Manual / Pirated Launcher Method</strong>
+              The Native archive is a raw dump of all modpack files with no launcher structure.
+              This method works with any launcher - including KLauncher, TLauncher, and Legacy Launcher -
+              since you copy files directly into your <span class="ic">.minecraft</span> folder.
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p class="step-title">Download the Native Archive</p>
+                <p class="step-desc">
+                  Go to the <a href="/download">Downloads page</a> and download the file ending in
+                  <span class="ic">_Native.zip</span> from the latest release.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p class="step-title">Locate Your .minecraft Folder</p>
+                <p class="step-desc">Open your launcher and find the game directory, or navigate manually:</p>
+                <div class="code-note" style="flex-direction:column;gap:0.35rem;">
+                  <div><i class="fab fa-windows" style="color:#60a5fa;"></i>&nbsp;&nbsp;Windows:
+                    <span style="color:var(--yellow);font-family:'JetBrains Mono',monospace;">%APPDATA%\.minecraft</span>
+                  </div>
+                  <div><i class="fab fa-apple" style="color:#aaa;"></i>&nbsp;&nbsp;macOS:
+                    <span style="color:var(--yellow);font-family:'JetBrains Mono',monospace;">~/Library/Application Support/minecraft</span>
+                  </div>
+                  <div><i class="fab fa-linux" style="color:#4ade80;"></i>&nbsp;&nbsp;Linux:
+                    <span style="color:var(--yellow);font-family:'JetBrains Mono',monospace;">~/.minecraft</span>
+                  </div>
+                </div>
+                <p class="step-desc" style="margin-top:0.5rem;">
+                  If your launcher manages multiple instances, use <em>that</em> instance's game directory
+                  instead of the default one.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p class="step-title">Extract and Copy All Files</p>
+                <p class="step-desc">
+                  Open the Native ZIP and copy <strong>all files and folders</strong> directly into your
+                  <span class="ic">.minecraft</span> folder, merging with any existing content.
+                  You should end up with a <span class="ic">mods/</span> folder,
+                  <span class="ic">config/</span> folder, etc. inside <span class="ic">.minecraft</span>.
+                </p>
+                <div class="code-note">
+                  <i class="fas fa-circle-exclamation"></i>
+                  Do <strong>not</strong> put everything inside a subfolder. The contents of the ZIP
+                  go <em>directly</em> into
+                  <span style="color:var(--yellow);font-family:'JetBrains Mono',monospace;">.minecraft</span>,
+                  not into a nested folder inside it.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p class="step-title">Install Forge &amp; Launch</p>
+                <p class="step-desc">
+                  Make sure your launcher is set to use the correct Forge version for 1.7.10
+                  (the release notes on GitHub list the exact Forge build required). Allocate at least
+                  <strong>4 GB RAM</strong> in your launcher's JVM arguments, then start the game.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider" style="margin-bottom:3rem;"></div>
+
+      <!-- ═══ SECTION 4 - Launcher Comparison ═══ -->
+      <section id="launchers" class="guide-section reveal">
+        <p class="section-label">Reference</p>
+        <h2 class="guide-section-title">
+          <span class="title-icon"><i class="fas fa-table"></i></span>
+          Launcher Comparison
+        </h2>
+        <p class="guide-desc">
+          Quick reference for which archive format to use with which launcher, and which launchers
+          require a paid Minecraft account.
+        </p>
+
+        <div class="method-table-wrap">
+          <table class="method-table">
+            <thead>
+              <tr>
+                <th>Launcher</th>
+                <th>Archive to Use</th>
+                <th>Paid Account?</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Prism Launcher</td>
+                <td>
+                  <span class="pill pill-green">MMC_Prism</span>
+                  <span class="pill pill-orange">CurseForge</span>
+                  <span class="pill pill-purple">Modrinth</span>
+                </td>
+                <td><span class="pill pill-amber">Required</span></td>
+                <td style="font-size:0.8rem;">Open-source. Supports all three import formats. MMC_Prism preferred.
+                  Does <strong style="color:var(--text-bright);">not</strong> support Native.</td>
+              </tr>
+              <tr>
+                <td>MultiMC</td>
+                <td><span class="pill pill-green">MMC_Prism</span></td>
+                <td><span class="pill pill-amber">Required</span></td>
+                <td style="font-size:0.8rem;">Prism is a fork of MMC. Both support the same archive format.</td>
+              </tr>
+              <tr>
+                <td>CurseForge App</td>
+                <td><span class="pill pill-orange">CurseForge</span></td>
+                <td><span class="pill pill-amber">Required</span></td>
+                <td style="font-size:0.8rem;">Import via the Import button on the My Modpacks page.</td>
+              </tr>
+              <tr>
+                <td>Modrinth App</td>
+                <td><span class="pill pill-purple">Modrinth</span></td>
+                <td><span class="pill pill-amber">Required</span></td>
+                <td style="font-size:0.8rem;">Import the .mrpack file via the + button.</td>
+              </tr>
+              <tr>
+                <td>KLauncher / TLauncher / Legacy Launcher</td>
+                <td><span class="pill pill-blue">Native</span></td>
+                <td><span class="pill pill-green">Not Required</span></td>
+                <td style="font-size:0.8rem;">Extract the Native ZIP into your .minecraft directory manually.</td>
+              </tr>
+              <tr>
+                <td>Any other launcher</td>
+                <td><span class="pill pill-blue">Native</span></td>
+                <td style="font-size:0.8rem;color:var(--text-muted);">Varies</td>
+                <td style="font-size:0.8rem;">The Native method works universally for any launcher not listed here.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="notice notice-tip">
+          <i class="fas fa-star"></i>
+          <div class="notice-content">
+            <strong>Why Prism Launcher?</strong>
+            Prism is free, open-source, and runs on Windows, macOS, and Linux. It bundles its own Java,
+            handles RAM settings per-instance, and can import CurseForge, MMC/Prism, and Modrinth archives.
+            If you don't have a preference,
+            <a href="https://prismlauncher.org/download/" target="_blank" rel="noopener noreferrer" style="color:#4ade80;">start here</a>.
+          </div>
+        </div>
+      </section>
+
+      <div class="divider" style="margin-bottom:3rem;"></div>
+
+      <!-- ═══ SECTION 5 - FAQ ═══ -->
+      <section id="faq" class="guide-section reveal">
+        <p class="section-label">Help</p>
+        <h2 class="guide-section-title">
+          <span class="title-icon"><i class="fas fa-circle-question"></i></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="faq-list">
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">The game crashes immediately on launch. What do I do?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The most common causes are wrong Java version (must be Java 8 64-bit) or not enough RAM allocated.
+                Confirm in your launcher's settings that Java 8 is selected, and that maximum memory is at least
+                4096 MB. If the crash persists, open the crash report (in <span class="ic">.minecraft/crash-reports/</span>)
+                and paste it in the <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer">#support</a>
+                channel on Discord.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Can I play on a pirated / cracked Minecraft account?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The modpack itself works with unofficial launchers (KLauncher, TLauncher, Legacy Launcher).
+                Use the <strong>Native</strong> archive and follow the manual installation steps above.
+                Note that our official multiplayer server requires a legitimate account to connect.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How do I update to a new version of NT:NH?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The safest method is to create a fresh instance from the new release archive, then copy your
+                world save from the old instance's <span class="ic">saves/</span> folder into the new one.
+                Do <strong>not</strong> overwrite your old instance - keep it as a backup until you've confirmed
+                your world loads correctly in the new version. Check the release notes on GitHub for any
+                migration warnings.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How much RAM should I allocate?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                4 GB (4096 MB) is the minimum. 5–6 GB is ideal for smooth gameplay. More than 8 GB is generally
+                counterproductive for 1.7.10 and can cause longer garbage-collection pauses. If you have
+                16 GB of system RAM, allocating 5–6 GB to Minecraft is a sensible target.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Which archive format should I use with Prism Launcher?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Always prefer the <strong>MMC_Prism</strong> archive when using Prism Launcher or MultiMC -
+                it's the native format and the most reliable. Prism also accepts CurseForge and Modrinth archives
+                if that's what you have. The <strong>Native</strong> archive cannot be imported into Prism -
+                it is a raw file dump intended for manual installation only.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How do I join the multiplayer server?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The community server address is <span class="ic">5.252.21.11:25565</span> (Balefire).
+                Add it in-game under Multiplayer → Add Server. A legitimate, paid Minecraft account is required.
+                Check the <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer">Discord</a>
+                for the latest server status and rules.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">I found a bug. Where do I report it?</span>
+              <i class="fas fa-chevron-down faq-chevron"></i>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Use the <a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer">GitHub Issues page</a>
+                and pick the appropriate template. Include your NT:NH version, a description of the bug,
+                steps to reproduce it, and any relevant crash reports or logs. You can also ask in
+                <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer">Discord</a>
+                first to confirm it's a known issue.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ═══ CTA ═══ -->
+      <div class="reveal" style="text-align:center;margin-top:2rem;">
+        <div class="divider" style="margin-bottom:2.5rem;"></div>
+        <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Ready?</p>
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--text-bright);margin-bottom:1rem;">
+          Start Playing
+        </h2>
+        <p style="color:var(--text-mid);margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.65;font-size:0.95rem;">
+          You've read the guide. Now grab the pack, fire up a launcher, and start your first factory.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+          <a href="/download" class="btn btn-primary">
+            <i class="fas fa-download"></i> Download NT:NH
+          </a>
+          <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <i class="fab fa-discord"></i> Join Discord
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <p style="margin-bottom:0.4rem;">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
+    <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
+    <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
+  </footer>
+
+  <script src="scripts/guide-script.js"></script>
+</body>
+</html>
