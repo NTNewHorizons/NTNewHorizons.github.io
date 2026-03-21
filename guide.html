@@ -213,6 +213,9 @@
           <button class="dl-tab" role="tab" aria-selected="false" data-tab="modrinth">
             <i class="fas fa-leaf"></i> Modrinth
           </button>
+          <button class="dl-tab" role="tab" aria-selected="false" data-tab="technic">
+            <i class="fas fa-wrench"></i> Technic
+          </button>
           <button class="dl-tab" role="tab" aria-selected="false" data-tab="native">
             <i class="fas fa-folder-open"></i> Native
           </button>
@@ -400,6 +403,66 @@
           </div>
         </div>
 
+        <!-- ── Technic ── -->
+        <div class="method-panel" id="tab-technic">
+          <div class="notice notice-info">
+            <i class="fas fa-circle-info"></i>
+            <div class="notice-content">
+              <strong>Technic Launcher Required</strong>
+              This method uses the Technic Launcher with the official NT:NH modpack page.
+              Requires a paid Minecraft account. Download Technic at
+              <a href="https://www.technicpack.net/download" target="_blank" rel="noopener noreferrer">technicpack.net/download</a>.
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <p class="step-title">Install the Technic Launcher</p>
+                <p class="step-desc">
+                  Download and install the <a href="https://www.technicpack.net/download" target="_blank" rel="noopener noreferrer">Technic Launcher</a>
+                  for your platform. Sign in with your Minecraft account during setup.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <p class="step-title">Open the Modpack Page</p>
+                <p class="step-desc">
+                  In the Technic Launcher, click <strong>Modpacks</strong> and search for
+                  <span class="ic">nuclear-tech-new-horizons</span>, or paste the modpack URL directly:
+                </p>
+                <div class="code-note" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--orange);">
+                  https://www.technicpack.net/modpack/nuclear-tech-new-horizons
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <p class="step-title">Install &amp; Configure RAM</p>
+                <p class="step-desc">
+                  Click <strong>Install</strong> on the NT:NH page. Once installed, go to
+                  <strong>Launcher Options → Java Settings</strong> and set memory to at least
+                  <strong>4096 MB</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <p class="step-title">Play</p>
+                <p class="step-desc">
+                  Select NT:NH from your modpack list and hit <strong>Play</strong>. The launcher
+                  handles all mod downloads automatically.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ── Native ── -->
         <div class="method-panel" id="tab-native">
           <div class="notice notice-warn">
@@ -532,6 +595,12 @@
                 <td><span class="pill pill-purple">Modrinth</span></td>
                 <td><span class="pill pill-amber">Required</span></td>
                 <td style="font-size:0.8rem;">Import the .mrpack file via the + button.</td>
+              </tr>
+              <tr>
+                <td>Technic Launcher</td>
+                <td><span class="pill pill-green">Technic</span></td>
+                <td><span class="pill pill-amber">Required</span></td>
+                <td style="font-size:0.8rem;">Install directly from the <a href="https://www.technicpack.net/modpack/nuclear-tech-new-horizons" target="_blank" rel="noopener noreferrer" style="color:var(--orange);">NT:NH Technic page</a>. No archive download needed.</td>
               </tr>
               <tr>
                 <td>KLauncher / TLauncher / Legacy Launcher</td>
@@ -688,6 +757,9 @@
         <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
           <a href="/download" class="btn btn-primary">
             <i class="fas fa-download"></i> Download
+          </a>
+          <a href="https://www.technicpack.net/modpack/nuclear-tech-new-horizons" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <i class="fas fa-wrench"></i> Technic Launcher
           </a>
           <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
             <i class="fab fa-discord"></i> Join Discord
