@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>42_4C_??</title>
+<meta charset="UTF-8">
+</head>
+<body>
+<tt>
+<pre>
+================================================================================
+
+  this page does not exist.
+
+  you should not be here.
+
+  if you found this by accident, close the tab.
+  if you know why you are here, you already know what to type.
+
+================================================================================
+</pre>
+</tt>
+
+<hr>
+
+<form id="authForm" onsubmit="return false">
+<tt>
+AUTHORIZATION CODE &gt;&gt; <input type="password" id="passInput" size="30" autocomplete="off"> &nbsp; <input type="submit" value="[ CONFIRM ]" onclick="attempt()">
+<br><br>
+<span id="responseText">&nbsp;</span>
+</tt>
+</form>
+
+<hr>
+
+<pre id="msgOutput"></pre>
+
+<script>
+// ── AES-GCM encrypted payload ──────────────────────────────────────────────
+// Generated with generate-secret.html. Replace these three values with your
+// own output. The password is never stored here. Wrong key = decrypt fails.
+const PAYLOAD = {
+  salt: "luC4T7BbwuOOpZgLnAm+2Q==",
+  iv:   "drMZmCZ7BmeYb/SV",
+  data: "r28BKHdrAcsK88k3P2fMvIVqZQHlSCUJbtqpzzkAxstqqQ=="
+};
+// ───────────────────────────────────────────────────────────────────────────
+
+async function attempt() {
+  const pw  = document.getElementById('passInput').value.trim();
+  const out = document.getElementById('responseText');
+
+  if (!pw) {
+    out.innerText = 'no input.';
+    return;
+  }
+
+  out.innerText = '...';
+
+  try {
+    const enc = new TextEncoder();
+    const dec = new TextDecoder();
+
+    const toBytes = b64 => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      enc.encode(pw),
+      'PBKDF2',
+      false,
+      ['deriveKey']
+    );
+
+    const key = await crypto.subtle.deriveKey(
+      {
+        name:       'PBKDF2',
+        salt:       toBytes(PAYLOAD.salt),
+        iterations: 200000,
+        hash:       'SHA-256'
+      },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+
+    const plainBuf = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: toBytes(PAYLOAD.iv) },
+      key,
+      toBytes(PAYLOAD.data)
+    );
+
+    // success
+    out.innerText = 'access granted.';
+    document.getElementById('authForm').style.display = 'none';
+    document.getElementById('msgOutput').innerText = dec.decode(plainBuf);
+
+  } catch {
+    out.innerText = 'no.';
+    document.getElementById('passInput').value = '';
+    document.getElementById('passInput').focus();
+  }
+}
+
+// also allow Enter key in the input
+document.getElementById('passInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') attempt();
+});
+</script>
+
+</body>
+</html>
