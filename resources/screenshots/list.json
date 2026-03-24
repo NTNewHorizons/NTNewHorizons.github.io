@@ -19,16 +19,12 @@
     "desc": "Quests will guide you through the modpack and keep you interested.",
     "file": "screenshot5.png"
   },
-  "42_4C_??_48_■_53": {
-    "desc": "Black hole sun, won't you come...",
-    "file": "screenshot6.png"
-  },
-  "Build complex factories": {
+  "Build complex factories...": {
     "desc": "Go factorio in minecraft",
     "file": "screenshot8.png"
   },
-  "Build complex factories": {
-    "desc": "Go factorio in minecraft",
+  "...to build even more factories!": {
+    "desc": "YES, THE FACTORY MUST GROW",
     "file": "screenshot10.png"
   },
   "Ah, what a nice view": {
@@ -38,5 +34,9 @@
   "And so much more!": {
     "desc": "Go download the modpack already! What are you waiting for?",
     "file": "screenshot7.png"
+  },
+  "746865747275746873766E": {
+    "desc": "42_6C_61_63_6B_20_48_6F_6C_65_20_53_75_6E",
+    "file": "screenshot6.png"
   }
 }
