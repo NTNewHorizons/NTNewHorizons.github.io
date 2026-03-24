@@ -33,7 +33,8 @@
   <!-- ═══ NAVIGATION ═══ -->
   <header>
     <nav class="nav-bar">
-      <a href="index" class="nav-logo">
+      <!-- flex:1 on logo so links stay perfectly centered -->
+      <a href="index" class="nav-logo" style="flex:1;">
         <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
         <span class="nav-logo-text">NT:NH</span>
       </a>
@@ -45,10 +46,12 @@
         <li><a href="#download">Download</a></li>
         <li><a href="#community">Community</a></li>
         <li><a href="/guide">Guide</a></li>
+        <li><a href="/about">Story</a></li>
         <li><a href="#support" class="nav-link-support">☕ Support</a></li>
       </ul>
 
-      <div class="nav-icons">
+      <!-- flex:1 + justify-content:flex-end mirrors the logo side, keeping links centered -->
+      <div class="nav-icons" style="flex:1;justify-content:flex-end;">
         <a href="https://ko-fi.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn icon-btn-kofi" title="Support on Ko-fi">
           <i class="fas fa-mug-hot"></i>
         </a>
@@ -371,6 +374,9 @@
               <a href="/guide" class="link-item">
                 <i class="fas fa-map"></i> Getting Started Guide
               </a>
+              <a href="/about" class="link-item">
+                <i class="fas fa-book-open"></i> Story &amp; Philosophy
+              </a>
               <a href="https://github.com/NTNewHorizons/NTNH/issues/new/choose" target="_blank" rel="noopener noreferrer" class="link-item">
                 <i class="fas fa-bug"></i> Report an Issue
               </a>
@@ -622,6 +628,7 @@
         dismiss();
       });
     })();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

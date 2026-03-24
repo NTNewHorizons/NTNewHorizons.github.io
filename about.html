@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Story & Philosophy - Nuclear Tech: New Horizons</title>
-  <meta name="description" content="The story behind Nuclear Tech: New Horizons - from a cracked Xbox 360 to a full modpack. Written by Bufka2011, lead developer.">
+  <meta name="description" content="Why NTNH exists. Written by Bufka2011 - lead developer, born 2011.">
   <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles/shared-styles.css">
@@ -18,10 +18,11 @@
   <!-- ═══ NAVIGATION ═══ -->
   <header>
     <nav class="nav-bar">
-      <a href="index" class="nav-logo">
+      <a href="index" class="nav-logo" style="flex:1;">
         <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width:24px;height:24px;"></div>
         <span class="nav-logo-text">NT:NH</span>
       </a>
+
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/#features">Features</a></li>
@@ -30,7 +31,17 @@
         <li><a href="/guide">Guide</a></li>
         <li><a href="/about" style="color:var(--orange);">Story</a></li>
       </ul>
-      <div class="nav-icons">
+
+      <div class="nav-icons" style="flex:1;justify-content:flex-end;">
+        <a href="https://ko-fi.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn icon-btn-kofi" title="Support on Ko-fi">
+          <i class="fas fa-mug-hot"></i>
+        </a>
+        <a href="https://x.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="X / Twitter">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://www.technicpack.net/modpack/nuclear-tech-new-horizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Technic Launcher">
+          <i class="fas fa-wrench"></i>
+        </a>
         <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
           <i class="fab fa-discord"></i>
         </a>
@@ -43,341 +54,274 @@
 
   <!-- ═══ MAIN ═══ -->
   <main>
+    <div class="journal-wrap">
 
-    <!-- ─── Hero ─── -->
-    <div class="about-hero">
-      <p class="section-label" style="justify-content:center;margin-bottom:0.6rem;">Personal Notes</p>
-      <h1 class="about-hero-title">Story &amp; Philosophy</h1>
-      <p class="about-hero-sub">Written by Bufka2011 · Lead Developer</p>
-      <nav class="jump-nav" aria-label="Page sections">
-        <a href="#story"       class="jump-link"><i class="fas fa-book-open"></i> The Story</a>
-        <a href="#generations" class="jump-link"><i class="fas fa-code-branch"></i> Generations</a>
-        <a href="#burnout"     class="jump-link"><i class="fas fa-fire-flame-curved"></i> Burnout &amp; Rebirth</a>
-        <a href="#philosophy"  class="jump-link"><i class="fas fa-heart"></i> Philosophy</a>
-        <a href="#now"         class="jump-link"><i class="fas fa-rocket"></i> Today</a>
-      </nav>
-    </div>
-
-    <div class="about-wrap">
-
-      <!-- ── Author card ── -->
-      <div class="author-card reveal">
-        <div class="author-avatar">👾</div>
-        <div class="author-info">
-          <span class="author-badge"><i class="fas fa-code"></i> Lead Developer</span>
-          <h3>Alex</h3>
-          <p class="handle">@Bufka2011</p>
-          <p>Ukrainian developer, born in 2011. I started this project at 12 years old, completely alone. This page is me talking to you directly - no PR language, no marketing. Just the story of how and why this all exists.</p>
+      <!-- ── Opening ── -->
+      <header class="journal-header reveal">
+        <p class="journal-eyebrow">A personal note from the lead developer</p>
+        <h1 class="journal-title">Why This Exists</h1>
+        <div class="journal-sig">
+          <span class="sig-name">Alex</span>
+          <span class="sig-sep">·</span>
+          <span class="sig-handle">Bufka2011</span>
+          <span class="sig-sep">·</span>
+          <span class="sig-role">Born 2011, Ukraine</span>
         </div>
-      </div>
+        <p class="journal-intro">
+          This isn't a features list. It isn't marketing. It's just me, talking to you directly, about a game I've loved since I was five, a mod that changed everything, and a project I've been building - alone, then together - for years. If you're the kind of person who wants to understand <em>why</em> something exists before deciding if you care about it, this is for you.
+        </p>
+        <nav class="journal-nav" aria-label="Chapters">
+          <a href="#ch1" class="jnav-link">I. The Beginning</a>
+          <a href="#ch2" class="jnav-link">II. Generations</a>
+          <a href="#ch3" class="jnav-link">III. Burnout</a>
+          <a href="#ch4" class="jnav-link">IV. Philosophy</a>
+          <a href="#ch5" class="jnav-link">V. Today</a>
+        </nav>
+      </header>
 
-      <div class="divider" style="margin-bottom:3rem;"></div>
+      <div class="journal-divider" aria-hidden="true">✦</div>
 
-      <!-- ═══ SECTION 1 - Story ═══ -->
-      <section id="story" class="about-section reveal">
-        <p class="section-label">Chapter 1</p>
-        <h2 class="about-section-title">
-          <span class="title-icon"><i class="fas fa-book-open"></i></span>
-          A Cracked Xbox and a Kid Who Fell in Love
-        </h2>
+      <!-- ══ CHAPTER 1 ══ -->
+      <article id="ch1" class="chapter reveal">
+        <div class="chapter-label">Chapter I</div>
+        <h2 class="chapter-title">The Beginning</h2>
 
-        <div class="prose">
-          <p>
-            Let me take you back to around <strong>2016–2017</strong>. My parents bought a cracked Xbox 360. Nothing fancy - it wasn't even a legitimate console. But on that thing, I played Minecraft for the very first time. And something clicked in me that has never really stopped clicking since. I was completely, utterly in love with that game. I still am.
-          </p>
-          <p>
-            Years passed. I kept playing Minecraft on and off, across different devices and versions. And then, in <strong>2023</strong>, I stumbled across something that hit me the same way Minecraft did back in 2016 - <em>HBM's Nuclear Tech Mod</em>.
-          </p>
-          <p>
-            I was blown away. I couldn't believe a mod like this existed. The machines, the processing chains, the sheer depth of it all. I was so amazed that I didn't even think twice - I started building a modpack around it almost immediately. That first version wasn't anything special. Just about 25 mods thrown together with no real structure or direction. But I didn't care. I was having fun, and I was dragging my friends in to experience NTM with me.
-          </p>
-        </div>
-
-        <div class="birthday-box reveal" style="transition-delay:0.1s;">
-          <span class="bday-icon">🎂</span>
-          <div class="bday-text">
-            <strong>September 11, 2023 - The Official Birthday</strong>
-            <p>
-              That's the date I created <em>NTM RP</em> - the very first version of what would eventually become NTNH.
-              Technically, that makes it the birthday of the entire project. I even made an old trailer in Russian for it.
-              It was pretty bad, honestly. Maybe I'll show it someday, for the laughs.
-            </p>
-          </div>
-        </div>
-
-        <div class="prose" style="margin-top:1rem;">
-          <p>
-            The first proper concept was called <strong>NTM RP</strong>. The idea: players would roleplay countries - real cities, professions, diplomacy, wars - all built on NTM's foundation. On paper it sounded genuinely exciting. In practice... it didn't hold together. So after about a month, I renamed it to <strong>NuclearCraft Project</strong>.
-          </p>
-          <p>
-            And that's where it got real. NuclearCraft Project was the first time I started <em>genuinely</em> investing myself into this. Not just throwing mods together - but thinking about progression, about what kind of experience I wanted players to have, about what made NTM special and how to build around that. I was still learning. Still making plenty of mistakes. But the soul of the project was there, from that point on.
-          </p>
-        </div>
-      </section>
-
-      <div class="divider" style="margin-bottom:3rem;"></div>
-
-      <!-- ═══ SECTION 2 - Generations ═══ -->
-      <section id="generations" class="about-section reveal">
-        <p class="section-label">Chapter 2</p>
-        <h2 class="about-section-title">
-          <span class="title-icon"><i class="fas fa-code-branch"></i></span>
-          Six Generations
-        </h2>
-        <p class="about-desc">
-          The project didn't become NTNH overnight. It went through six distinct generations - each one a full rethink, a new direction, a different Minecraft version. Here's the full lineage, warts and all.
+        <p>
+          Around 2016–2017, my parents bought a cracked Xbox 360. I want to be upfront about that - it wasn't a legitimate console, and we weren't a wealthy family. But on that thing, I played Minecraft for the very first time. I was maybe five or six years old. And something happened to me that day that I genuinely don't know how to explain to someone who hasn't felt it. I just fell completely in love. Not with a game mechanic. With the idea of it. The fact that you could build anything. That there was no ceiling.
+        </p>
+        <p>
+          I've been playing Minecraft on and off ever since. Different versions, different devices, different stages of my life. But that love never really went anywhere.
+        </p>
+        <p>
+          Then in 2023, I stumbled across <strong>HBM's Nuclear Tech Mod</strong>. And it happened again - the same feeling. I couldn't believe something like this existed. The machines, the chemical processing chains, the sheer depth buried under what looked from the outside like just "a nuclear mod." I was twelve years old and completely, embarrassingly obsessed with it.
+        </p>
+        <p>
+          So I did the only thing that felt natural: I started building a modpack around it. The first version was nothing - just 25 mods thrown together with no structure, no vision. I was calling friends to play it with me, basically just sharing the excitement. But that was the beginning.
         </p>
 
-        <div class="timeline">
-
-          <div class="tl-item tl-highlight">
-            <div class="tl-gen">September 11, 2023 · Origin</div>
-            <div class="tl-title">NTM RP <span class="tl-badge badge-star">★ Birthday</span></div>
-            <div class="tl-desc">
-              Minecraft 1.12.2 using NTM: Extended Edition. A roleplay modpack - nations, cities, wars, professions. The concept had heart. The execution didn't quite work. Lasted about a month before I knew I had to rethink everything.
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-gen">Generation 1</div>
-            <div class="tl-title">NuclearCraft Project <span class="tl-badge badge-red">1.12.2</span></div>
-            <div class="tl-desc">
-              The rename that changed everything. First real attempt at building something with intention. NTM: Extended Edition, Minecraft 1.12.2. First real progression ideas. First time the project felt like it had a direction - and like it was genuinely <em>mine</em>.
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-gen">Generation 2</div>
-            <div class="tl-title">NuclearCraft Project <span class="tl-badge badge-red">1.12.2</span></div>
-            <div class="tl-desc">
-              Full content overhaul. Better quests, tighter progression, more polish. Same 1.12.2 foundation with NTM: Extended Edition - but noticeably more deliberate.
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-gen">Generation 3</div>
-            <div class="tl-title">NuclearCraft Project <span class="tl-badge badge-orange">1.7.10</span></div>
-            <div class="tl-desc">
-              A big jump to Minecraft 1.7.10 and the original HBM's NTM. Completely different ecosystem - older, more classic modded Minecraft. It taught me a lot about what the original mod was capable of on its own terms.
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-gen">Generation 4</div>
-            <div class="tl-title">NuclearCraft Project <span class="tl-badge badge-red">1.12.2</span> + <span class="tl-badge badge-orange">1.7.10</span></div>
-            <div class="tl-desc">
-              The ambitious one. Dual-version development - 1.12.2 running <em>NTM: Space</em> instead of regular NTM, and 1.7.10 running alongside it in parallel. I was trying to do too much at once. Chaotic in hindsight. But the experience was invaluable.
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-gen">Generation 5</div>
-            <div class="tl-title">NuclearCraft Project <span class="tl-badge badge-red">1.12.2</span></div>
-            <div class="tl-desc">
-              Back to a single version. Real momentum - but also where things fell apart personally. The generation that led directly to burnout, and eventually to everything changing. More on that next.
-            </div>
-          </div>
-
-          <div class="tl-item tl-highlight">
-            <div class="tl-gen">The Rebirth</div>
-            <div class="tl-title">Nuclear Tech: New Horizons <span class="tl-badge badge-star">Current</span></div>
-            <div class="tl-desc">
-              Not a new generation - a completely new identity. New name, new vision, new purpose. Built on 1.7.10 with original HBM's NTM. Inspired by what GregTech: New Horizons did for GregTech - and determined to do the same for Nuclear Tech.
-            </div>
-          </div>
-
-        </div>
-
-        <div class="aside-note reveal" style="transition-delay:0.1s;">
-          <i class="fas fa-circle-info"></i>
-          <div>
-            <strong>A note on versions:</strong> Minecraft 1.12.2 builds used <em>NTM: Extended Edition</em> by Alcater. Minecraft 1.7.10 builds used the original <em>HBM's Nuclear Tech Mod</em>. Between every generation there were full rewrites and wipes. I worked through all of it alone.
-          </div>
-        </div>
-      </section>
-
-      <div class="divider" style="margin-bottom:3rem;"></div>
-
-      <!-- ═══ SECTION 3 - Burnout ═══ -->
-      <section id="burnout" class="about-section reveal">
-        <p class="section-label">Chapter 3</p>
-        <h2 class="about-section-title">
-          <span class="title-icon"><i class="fas fa-fire-flame-curved"></i></span>
-          Burnout. Silence. Coming Back Differently.
-        </h2>
-
-        <div class="prose">
+        <div class="chapter-note">
+          <div class="note-date">September 11, 2023</div>
           <p>
-            I want to be honest about this part, because I think it matters.
-          </p>
-          <p>
-            By the end of the fifth generation, I had run out of steam. Not because I stopped caring about NTM or Minecraft - I never stopped caring. But I'd been working on this completely alone for a long time. I had no clear idea where to take the modpack next. And on top of that, a small number of people who seemed to exist specifically to throw meaningless, baseless criticism at everything I made. Not useful feedback - just noise. And after a while, that kind of noise adds up.
-          </p>
-          <p>
-            I disappeared. Went quiet for about a month. Just... stopped.
-          </p>
-          <div class="aside-note">
-            <i class="fas fa-triangle-exclamation"></i>
-            <div>Honest confession: I wasn't a great developer back then. And I wasn't a great community admin either. I was figuring things out in public, making mistakes in public, and not always handling it well. That's the truth, and I'd rather say it than pretend otherwise.</div>
-          </div>
-          <p>
-            And then I came across <em>Nuclear Tech: Integrated</em> - a modpack by Skippy. I want to say this clearly: <strong>Skippy, if you're reading this - thank you.</strong> That modpack reminded me what was possible when you approach NTM with real creative focus and intention. It reminded me why I started all of this. It pulled me back in.
-          </p>
-          <p>
-            But I didn't come back to keep doing what I'd been doing. I came back with a completely different question in my head:
+            That's the date I created <em>NTM RP</em> - the very first version. Officially, that's the birthday of the entire project. I even made a trailer for it, in Russian. It was genuinely terrible. Maybe I'll show it someday.
           </p>
         </div>
 
-        <div class="quote-block reveal" style="transition-delay:0.05s;">
-          <p>"What would happen if someone made GTNH, but with Nuclear Tech Mod at the core instead of GregTech?"</p>
-          <span class="quote-attr">- Me, somewhere in late 2023</span>
-        </div>
-
-        <div class="prose">
-          <p>
-            I'd heard a lot about GregTech: New Horizons by that point. I knew what made it remarkable - a modpack built entirely around the identity of one specific mod, taken to its absolute limit, with guided progression and real mechanical depth. And I thought: NTM deserves exactly that. NTM has <em>always</em> deserved that.
-          </p>
-          <p>
-            So that's where <strong>Nuclear Tech: New Horizons</strong> came from. Not a new generation of NuclearCraft - something genuinely new. A project with a clear identity and a clear purpose, with a name that says exactly what it is.
-          </p>
-        </div>
-      </section>
-
-      <div class="divider" style="margin-bottom:3rem;"></div>
-
-      <!-- ═══ SECTION 4 - Philosophy ═══ -->
-      <section id="philosophy" class="about-section reveal">
-        <p class="section-label">Chapter 4</p>
-        <h2 class="about-section-title">
-          <span class="title-icon"><i class="fas fa-heart"></i></span>
-          What I Actually Believe
-        </h2>
-
-        <div class="prose">
-          <p>
-            These aren't things I wrote because they sound good. They're things I genuinely believe, based on where I came from and what I've seen.
-          </p>
-        </div>
-
-        <div class="phil-block reveal" style="transition-delay:0.05s;">
-          <div class="phil-number">01</div>
-          <div class="phil-content">
-            <h3>NTNH will always be free. No exceptions.</h3>
-            <p>
-              I grew up in a low-income family. I know exactly what it's like to want something and not be able to afford it - especially online, when your parents are skeptical of internet payments in general. There are kids right now in exactly that position.
-            </p>
-            <p>
-              NTNH is built entirely on free, open-source mods that other people made and gave to the community for nothing. It would be genuinely wrong to take that work and charge money for it. I'm not willing to do that. Not now, not ever.
-            </p>
-            <p>
-              Want to donate? We have a Ko-fi. I'll be grateful for it. But it will never be required. No paywalls. No locked content. No advantages for supporters. This is a tip jar - nothing more.
-            </p>
-          </div>
-        </div>
-
-        <div class="phil-block reveal" style="transition-delay:0.1s;">
-          <div class="phil-number">02</div>
-          <div class="phil-content">
-            <h3>HBM's Nuclear Tech Mod is criminally underrated - and that needs to change.</h3>
-            <p>
-              This mod has been in active development for over <strong>10 years</strong>. It has deep, layered factory gameplay. It has lore. It has a real backstory. It has easter eggs and hidden references that most players never even stumble across.
-            </p>
-            <p>
-              And almost nobody outside of small modded Minecraft communities knows it exists. Most people who've heard of it at all think it's just "a mod that lets you blow things up with nukes." That description misses everything that makes it great.
-            </p>
-            <p>
-              This is not a bomb mod. It's a full industrial simulator with a storyline running underneath it - if you know where to look. The engineering chains alone are more complex and rewarding than most mainstream mods even attempt to be.
-            </p>
-          </div>
-        </div>
-
-        <div class="quote-block reveal" style="transition-delay:0.05s;">
-          <p>"Did you know NTM has lore? A full backstory, hidden in the world? Did you know how many easter eggs and references are buried in this mod that almost nobody ever finds?"</p>
-          <span class="quote-attr">- Something I want every new player to eventually discover on their own</span>
-        </div>
-
-        <div class="phil-block reveal" style="transition-delay:0.1s;">
-          <div class="phil-number">03</div>
-          <div class="phil-content">
-            <h3>Our goal is to put NTM on the map.</h3>
-            <p>
-              Every player who discovers HBM's Nuclear Tech Mod through NTNH is a real win. Not just for this modpack - but for the mod itself, and for the people who have spent over a decade building it. They deserve that recognition.
-            </p>
-            <p>
-              If NTNH can do for NTM what GTNH did for GregTech - build something so compelling around it that people simply can't ignore the underlying mod anymore - that would mean everything to me.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider" style="margin-bottom:3rem;"></div>
-
-      <!-- ═══ SECTION 5 - Now ═══ -->
-      <section id="now" class="about-section reveal">
-        <p class="section-label">Chapter 5</p>
-        <h2 class="about-section-title">
-          <span class="title-icon"><i class="fas fa-rocket"></i></span>
-          And Now, Here We Are
-        </h2>
-
-        <div class="prose">
-          <p>
-            A project I started at 12 years old, alone, with 25 mods and no real plan - has turned into this. A proper website. A large, active Discord. A multiplayer server. Translations in over 20 languages. Our own AI bot. A real development team. 300+ quests with real, guided progression.
-          </p>
-          <p>
-            And recently - something that means a lot to me - new people have started joining the project. Not just players, but contributors and developers who share the same vision. Who understand what this is supposed to be. Who believe in the same things I believe in.
-          </p>
-          <p>
-            We're like a family running a family business - except we don't charge anyone for anything. I think there's something really special about that. Something worth protecting.
-          </p>
-        </div>
-
-        <div class="now-box reveal" style="transition-delay:0.1s;">
-          <div class="now-box-title">
-            <span class="live-dot"></span>
-            What exists as of today
-          </div>
-          <div class="now-items">
-            <div class="now-item"><i class="fas fa-globe"></i> Own website</div>
-            <div class="now-item"><i class="fab fa-discord"></i> Active Discord server</div>
-            <div class="now-item"><i class="fas fa-server"></i> Multiplayer server</div>
-            <div class="now-item"><i class="fas fa-robot"></i> Custom AI bot</div>
-            <div class="now-item"><i class="fab fa-github"></i> Open GitHub organization</div>
-            <div class="now-item"><i class="fas fa-scroll"></i> 300+ quests</div>
-            <div class="now-item"><i class="fas fa-language"></i> 20+ language translations</div>
-            <div class="now-item"><i class="fas fa-people-group"></i> A real team</div>
-          </div>
-        </div>
-
-        <div class="prose" style="margin-top:1.75rem;">
-          <p>
-            Is this what happiness looks like? Yeah. I think it is. I started this because I fell in love with a game on a cracked Xbox, and then fell in love again with a mod that almost nobody knew about. And I just kept going - through the bad versions, through the burnout, through building everything completely alone for months.
-          </p>
-          <p>
-            I'm happy I kept going. And I'm not done.
-          </p>
-          <div class="shoutout-line">
-            <i class="fas fa-hand-spock"></i>
-            A shoutout to <span class="shoutout-name">Skippy</span> - the person whose work pulled me back when I was ready to stop. Go check out <em>Nuclear Tech: Integrated</em>.
-          </div>
-        </div>
-      </section>
-
-      <div class="divider" style="margin-bottom:2.5rem;"></div>
-
-      <!-- ─── CTA ─── -->
-      <div class="about-cta reveal">
-        <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Still reading?</p>
-        <h2 class="about-cta-title">Come Build With Us</h2>
-        <p class="about-cta-sub">
-          If any of this resonated - if you love Minecraft the way I love it, or you're curious about a mod that's been hiding in plain sight for over a decade - come play. Come see what we've built. You're welcome here.
+        <p>
+          NTM RP was a roleplay concept - players would form countries, cities, professions, go to war, all built on NTM's foundation. I thought it sounded exciting. In practice it didn't hold together. After a month, I renamed the project to <strong>NuclearCraft Project</strong>. And that's when it started being real.
         </p>
-        <div class="cta-btns">
+        <p>
+          NuclearCraft Project was the first time I stopped just throwing things at the wall and started actually thinking. What experience did I want people to have? What made NTM special, and how do you build a modpack that honors that instead of burying it? I was still learning. I was making mistakes constantly. But for the first time, the project had a soul.
+        </p>
+      </article>
+
+      <div class="journal-divider" aria-hidden="true">✦</div>
+
+      <!-- ══ CHAPTER 2 ══ -->
+      <article id="ch2" class="chapter reveal">
+        <div class="chapter-label">Chapter II</div>
+        <h2 class="chapter-title">Six Generations</h2>
+
+        <p>
+          The project didn't arrive at Nuclear Tech: New Horizons in one step. It went through six completely different versions, each one a full rethink - different Minecraft version, different NTM fork, different vision. I want to write them down because they're all part of the story, even the bad ones. Especially the bad ones.
+        </p>
+        <p class="gen-note">
+          A note on versions: all 1.12.2 builds used <em>NTM: Extended Edition</em> by Alcater. All 1.7.10 builds used the original <em>HBM's Nuclear Tech Mod</em>.
+        </p>
+
+        <div class="gen-timeline">
+
+          <div class="gen-item gen-special">
+            <div class="gen-marker">★</div>
+            <div class="gen-body">
+              <div class="gen-id">September 11, 2023 · Origin</div>
+              <div class="gen-name">NTM RP <span class="gen-mc">1.12.2</span></div>
+              <p>A roleplay modpack. Nations, cities, war. The concept had heart; the execution didn't. Lasted about a month before I scrapped the direction entirely.</p>
+            </div>
+          </div>
+
+          <div class="gen-item">
+            <div class="gen-marker">I</div>
+            <div class="gen-body">
+              <div class="gen-id">Generation 1</div>
+              <div class="gen-name">NuclearCraft Project <span class="gen-mc">1.12.2</span></div>
+              <p>The rename. First real structure. First time the project felt intentional - like something I was actually building, not just assembling.</p>
+            </div>
+          </div>
+
+          <div class="gen-item">
+            <div class="gen-marker">II</div>
+            <div class="gen-body">
+              <div class="gen-id">Generation 2</div>
+              <div class="gen-name">NuclearCraft Project <span class="gen-mc">1.12.2</span></div>
+              <p>Full content overhaul. Better quests, tighter progression, more thought put into what the experience should feel like. Noticeably better than Gen 1.</p>
+            </div>
+          </div>
+
+          <div class="gen-item">
+            <div class="gen-marker">III</div>
+            <div class="gen-body">
+              <div class="gen-id">Generation 3</div>
+              <div class="gen-name">NuclearCraft Project <span class="gen-mc">1.7.10</span></div>
+              <p>A jump to the older version of Minecraft and the original HBM's NTM. Completely different ecosystem. Taught me a lot about what the mod was capable of on its own terms.</p>
+            </div>
+          </div>
+
+          <div class="gen-item">
+            <div class="gen-marker">IV</div>
+            <div class="gen-body">
+              <div class="gen-id">Generation 4</div>
+              <div class="gen-name">NuclearCraft Project <span class="gen-mc">1.12.2</span> + <span class="gen-mc">1.7.10</span></div>
+              <p>The ambitious one. Dual-version development running in parallel - 1.12.2 with NTM: Extended Edition, and 1.7.10 using <em>NTM: Space</em> instead of regular NTM. I was trying to do too much at once. Chaotic. Instructive.</p>
+            </div>
+          </div>
+
+          <div class="gen-item">
+            <div class="gen-marker">V</div>
+            <div class="gen-body">
+              <div class="gen-id">Generation 5</div>
+              <div class="gen-name">NuclearCraft Project <span class="gen-mc">1.12.2</span></div>
+              <p>Back to one version. Real momentum - and then a wall. The generation that ended with me going quiet for a month. More on that shortly.</p>
+            </div>
+          </div>
+
+          <div class="gen-item gen-special">
+            <div class="gen-marker">★</div>
+            <div class="gen-body">
+              <div class="gen-id">The Rebirth</div>
+              <div class="gen-name">Nuclear Tech: New Horizons <span class="gen-mc">1.7.10</span></div>
+              <p>Not a new generation. A completely new identity, new name, new vision. The one you're playing right now.</p>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <div class="journal-divider" aria-hidden="true">✦</div>
+
+      <!-- ══ CHAPTER 3 ══ -->
+      <article id="ch3" class="chapter reveal">
+        <div class="chapter-label">Chapter III</div>
+        <h2 class="chapter-title">Burnout. And Coming Back.</h2>
+
+        <p>
+          I want to be honest about this part.
+        </p>
+        <p>
+          By the end of Generation 5, I had nothing left. I'd been working on this completely alone for months. I had no clear idea where to take the modpack. And on top of that, there were a small number of people who just... existed to throw meaningless, baseless criticism at everything I made. Not useful feedback. Just noise. The kind that doesn't tell you how to improve, it just tells you that you failed. And after long enough, that kind of thing eats at you.
+        </p>
+        <p>
+          I disappeared for about a month. Stopped posting, stopped updating, stopped thinking about it. I want to say that clearly rather than smooth over it, because it's part of what the project is.
+        </p>
+
+        <blockquote class="journal-quote">
+          I'll be upfront: I wasn't a good developer back then. And I wasn't a good community admin. I was figuring things out in public, making mistakes in public, handling things badly in public. That's the truth.
+        </blockquote>
+
+        <p>
+          And then I found <em>Nuclear Tech: Integrated</em> - a modpack by someone called Skippy. I want to say this directly, in writing, where he might actually see it: <strong>thank you, Skippy.</strong> That project showed me what was possible when you approach NTM with real creative focus. It reminded me why I started any of this. It pulled me back.
+        </p>
+        <p>
+          But I came back with a different question. Not "how do I fix NuclearCraft Project?" - something I'd never asked before:
+        </p>
+
+        <blockquote class="journal-quote journal-quote-big">
+          "What would happen if someone made GregTech: New Horizons, but with Nuclear Tech Mod at the center instead of GregTech?"
+        </blockquote>
+
+        <p>
+          I'd heard about GTNH. I knew what it stood for - a modpack built entirely around one specific mod, taken to its absolute limit, with guided progression and real depth. And I thought: NTM deserves that. NTM has always deserved that.
+        </p>
+        <p>
+          So Nuclear Tech: New Horizons isn't NuclearCraft Project with a new name. It's something genuinely different - built with a clear identity and a clear purpose, from the very start. That moment of clarity, coming back after a month of silence, was the actual beginning.
+        </p>
+      </article>
+
+      <div class="journal-divider" aria-hidden="true">✦</div>
+
+      <!-- ══ CHAPTER 4 ══ -->
+      <article id="ch4" class="chapter reveal">
+        <div class="chapter-label">Chapter IV</div>
+        <h2 class="chapter-title">What I Believe</h2>
+
+        <p>
+          These are things I actually believe, not things I wrote because they sound good. They come from who I am and where I came from.
+        </p>
+
+        <h3 class="ch-subhead">On money</h3>
+        <p>
+          I grew up in a low-income family. I know exactly what it feels like to want something and not be able to afford it - especially online, when your parents are skeptical of internet payments in general. There are kids in that exact situation right now, today.
+        </p>
+        <p>
+          NTNH is built entirely on free, open-source mods that other people made and gave to the community for nothing. It would feel genuinely wrong to take that and charge money for it. I'm not going to do that. Not now, not ever. If you want to support us on Ko-fi, I'll be grateful for every coffee - but it will never be required, and it will never unlock anything. No paywalls. No locked content. No advantages. It's a tip jar, nothing more.
+        </p>
+        <p>
+          You cannot earn money off other people's work and call it fair. I don't think that's a complicated idea, but it's one I'll defend every time.
+        </p>
+
+        <h3 class="ch-subhead">On HBM's Nuclear Tech Mod</h3>
+        <p>
+          This mod has been in active development for over ten years. It has deep, layered factory gameplay. It has lore. It has a real backstory running underneath everything. It has easter eggs and hidden references that most players never even stumble across. And almost nobody outside of very small modded Minecraft communities knows it exists.
+        </p>
+        <p>
+          Most people who've heard of NTM think it's just "the mod where you blow things up with nuclear bombs." That description misses everything that makes it great. This is not a bomb mod. It's a full industrial simulator with a storyline - if you know where to look. The engineering chains alone are more complex and rewarding than most mainstream mods even attempt.
+        </p>
+
+        <blockquote class="journal-quote">
+          Did you know NTM has lore? A whole backstory embedded in the world? Do you know how many easter eggs and hidden references are buried in this mod that almost nobody ever finds? Most people who play it don't even know to look.
+        </blockquote>
+
+        <p>
+          That bothers me. And NTNH is, in part, my answer to it. Every player who discovers what NTM actually is through this modpack is a real win - not just for us, but for the people who have spent more than a decade building the mod. They deserve that recognition.
+        </p>
+
+        <h3 class="ch-subhead">On what this project is for</h3>
+        <p>
+          If NTNH can do for NTM what GTNH did for GregTech - build something so compelling around it that people can't ignore the underlying mod anymore - that would mean everything to me. That's the goal. Not "make a popular modpack." Make a modpack that shows people something they didn't know existed, and makes them grateful they found it.
+        </p>
+      </article>
+
+      <div class="journal-divider" aria-hidden="true">✦</div>
+
+      <!-- ══ CHAPTER 5 ══ -->
+      <article id="ch5" class="chapter reveal">
+        <div class="chapter-label">Chapter V</div>
+        <h2 class="chapter-title">Today</h2>
+
+        <p>
+          A project I started at twelve years old, alone, with no real plan - has turned into something I'm genuinely proud of. A website. A large active Discord. A multiplayer server. Translations in over twenty languages. An AI bot someone built for it. A real development team. Three hundred quests.
+        </p>
+        <p>
+          And recently - this is the part that actually moves me - new people have started joining the project. Not just players. Contributors and developers who share the same vision. Who understand what this is supposed to be. Who believe in the same things.
+        </p>
+        <p>
+          We're like a family running a family business, except we don't charge anyone for anything. I think there's something really rare and worth protecting about that.
+        </p>
+        <p>
+          Is this what happiness looks like? I think it might be. I started this because I fell in love with a game on a cracked Xbox, and then fell in love again with a mod that almost nobody knew about. And I just kept going - through the bad versions, through the burnout, through all the months of building alone.
+        </p>
+        <p>
+          I'm glad I kept going. I'm not done.
+        </p>
+
+        <div class="chapter-note chapter-note-shoutout">
+          <p>
+            A shoutout to <strong>Skippy</strong> - the person whose work pulled me back when I was ready to stop. Go find <em>Nuclear Tech: Integrated</em> and give it a look.
+          </p>
+        </div>
+      </article>
+
+      <div class="journal-divider" aria-hidden="true">✦</div>
+
+      <!-- ── Closing ── -->
+      <footer class="journal-footer reveal">
+        <p>If any of this meant something to you - come play. Come build. You're welcome here.</p>
+        <div class="journal-footer-links">
           <a href="/download" class="btn btn-primary"><i class="fas fa-download"></i> Download</a>
           <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fab fa-discord"></i> Join Discord</a>
           <a href="/guide" class="btn btn-secondary"><i class="fas fa-map"></i> Getting Started</a>
         </div>
-      </div>
+        <p class="journal-sign">- Alex (Bufka2011)</p>
+      </footer>
 
     </div>
   </main>
