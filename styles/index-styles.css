@@ -419,7 +419,7 @@
   box-shadow: 0 0 0 2px var(--orange), 0 24px 64px rgba(0,0,0,0.6);
 }
 
-/* Viewport — clips the sliding track */
+/* Viewport - clips the sliding track */
 .slider-viewport {
   position: absolute;
   inset: 0;
@@ -505,7 +505,7 @@
 .slider-arrow-prev { left: 1.25rem; }
 .slider-arrow-next { right: 1.25rem; }
 
-/* ─── Info card — bottom-right overlay ─── */
+/* ─── Info card - bottom-right overlay ─── */
 .slider-info-card {
   position: absolute;
   bottom: 2.75rem;

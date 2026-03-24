@@ -1,0 +1,626 @@
+/* ══════════════════════════════════════════
+   ABOUT / STORY PAGE - about-styles.css
+══════════════════════════════════════════ */
+
+/* ─── Hero ─── */
+.about-hero {
+  position: relative;
+  z-index: 1;
+  padding: 5.5rem 2rem 3.5rem;
+  text-align: center;
+}
+
+.about-hero-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text-bright) 0%, var(--orange) 60%, var(--yellow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.about-hero-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* ─── Jump nav ─── */
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.jump-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-mid);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.jump-link:hover {
+  border-color: var(--border-hot);
+  background: var(--red-glow);
+  color: var(--orange);
+  transform: translateY(-2px);
+}
+
+/* ─── Page wrap ─── */
+.about-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* ─── Author card ─── */
+.author-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(10, 3, 0, 0.85);
+  border: 1px solid var(--border-hot);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.author-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+}
+
+.author-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 28px rgba(255, 106, 0, 0.5);
+  position: relative;
+}
+
+.author-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 140, 0, 0.4);
+  animation: rotateSlow 14s linear infinite;
+}
+
+@keyframes rotateSlow {
+  to { transform: rotate(360deg); }
+}
+
+.author-info h3 {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.15rem;
+}
+
+.author-info .handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--orange);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+
+.author-info p {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+
+.author-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  background: rgba(255, 106, 0, 0.10);
+  border: 1px solid rgba(255, 106, 0, 0.35);
+  color: var(--orange);
+  margin-bottom: 0.45rem;
+}
+
+/* ─── Section blocks ─── */
+.about-section {
+  margin-bottom: 0;
+}
+
+.about-section-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.about-section-title .title-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: rgba(255, 80, 0, 0.10);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.about-desc {
+  color: var(--text-mid);
+  font-size: 0.92rem;
+  line-height: 1.75;
+  margin-bottom: 1.75rem;
+}
+
+/* ─── Prose ─── */
+.prose {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.prose p { margin: 0; }
+
+.prose strong {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.prose em {
+  color: var(--yellow);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ─── Aside / note ─── */
+.aside-note {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin: 1.25rem 0;
+}
+
+.aside-note > i {
+  color: var(--orange);
+  font-size: 0.9rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.aside-note strong {
+  color: var(--text-bright);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Birthday callout ─── */
+.birthday-box {
+  background: rgba(10, 3, 0, 0.82);
+  border: 1px solid rgba(255, 204, 0, 0.25);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin: 1.75rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.birthday-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+}
+
+.birthday-box .bday-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.6));
+}
+
+.birthday-box .bday-text strong {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.85rem;
+  color: var(--yellow);
+  display: block;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.03em;
+}
+
+.birthday-box .bday-text p {
+  font-size: 0.86rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ─── Timeline ─── */
+.timeline {
+  position: relative;
+  padding-left: 2.75rem;
+  margin: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--red), var(--orange), rgba(255, 106, 0, 0.08));
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -2.05rem;
+  top: 0.6rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 2px solid #080000;
+  box-shadow: 0 0 10px rgba(255, 106, 0, 0.7);
+  z-index: 1;
+}
+
+.tl-item.tl-highlight::before {
+  background: var(--yellow);
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.9);
+  width: 14px;
+  height: 14px;
+  left: -2.2rem;
+  top: 0.5rem;
+}
+
+.tl-gen {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.2rem;
+}
+
+.tl-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tl-desc {
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+}
+
+.tl-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  border: 1px solid;
+  line-height: 1.6;
+}
+
+.badge-red    { color: var(--red);    background: rgba(255,34,0,0.08);   border-color: rgba(255,34,0,0.3); }
+.badge-orange { color: var(--orange); background: rgba(255,106,0,0.08);  border-color: rgba(255,106,0,0.3); }
+.badge-star   { color: var(--yellow); background: rgba(255,204,0,0.08);  border-color: rgba(255,204,0,0.3); }
+
+/* ─── Quote block ─── */
+.quote-block {
+  border-left: 3px solid var(--orange);
+  padding: 1.1rem 1.6rem;
+  margin: 2rem 0;
+  background: rgba(255, 106, 0, 0.04);
+  border-radius: 0 10px 10px 0;
+}
+
+.quote-block p {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  line-height: 1.65;
+  font-style: italic;
+  margin: 0;
+}
+
+.quote-block .quote-attr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+  margin-top: 0.65rem;
+  display: block;
+  font-style: normal;
+}
+
+/* ─── Philosophy blocks ─── */
+.phil-block {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: rgba(10, 3, 0, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem;
+  margin: 1.25rem 0;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.3s;
+}
+
+.phil-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.phil-block:hover { border-color: var(--border-hot); }
+.phil-block:hover::before { opacity: 1; }
+
+.phil-number {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255, 106, 0, 0.18);
+  line-height: 1;
+  padding-top: 0.15rem;
+  user-select: none;
+}
+
+.phil-content h3 {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.phil-content p {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.phil-content p:last-child { margin-bottom: 0; }
+
+.phil-content strong {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* ─── "Now" box ─── */
+.now-box {
+  background: linear-gradient(135deg,
+    rgba(255, 34, 0, 0.05),
+    rgba(255, 106, 0, 0.05),
+    rgba(255, 204, 0, 0.05)
+  );
+  border: 1px solid var(--border-hot);
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.now-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+  background-size: 200% auto;
+  animation: nowShimmer 3s linear infinite;
+}
+
+@keyframes nowShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.now-box-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 8px var(--yellow);
+  animation: liveBlink 1.5s step-end infinite;
+  flex-shrink: 0;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.1; }
+}
+
+.now-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.now-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.86rem;
+  color: var(--text-mid);
+}
+
+.now-item i {
+  color: var(--orange);
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ─── Shoutout ─── */
+.shoutout-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.65rem 1rem;
+  margin-top: 1.25rem;
+  line-height: 1.6;
+}
+
+.shoutout-line > i { color: var(--orange); flex-shrink: 0; }
+
+.shoutout-name {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+/* ─── CTA block ─── */
+.about-cta {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.about-cta-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.9rem;
+}
+
+.about-cta-sub {
+  font-size: 0.92rem;
+  color: var(--text-mid);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+}
+
+.cta-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .author-card         { flex-direction: column; text-align: center; }
+  .author-info .handle { justify-content: center; }
+  .phil-block          { grid-template-columns: 1fr; gap: 0.75rem; }
+  .phil-number         { font-size: 1.4rem; }
+  .timeline            { padding-left: 2rem; }
+  .now-items           { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 420px) {
+  .now-items { grid-template-columns: 1fr; }
+}
