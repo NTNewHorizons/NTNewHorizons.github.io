@@ -13,8 +13,8 @@
 
   you should not be here.
 
-  if you found this by accident, close the tab.
   if you know why you are here, you already know what to type.
+  because the end is near
 
 ================================================================================
 </pre>
@@ -35,15 +35,11 @@ AUTHORIZATION CODE &gt;&gt; <input type="password" id="passInput" size="30" auto
 <pre id="msgOutput"></pre>
 
 <script>
-// ── AES-GCM encrypted payload ──────────────────────────────────────────────
-// Generated with generate-secret.html. Replace these three values with your
-// own output. The password is never stored here. Wrong key = decrypt fails.
 const PAYLOAD = {
-  salt: "luC4T7BbwuOOpZgLnAm+2Q==",
-  iv:   "drMZmCZ7BmeYb/SV",
-  data: "r28BKHdrAcsK88k3P2fMvIVqZQHlSCUJbtqpzzkAxstqqQ=="
+  salt: "QSW8ipe270KNgfNxV0z8xQ==",
+  iv:   "U4O7A7mRcy7suta9",
+  data: "fukQ4WYN2b/PUAZS1Qc1tgXoml+zuoO0cue6av4sTmWVRKNNoOIEYxv/rKXPBC54YnvXgI24++rz2PAsB/VkUyDTP/DMhAtvZQbWBliS0rUgoPjEjKCKFSTIm9KzMcULScMeX05GJ8ciSXOiKA5mh3Qa6AKMFP96huizsRHnVljGNPb5vrtGkCSXuLQrj1xqt7ozwiGFm6C6k7Nzv1XeJSAry7EWMAlfG5obyjCcxsYnykN/Yq2P5udBxsjXc1195IwErDjwnZr8sMdTlZIVzyonDywc8cD3vC27KuvHSTRXs1+vOQPQkyup7Rfqcf3ZNi2sxdh7AuLATR79EA1aMU6hJls0d/q4+ktsrAx9QflAKCiGGquiSIFozgUA4zMwy+QAIn3/aTZib+KKwGOZPlQ9IyAW+iOIncdOdxeO7UFhvQS7oIt3UeDoM1XO0tdP0CJ+gd/cnTwb9tZwaIwksaWK/ITXkqh8maaB8GbdquCyYNpi5KyxC88jKObMYHu3KiwJJnrZHxjcXp34v2m88w74lrcMVz7G8hcwHBygb1K3qyVI+riWi7byHqkZBPmmYNj1xiTNJD4bWmaXQlB0ENosdgmzzUwy5rEuWkIOYg1CSHF7b4kMkwxDQ3Ji4xyah7odeJISfXrN7ueUzPy6/kL8oZZhkJ1e0AM="
 };
-// ───────────────────────────────────────────────────────────────────────────
 
 async function attempt() {
   const pw  = document.getElementById('passInput').value.trim();
