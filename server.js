@@ -32,7 +32,7 @@ app.use(session({
 }));
 
 // ──────────────────────────────────────────────────────────
-// SECURITY — block direct access to data / source directories
+// SECURITY - block direct access to data / source directories
 // ──────────────────────────────────────────────────────────
 
 // Prevent blog-data JSON files from being served as static files

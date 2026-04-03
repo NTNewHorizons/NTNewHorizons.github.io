@@ -7,7 +7,7 @@
  *
  * Passwords are stored as bcrypt hashes (cost factor 12).
  * You can also manually edit blog-data/admins.json and run this
- * script to re-hash a plaintext password you've put there —
+ * script to re-hash a plaintext password you've put there -
  * just delete the passwordHash field and re-run.
  */
 
@@ -35,7 +35,7 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 const ask = (q) => new Promise(resolve => rl.question(q, resolve));
 
 async function main() {
-  console.log('\n=== NT:NH Blog — Add/Update Admin ===\n');
+  console.log('\n=== NT:NH Blog - Add/Update Admin ===\n');
 
   const username    = (await ask('Username (alphanumeric, no spaces): ')).trim();
   const displayName = (await ask('Display name (shown on posts, e.g. "Bob"): ')).trim();
@@ -45,8 +45,8 @@ async function main() {
     rl.close(); process.exit(1);
   }
 
-  // Hide password input (simple approach — readline doesn't support it natively)
-  const password = (await ask('Password (input visible — run in private terminal): ')).trim();
+  // Hide password input (simple approach - readline doesn't support it natively)
+  const password = (await ask('Password (input visible - run in private terminal): ')).trim();
 
   if (password.length < 8) {
     console.error('Error: password must be at least 8 characters.');

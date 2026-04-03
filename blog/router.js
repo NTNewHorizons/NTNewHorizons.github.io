@@ -18,7 +18,7 @@ if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 const DEFAULTS = {
   'admins.json':   [],
   'posts.json':    [],
-  'users.json':    [],   // array — was IP-keyed object; silently migrated below
+  'users.json':    [],   // array - was IP-keyed object; silently migrated below
   'comments.json': {},
 };
 
@@ -307,7 +307,7 @@ function flashHtml(flash) {
 // PUBLIC BLOG ROUTES
 // ──────────────────────────────────────────────────────────────────────────────
 
-// GET /blog  — post listing
+// GET /blog  - post listing
 router.get('/', (req, res) => {
   const posts = readData('posts.json')
     .filter(p => p.published)
@@ -341,7 +341,7 @@ ${topNav(req)}
 </div>`));
 });
 
-// GET /blog/post/:slug  — single post
+// GET /blog/post/:slug  - single post
 router.get('/post/:slug', (req, res) => {
   const posts = readData('posts.json');
   const post  = posts.find(p => p.slug === req.params.slug && p.published);
@@ -355,10 +355,11 @@ ${topNav(req)}
   const flash    = flashGet(req);
   const allComs  = readData('comments.json');
   const comments = allComs[req.params.slug] || [];
+  const commenterId = user ? user.id : admin ? `admin:${admin.username}` : null;
 
   const commentsHtml = comments.length
     ? comments.map(c => {
-        const isOwn  = user && user.id === c.userId;
+        const isOwn  = commenterId && commenterId === c.userId;
         const canDel = !!(admin || isOwn);
         const delBtn = canDel
           ? `<form method="POST"
@@ -378,11 +379,14 @@ ${topNav(req)}
       }).join('\n')
     : '<p style="color:#aaa;margin:12px 0;">No comments yet. Be the first!</p>';
 
-  const commentFormHtml = user
+  const commentActorLabel = admin
+    ? `<b style="color:#4F4;">${escapeHtml(admin.displayName || admin.username)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
+    : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> &mdash; <a href="/blog/profile">change nickname</a>`;
+
+  const commentFormHtml = (user || admin)
     ? `<div class="comment-form" style="margin-top:20px;">
          <hr>
-         <p>Commenting as <b style="color:#4F4;">${escapeHtml(user.nickname)}</b>
-            &mdash; <a href="/blog/profile">change nickname</a></p>
+         <p>Commenting as ${commentActorLabel}</p>
          <form method="POST" action="/blog/post/${escapeHtml(post.slug)}/comment">
            <textarea name="content" rows="5" maxlength="2000"
              placeholder="Write a comment... (max 2000 characters)"></textarea>
@@ -417,14 +421,20 @@ ${topNav(req)}
 // POST /blog/post/:slug/comment
 router.post('/post/:slug/comment', (req, res) => {
   const slug = req.params.slug;
+  const admin = req.session?.adminUser;
 
-  if (!isUser(req)) {
+  if (!isUser(req) && !isAdmin(req)) {
     flashSet(req, 'Error: You must be logged in to post a comment.');
     return res.redirect(`/blog/post/${slug}#comments`);
   }
 
   const user = getCurrentUser(req);
-  if (!user) { req.session.destroy(); return res.redirect('/blog/login'); }
+  const commenter = user || (admin && {
+    id:       `admin:${admin.username}`,
+    nickname: admin.displayName || admin.username,
+  });
+
+  if (!commenter) { req.session.destroy(); return res.redirect('/blog/login'); }
 
   const posts = readData('posts.json');
   if (!posts.find(p => p.slug === slug && p.published))
@@ -440,8 +450,8 @@ router.post('/post/:slug/comment', (req, res) => {
   if (!all[slug]) all[slug] = [];
   all[slug].push({
     id:       crypto.randomBytes(8).toString('hex'),
-    userId:   user.id,
-    nickname: user.nickname,   // snapshot at time of posting
+    userId:   commenter.id,
+    nickname: commenter.nickname,   // snapshot at time of posting
     content,
     date:     new Date().toISOString(),
   });
@@ -480,7 +490,7 @@ router.post('/post/:slug/comment/:commentId/delete', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
-// USER AUTH — REGISTER
+// USER AUTH - REGISTER
 // ──────────────────────────────────────────────────────────────────────────────
 
 router.get('/register', (req, res) => {
@@ -583,7 +593,7 @@ router.post('/register', async (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
-// USER AUTH — LOGIN / LOGOUT
+// USER AUTH - LOGIN / LOGOUT
 // ──────────────────────────────────────────────────────────────────────────────
 
 router.get('/login', (req, res) => {
