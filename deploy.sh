@@ -3,13 +3,17 @@ echo "=== Deployment started at $(date) ==="
 
 cd /home/bufka/site
 
-# Pull latest changes safely
-git fetch --prune --tags origin
-git reset --hard origin/main
+echo "Pulling latest changes from main branch..."
 
-echo "Website files updated."
+if git pull --ff-only origin main; then
+    echo "✅ Git pull successful - files updated."
+else
+    echo "❌ Git pull failed (possible conflict). Aborting deploy."
+    exit 1
+fi
 
-# Restart the Express site
+echo "Restarting PM2 process 'ntnewHorizons'..."
 pm2 restart ntnewHorizons
 
-echo "=== Deployment finished successfully at $(date) ==="
+echo "✅ Deployment finished successfully at $(date)"
+echo "========================================"
