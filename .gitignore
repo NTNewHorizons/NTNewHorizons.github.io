@@ -2,3 +2,12 @@ node_modules/
 *.log
 .DS_Store
 .env
+
+# Blog data — sensitive / dynamic, managed on the server
+# posts.json is intentionally NOT ignored so your posts survive git pushes.
+# If you prefer to manage posts through the web UI only (not git),
+# uncomment the posts.json line below.
+blog-data/admins.json
+blog-data/users.json
+blog-data/comments.json
+# blog-data/posts.json
