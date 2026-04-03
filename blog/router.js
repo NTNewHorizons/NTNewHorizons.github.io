@@ -399,7 +399,7 @@ ${topNav(req)}
          <a href="/blog/register">[Create a free account]</a> to leave a comment.
        </div>`;
 
-  res.send(page(`${post.title} \u2014 NT:NH Blog`, `
+  res.send(page(`${post.title} - NT:NH Blog`, `
 ${topNav(req)}
 <div class="content">
   <h1 style="text-align:center;">${escapeHtml(post.title)}</h1>
@@ -496,7 +496,7 @@ router.post('/post/:slug/comment/:commentId/delete', (req, res) => {
 router.get('/register', (req, res) => {
   if (isUser(req) || isAdmin(req)) return res.redirect('/blog');
   const flash = flashGet(req);
-  res.send(page('Create Account \u2014 NT:NH Blog', `
+  res.send(page('Create Account - NT:NH Blog', `
 ${topNav(req)}
 <div class="auth-wrap">
   <h2>Create Account</h2>
@@ -599,7 +599,7 @@ router.post('/register', async (req, res) => {
 router.get('/login', (req, res) => {
   if (isUser(req) || isAdmin(req)) return res.redirect('/blog');
   const flash = flashGet(req);
-  res.send(page('Login \u2014 NT:NH Blog', `
+  res.send(page('Login - NT:NH Blog', `
 ${topNav(req)}
 <div class="auth-wrap">
   <h2>Login</h2>
@@ -694,7 +694,7 @@ router.get('/profile', (req, res) => {
          (Cooldown: once every ${NICK_COOLDOWN_DAYS} days)
        </div>`;
 
-  res.send(page('Your Profile \u2014 NT:NH Blog', `
+  res.send(page('Your Profile - NT:NH Blog', `
 ${topNav(req)}
 <div class="profile-wrap">
   <h2>Your Profile</h2>
@@ -756,7 +756,7 @@ router.post('/profile/nickname', (req, res) => {
     return res.redirect('/blog/profile');
   }
   if (daysSince(user.nicknameChangedAt) < NICK_COOLDOWN_DAYS) {
-    flashSet(req, `Error: Nickname cooldown active \u2014 try again in ${nickTimeRemaining(user.nicknameChangedAt)}.`);
+    flashSet(req, `Error: Nickname cooldown active - try again in ${nickTimeRemaining(user.nicknameChangedAt)}.`);
     return res.redirect('/blog/profile');
   }
 
@@ -937,7 +937,7 @@ router.post('/admin/users/delete', (req, res) => {
 // ──────────────────────────────────────────────────────────────────────────────
 
 function renderAdminLogin(res, error = '') {
-  res.send(page('Blog Admin \u2014 NT:NH', `
+  res.send(page('Blog Admin - NT:NH', `
 <div class="login-box">
   <h2 style="margin-bottom:16px;font-variant:small-caps;">Admin Login</h2>
   ${error ? `<div class="msg error">${escapeHtml(error)}</div>` : ''}
@@ -1092,7 +1092,7 @@ function updatePreview() {
 }
 </script>`;
 
-  res.send(page('Blog Admin \u2014 NT:NH', `
+  res.send(page('Blog Admin - NT:NH', `
 ${topNav(req)}
 <div class="admin-wrap">
   <h2 style="margin-bottom:4px;">Blog Admin Panel</h2>
@@ -1153,7 +1153,7 @@ function switchTab(name) {
 // ──────────────────────────────────────────────────────────────────────────────
 
 router.use((req, res) => {
-  res.status(404).send(page('404 \u2014 NT:NH Blog', `
+  res.status(404).send(page('404 - NT:NH Blog', `
 ${topNav(req)}
 <div class="content">
   <h1>404 &mdash; Not Found</h1>
