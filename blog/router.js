@@ -379,12 +379,12 @@ ${topNav(req)}
       }).join('\n')
     : '<p style="color:#aaa;margin:12px 0;">No comments yet. Be the first!</p>';
 
-  const commentActorLabel = admin
-    ? `<b style="color:#4F4;">${escapeHtml(admin.displayName || admin.username)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
-    : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> &mdash; <a href="/blog/profile">change nickname</a>`;
-
   const commentFormHtml = (user || admin)
-    ? `<div class="comment-form" style="margin-top:20px;">
+    ? (() => {
+        const commentActorLabel = admin
+          ? `<b style="color:#4F4;">${escapeHtml(admin.displayName || admin.username)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
+          : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> &mdash; <a href="/blog/profile">change nickname</a>`;
+        return `<div class="comment-form" style="margin-top:20px;">
          <hr>
          <p>Commenting as ${commentActorLabel}</p>
          <form method="POST" action="/blog/post/${escapeHtml(post.slug)}/comment">
@@ -392,7 +392,8 @@ ${topNav(req)}
              placeholder="Write a comment... (max 2000 characters)"></textarea>
            <button type="submit">Post Comment</button>
          </form>
-       </div>`
+       </div>`;
+      })()
     : `<div class="comment-gate">
          <b>Want to join the discussion?</b><br>
          <a href="/blog/login">[Login]</a> &nbsp; or &nbsp;
