@@ -9,6 +9,33 @@ const { marked } = require('marked');
 const crypto     = require('crypto');
 
 // ──────────────────────────────────────────────────────────────────────────────
+// IMAGE UPLOAD SETUP (requires: npm install multer)
+// ──────────────────────────────────────────────────────────────────────────────
+
+const UPLOAD_DIR = path.join(__dirname, '..', 'resources', 'blog-uploads');
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+let upload = null;
+try {
+  const multer  = require('multer');
+  const storage = multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+    filename:    (_req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase().replace(/[^a-z0-9.]/g, '');
+      cb(null, Date.now() + '_' + crypto.randomBytes(6).toString('hex') + ext);
+    },
+  });
+  upload = multer({
+    storage,
+    limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB
+    fileFilter: (_req, file, cb) =>
+      cb(null, /\.(jpe?g|png|gif|webp|svg)$/i.test(path.extname(file.originalname))),
+  });
+} catch {
+  upload = null; // multer not installed; uploads disabled
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
 // DATA LAYER
 // ──────────────────────────────────────────────────────────────────────────────
 
@@ -18,7 +45,7 @@ if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 const DEFAULTS = {
   'admins.json':   [],
   'posts.json':    [],
-  'users.json':    [],   // array - was IP-keyed object; silently migrated below
+  'users.json':    [],
   'comments.json': {},
 };
 
@@ -30,7 +57,6 @@ for (const [file, dflt] of Object.entries(DEFAULTS)) {
 function readData(file) {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), 'utf8'));
-    // Migration: old users.json was an IP-keyed object; treat as empty array
     if (file === 'users.json' && !Array.isArray(raw)) return [];
     return raw;
   } catch {
@@ -118,6 +144,16 @@ function isReservedNick(nick, admins) {
     .includes(low);
 }
 
+// Sort: pinned first (newest pin first), then by date desc
+function sortPosts(posts) {
+  return [...posts].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    if (a.pinned && b.pinned) return new Date(b.pinnedAt || 0) - new Date(a.pinnedAt || 0);
+    return new Date(b.date) - new Date(a.date);
+  });
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
 // MARKDOWN
 // ──────────────────────────────────────────────────────────────────────────────
@@ -125,7 +161,7 @@ function isReservedNick(nick, admins) {
 marked.use({ gfm: true, breaks: true });
 
 // ──────────────────────────────────────────────────────────────────────────────
-// CSS  (same retro palette; additions: top nav, auth forms, profile)
+// CSS
 // ──────────────────────────────────────────────────────────────────────────────
 
 const BLOG_CSS = `
@@ -138,7 +174,8 @@ a:hover{color:#FF8;text-decoration:underline;}
 .return{padding:5px;border-style:outset;border-color:#FF8;background-color:#444;}
 .cookies{margin:auto;width:98%;background-color:#777;border-style:outset;border-color:#aaa;text-align:center;padding-top:10px;padding-bottom:10px;}
 .content{width:1000px;margin:auto;margin-top:40px;padding:20px;background-color:#777;border-style:outset;border-color:#aaa;}
-.blog-panel{width:900px;height:206px;margin:auto;margin-top:20px;color:#FFF;background-color:#444;border-style:inset;border-color:#aaa;overflow:hidden;}
+.blog-panel{width:900px;height:206px;margin:auto;margin-top:20px;color:#FFF;background-color:#444;border-style:inset;border-color:#aaa;overflow:hidden;position:relative;}
+.blog-panel.is-pinned{border-left:4px solid #FF8;box-shadow:inset 4px 0 12px rgba(255,204,0,0.08);}
 .blog-image{width:200px;height:200px;float:left;border-style:outset;border-color:#aaa;object-fit:cover;display:block;}
 .blog-image-placeholder{width:200px;height:200px;float:left;border-style:outset;border-color:#aaa;background:#222;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;}
 .blog-desc{width:648px;height:180px;padding:20px;padding-top:0;float:right;border-style:outset;border-color:#aaa;overflow:hidden;}
@@ -159,6 +196,10 @@ a:hover{color:#FF8;text-decoration:underline;}
 .blog-entry hr{border:none;border-top:1px solid #555;margin:20px 0;}
 .blog-entry a{color:#FF8;}
 
+/* pin badge */
+.pin-badge{display:inline-flex;align-items:center;gap:4px;background:#FF8;color:#000;font-size:10px;font-weight:bold;padding:2px 7px;border-radius:3px;vertical-align:middle;margin-right:6px;letter-spacing:0.05em;}
+.pin-corner{position:absolute;top:6px;right:6px;background:#FF8;color:#000;font-size:10px;font-weight:bold;padding:2px 8px;border-radius:3px;letter-spacing:0.05em;}
+
 /* comments */
 .comments{padding:20px 40px;background-color:#333;margin-top:0;border-style:inset;border-color:#aaa;}
 .comment{border-bottom:1px solid #555;padding:12px 0;position:relative;overflow:hidden;}
@@ -176,13 +217,13 @@ a:hover{color:#FF8;text-decoration:underline;}
 .comment-gate{margin-top:20px;padding:14px 20px;background:#222;border:1px solid #555;color:#aaa;}
 .comment-gate a{color:#FF8;}
 
-/* flash messages */
+/* flash */
 .msg{padding:8px 12px;margin:10px 0;background:#333;border-left:3px solid #FF8;}
 .msg.error{border-color:#F44;color:#F88;}
 .msg.ok{border-color:#4F4;color:#8F8;}
 .msg.info{border-color:#88F;color:#aaf;}
 
-/* sticky nav bar */
+/* top nav */
 .blog-topnav{background:#111;border-bottom:2px solid #FF8;padding:0 16px;display:flex;align-items:stretch;min-height:36px;font-size:13px;position:sticky;top:0;z-index:50;}
 .blog-topnav a,.blog-topnav button{color:#FF8;text-decoration:none;padding:0 12px;display:flex;align-items:center;background:none;border:none;border-right:1px solid #333;font-family:monospace;font-size:13px;cursor:pointer;white-space:nowrap;}
 .blog-topnav a:hover,.blog-topnav button:hover{background:#222;text-decoration:none;}
@@ -233,6 +274,30 @@ a:hover{color:#FF8;text-decoration:underline;}
 .admin-tab.active,.admin-tab:hover{background:#444;color:#FF8;}
 .admin-panel{display:none;}
 .admin-panel.active{display:block;}
+
+/* ── Markdown toolbar ── */
+.md-toolbar{display:flex;flex-wrap:wrap;gap:3px;padding:7px 8px;background:#1a0800;border:1px solid #555;border-bottom:none;border-radius:5px 5px 0 0;align-items:center;}
+.md-toolbar-sep{width:1px;background:#444;margin:0 4px;align-self:stretch;min-height:18px;}
+.md-group{display:flex;gap:2px;flex-wrap:wrap;align-items:center;}
+.md-btn{background:#2a1500;color:#FF8;border:1px solid #554400;font-family:monospace;font-size:12px;padding:3px 9px;cursor:pointer;border-radius:3px;white-space:nowrap;line-height:1.4;transition:background 0.1s,border-color 0.1s;}
+.md-btn:hover{background:#3a2000;border-color:#FF8;}
+.md-btn:active{background:#553300;}
+.md-btn.upload-btn{color:#4F4;border-color:#244;}
+.md-btn.upload-btn:hover{background:#1a3a1a;border-color:#4F4;}
+.md-btn[disabled]{opacity:0.45;cursor:not-allowed;}
+.md-editor-wrap textarea{border-radius:0 0 4px 4px!important;border-top:none!important;}
+
+/* cover upload row */
+.cover-row{display:flex;gap:6px;align-items:center;}
+.cover-row .admin-input{flex:1;}
+.cover-preview{max-height:48px;max-width:120px;border:1px solid #555;border-radius:3px;object-fit:cover;display:none;}
+.cover-preview.show{display:block;}
+.upload-status{font-size:11px;color:#aaa;margin-left:4px;}
+
+/* pinned row */
+.pin-row{display:flex;align-items:center;gap:10px;}
+.pin-label{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.pin-icon{font-size:14px;}
 
 /* responsive */
 @media(max-width:1140px){.admin-wrap{width:98%;}}
@@ -307,23 +372,22 @@ function flashHtml(flash) {
 // PUBLIC BLOG ROUTES
 // ──────────────────────────────────────────────────────────────────────────────
 
-// GET /blog  - post listing
 router.get('/', (req, res) => {
-  const posts = readData('posts.json')
-    .filter(p => p.published)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  const flash   = flashGet(req);
-  const allComs = readData('comments.json');
+  const allPosts  = readData('posts.json').filter(p => p.published);
+  const posts     = sortPosts(allPosts);
+  const flash     = flashGet(req);
+  const allComs   = readData('comments.json');
 
   const panels = posts.length
     ? posts.map(p => {
-        const count = (allComs[p.slug] || []).length;
+        const count    = (allComs[p.slug] || []).length;
+        const pinBadge = p.pinned ? '<span class="pin-badge">&#128204; PINNED</span>' : '';
         return `
-<div class="blog-panel">
+<div class="blog-panel${p.pinned ? ' is-pinned' : ''}">
+  ${p.pinned ? '<span class="pin-corner">&#128204; PINNED</span>' : ''}
   ${blogImageEl(p.imageUrl)}
   <div class="blog-desc">
-    <h3><a href="/blog/post/${escapeHtml(p.slug)}">${escapeHtml(p.title)}</a></h3>
+    <h3>${pinBadge}<a href="/blog/post/${escapeHtml(p.slug)}">${escapeHtml(p.title)}</a></h3>
     ${escapeHtml(p.date)} &middot; ${count} comment${count !== 1 ? 's' : ''}<hr>
     ${escapeHtml(p.summary || '')}
   </div>
@@ -341,7 +405,6 @@ ${topNav(req)}
 </div>`));
 });
 
-// GET /blog/post/:slug  - single post
 router.get('/post/:slug', (req, res) => {
   const posts = readData('posts.json');
   const post  = posts.find(p => p.slug === req.params.slug && p.published);
@@ -350,11 +413,11 @@ ${topNav(req)}
 <div class="content"><h1>404</h1><p>Post not found.</p><br>
 <a href="/blog" class="return">&lt; Back to blog</a></div>`));
 
-  const user     = getCurrentUser(req);
-  const admin    = req.session?.adminUser;
-  const flash    = flashGet(req);
-  const allComs  = readData('comments.json');
-  const comments = allComs[req.params.slug] || [];
+  const user       = getCurrentUser(req);
+  const admin      = req.session?.adminUser;
+  const flash      = flashGet(req);
+  const allComs    = readData('comments.json');
+  const comments   = allComs[req.params.slug] || [];
   const commenterId = user ? user.id : admin ? `admin:${admin.username}` : null;
 
   const commentsHtml = comments.length
@@ -400,10 +463,12 @@ ${topNav(req)}
          <a href="/blog/register">[Create a free account]</a> to leave a comment.
        </div>`;
 
+  const pinBadge = post.pinned ? '<span class="pin-badge">&#128204; PINNED</span>' : '';
+
   res.send(page(`${post.title} - NT:NH Blog`, `
 ${topNav(req)}
 <div class="content">
-  <h1 style="text-align:center;">${escapeHtml(post.title)}</h1>
+  <h1 style="text-align:center;">${pinBadge}${escapeHtml(post.title)}</h1>
   <div class="blog-entry">
     <h3>${escapeHtml(post.authorDisplay || post.author)} &mdash; ${escapeHtml(post.date)}</h3>
     ${marked(post.content || '')}
@@ -419,9 +484,8 @@ ${topNav(req)}
 </div>`));
 });
 
-// POST /blog/post/:slug/comment
 router.post('/post/:slug/comment', (req, res) => {
-  const slug = req.params.slug;
+  const slug  = req.params.slug;
   const admin = req.session?.adminUser;
 
   if (!isUser(req) && !isAdmin(req)) {
@@ -429,7 +493,7 @@ router.post('/post/:slug/comment', (req, res) => {
     return res.redirect(`/blog/post/${slug}#comments`);
   }
 
-  const user = getCurrentUser(req);
+  const user      = getCurrentUser(req);
   const commenter = user || (admin && {
     id:       `admin:${admin.username}`,
     nickname: admin.displayName || admin.username,
@@ -452,7 +516,7 @@ router.post('/post/:slug/comment', (req, res) => {
   all[slug].push({
     id:       crypto.randomBytes(8).toString('hex'),
     userId:   commenter.id,
-    nickname: commenter.nickname,   // snapshot at time of posting
+    nickname: commenter.nickname,
     content,
     date:     new Date().toISOString(),
   });
@@ -462,7 +526,6 @@ router.post('/post/:slug/comment', (req, res) => {
   res.redirect(`/blog/post/${slug}#comments`);
 });
 
-// POST /blog/post/:slug/comment/:commentId/delete
 router.post('/post/:slug/comment/:commentId/delete', (req, res) => {
   const { slug, commentId } = req.params;
   const user  = getCurrentUser(req);
@@ -491,7 +554,7 @@ router.post('/post/:slug/comment/:commentId/delete', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
-// USER AUTH - REGISTER
+// USER AUTH
 // ──────────────────────────────────────────────────────────────────────────────
 
 router.get('/register', (req, res) => {
@@ -542,38 +605,17 @@ router.post('/register', async (req, res) => {
   const password  = (req.body.password  || '');
   const password2 = (req.body.password2 || '');
 
-  if (!isValidEmail(email)) {
-    flashSet(req, 'Error: Please enter a valid email address.');
-    return res.redirect('/blog/register');
-  }
-  if (!isValidNickname(nickname)) {
-    flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).');
-    return res.redirect('/blog/register');
-  }
-  if (password.length < 8) {
-    flashSet(req, 'Error: Password must be at least 8 characters.');
-    return res.redirect('/blog/register');
-  }
-  if (password !== password2) {
-    flashSet(req, 'Error: Passwords do not match.');
-    return res.redirect('/blog/register');
-  }
+  if (!isValidEmail(email)) { flashSet(req, 'Error: Please enter a valid email address.'); return res.redirect('/blog/register'); }
+  if (!isValidNickname(nickname)) { flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).'); return res.redirect('/blog/register'); }
+  if (password.length < 8) { flashSet(req, 'Error: Password must be at least 8 characters.'); return res.redirect('/blog/register'); }
+  if (password !== password2) { flashSet(req, 'Error: Passwords do not match.'); return res.redirect('/blog/register'); }
 
   const users  = readData('users.json');
   const admins = readData('admins.json');
 
-  if (users.find(u => u.email === email)) {
-    flashSet(req, 'Error: An account with that email already exists.');
-    return res.redirect('/blog/register');
-  }
-  if (isReservedNick(nickname, admins)) {
-    flashSet(req, 'Error: That nickname is reserved.');
-    return res.redirect('/blog/register');
-  }
-  if (users.find(u => u.nickname.toLowerCase() === nickname.toLowerCase())) {
-    flashSet(req, 'Error: That nickname is already taken. Please choose another.');
-    return res.redirect('/blog/register');
-  }
+  if (users.find(u => u.email === email)) { flashSet(req, 'Error: An account with that email already exists.'); return res.redirect('/blog/register'); }
+  if (isReservedNick(nickname, admins)) { flashSet(req, 'Error: That nickname is reserved.'); return res.redirect('/blog/register'); }
+  if (users.find(u => u.nickname.toLowerCase() === nickname.toLowerCase())) { flashSet(req, 'Error: That nickname is already taken. Please choose another.'); return res.redirect('/blog/register'); }
 
   const passwordHash = await bcrypt.hash(password, 12);
   const newUser = {
@@ -592,10 +634,6 @@ router.post('/register', async (req, res) => {
   flashSet(req, `Welcome, ${nickname}! Your account has been created.`);
   res.redirect('/blog');
 });
-
-// ──────────────────────────────────────────────────────────────────────────────
-// USER AUTH - LOGIN / LOGOUT
-// ──────────────────────────────────────────────────────────────────────────────
 
 router.get('/login', (req, res) => {
   if (isUser(req) || isAdmin(req)) return res.redirect('/blog');
@@ -636,7 +674,6 @@ router.post('/login', async (req, res) => {
   const user  = users.find(u => u.email === email);
 
   if (!user) {
-    // constant-time dummy compare to prevent timing attacks
     await bcrypt.compare(password, '$2a$12$invalidhashplaceholderXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     flashSet(req, FAIL);
     return res.redirect('/blog/login');
@@ -743,7 +780,6 @@ ${topNav(req)}
 </div>`));
 });
 
-// POST /blog/profile/nickname
 router.post('/profile/nickname', (req, res) => {
   if (!isUser(req)) return res.redirect('/blog/login');
 
@@ -752,26 +788,14 @@ router.post('/profile/nickname', (req, res) => {
 
   const newNick = (req.body.nickname || '').trim();
 
-  if (!isValidNickname(newNick)) {
-    flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).');
-    return res.redirect('/blog/profile');
-  }
-  if (daysSince(user.nicknameChangedAt) < NICK_COOLDOWN_DAYS) {
-    flashSet(req, `Error: Nickname cooldown active - try again in ${nickTimeRemaining(user.nicknameChangedAt)}.`);
-    return res.redirect('/blog/profile');
-  }
+  if (!isValidNickname(newNick)) { flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).'); return res.redirect('/blog/profile'); }
+  if (daysSince(user.nicknameChangedAt) < NICK_COOLDOWN_DAYS) { flashSet(req, `Error: Nickname cooldown active - try again in ${nickTimeRemaining(user.nicknameChangedAt)}.`); return res.redirect('/blog/profile'); }
 
   const users  = readData('users.json');
   const admins = readData('admins.json');
 
-  if (isReservedNick(newNick, admins)) {
-    flashSet(req, 'Error: That nickname is reserved.');
-    return res.redirect('/blog/profile');
-  }
-  if (users.find(u => u.id !== user.id && u.nickname.toLowerCase() === newNick.toLowerCase())) {
-    flashSet(req, 'Error: That nickname is already taken.');
-    return res.redirect('/blog/profile');
-  }
+  if (isReservedNick(newNick, admins)) { flashSet(req, 'Error: That nickname is reserved.'); return res.redirect('/blog/profile'); }
+  if (users.find(u => u.id !== user.id && u.nickname.toLowerCase() === newNick.toLowerCase())) { flashSet(req, 'Error: That nickname is already taken.'); return res.redirect('/blog/profile'); }
 
   const idx = users.findIndex(u => u.id === user.id);
   if (idx === -1) { req.session.destroy(); return res.redirect('/blog/login'); }
@@ -784,7 +808,6 @@ router.post('/profile/nickname', (req, res) => {
   res.redirect('/blog/profile');
 });
 
-// POST /blog/profile/password
 router.post('/profile/password', async (req, res) => {
   if (!isUser(req)) return res.redirect('/blog/login');
 
@@ -795,20 +818,11 @@ router.post('/profile/password', async (req, res) => {
   const newPassword     = req.body.newPassword     || '';
   const newPassword2    = req.body.newPassword2    || '';
 
-  if (newPassword.length < 8) {
-    flashSet(req, 'Error: New password must be at least 8 characters.');
-    return res.redirect('/blog/profile');
-  }
-  if (newPassword !== newPassword2) {
-    flashSet(req, 'Error: New passwords do not match.');
-    return res.redirect('/blog/profile');
-  }
+  if (newPassword.length < 8) { flashSet(req, 'Error: New password must be at least 8 characters.'); return res.redirect('/blog/profile'); }
+  if (newPassword !== newPassword2) { flashSet(req, 'Error: New passwords do not match.'); return res.redirect('/blog/profile'); }
 
   const valid = await bcrypt.compare(currentPassword, user.passwordHash);
-  if (!valid) {
-    flashSet(req, 'Error: Current password is incorrect.');
-    return res.redirect('/blog/profile');
-  }
+  if (!valid) { flashSet(req, 'Error: Current password is incorrect.'); return res.redirect('/blog/profile'); }
 
   const newHash = await bcrypt.hash(newPassword, 12);
   const users   = readData('users.json');
@@ -859,10 +873,26 @@ router.post('/admin/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/blog/admin'));
 });
 
+// ── Image upload endpoint ──────────────────────────────────────────────────────
+router.post('/admin/upload', (req, res) => {
+  if (!isAdmin(req)) return res.status(403).json({ error: 'Not authorised' });
+
+  if (!upload) {
+    return res.status(503).json({ error: 'Image uploads unavailable. Run: npm install multer' });
+  }
+
+  upload.single('image')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message || 'Upload failed' });
+    if (!req.file) return res.status(400).json({ error: 'No valid image file received (jpg/png/gif/webp/svg, max 8 MB)' });
+    res.json({ url: '/resources/blog-uploads/' + req.file.filename });
+  });
+});
+
+// ── Save / delete post ──────────────────────────────────────────────────────────
 router.post('/admin/post', (req, res) => {
   if (!isAdmin(req)) return res.status(403).send('Forbidden');
 
-  const { id, action, title, slug: rawSlug, date, summary, imageUrl, content, published } = req.body || {};
+  const { id, action, title, slug: rawSlug, date, summary, imageUrl, content, published, pinned } = req.body || {};
   const posts = readData('posts.json');
 
   if (action === 'delete' && id) {
@@ -879,10 +909,17 @@ router.post('/admin/post', (req, res) => {
   const desiredSlug = rawSlug?.trim() || slugify(title.trim());
   const finalSlug   = uniqueSlug(desiredSlug, posts, id || null);
   const admin       = req.session.adminUser;
+  const isPinned    = pinned === 'on';
+  const now         = new Date().toISOString();
 
   if (id) {
     const idx = posts.findIndex(p => p.id === id);
     if (idx !== -1) {
+      const wasPinned   = !!posts[idx].pinned;
+      const pinnedAt    = isPinned
+        ? (wasPinned ? posts[idx].pinnedAt : now)  // keep original pin time if already pinned
+        : null;
+
       posts[idx] = {
         ...posts[idx],
         title:       title.trim(),
@@ -892,7 +929,9 @@ router.post('/admin/post', (req, res) => {
         imageUrl:    (imageUrl || '').trim(),
         content:     content || '',
         published:   published === 'on',
-        updatedAt:   new Date().toISOString(),
+        pinned:      isPinned,
+        pinnedAt,
+        updatedAt:   now,
         updatedBy:   admin.username,
       };
     } else {
@@ -904,14 +943,16 @@ router.post('/admin/post', (req, res) => {
       id:            crypto.randomBytes(8).toString('hex'),
       slug:          finalSlug,
       title:         title.trim(),
-      date:          date || new Date().toISOString().slice(0, 10),
+      date:          date || now.slice(0, 10),
       author:        admin.username,
       authorDisplay: admin.displayName,
       summary:       (summary || '').trim(),
       imageUrl:      (imageUrl || '').trim(),
       content:       content || '',
       published:     published === 'on',
-      createdAt:     new Date().toISOString(),
+      pinned:        isPinned,
+      pinnedAt:      isPinned ? now : null,
+      createdAt:     now,
     });
   }
 
@@ -919,7 +960,7 @@ router.post('/admin/post', (req, res) => {
   res.redirect('/blog/admin');
 });
 
-// Admin: delete a user account
+// ── Delete user ──────────────────────────────────────────────────────────────────
 router.post('/admin/users/delete', (req, res) => {
   if (!isAdmin(req)) return res.status(403).send('Forbidden');
   const { userId } = req.body || {};
@@ -957,21 +998,22 @@ function renderAdminLogin(res, error = '') {
 
 function renderAdminDashboard(req, res, editPost, activeTab) {
   const admin  = req.session.adminUser;
-  const posts  = readData('posts.json').sort((a, b) => new Date(b.date) - new Date(a.date));
+  const posts  = sortPosts(readData('posts.json'));
   const users  = readData('users.json');
   const flash  = flashGet(req);
   const today  = new Date().toISOString().slice(0, 10);
 
-  // Post rows
+  // ── Post rows ──
   const postRows = posts.length
     ? posts.map(p => `
-<tr>
-  <td>${escapeHtml(p.date)}</td>
+<tr${p.pinned ? ' style="background:rgba(255,204,0,0.04);"' : ''}>
+  <td>${p.pinned ? '&#128204; ' : ''}${escapeHtml(p.date)}</td>
   <td>${p.published
     ? `<a href="/blog/post/${escapeHtml(p.slug)}" target="_blank">${escapeHtml(p.title)}</a>`
     : `<span style="color:#888;">${escapeHtml(p.title)} [draft]</span>`}</td>
   <td>${escapeHtml(p.authorDisplay || p.author)}</td>
   <td>${p.published ? '<span style="color:#4F4;">Yes</span>' : '<span style="color:#F88;">Draft</span>'}</td>
+  <td>${p.pinned ? '<span style="color:#FF8;">&#128204; Pinned</span>' : '<span style="color:#888;">—</span>'}</td>
   <td>
     <a href="/blog/admin/edit/${escapeHtml(p.id)}" class="admin-btn small">[Edit]</a>
     &nbsp;
@@ -983,9 +1025,9 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
     </form>
   </td>
 </tr>`).join('\n')
-    : '<tr><td colspan="5" style="color:#aaa;">No posts yet.</td></tr>';
+    : '<tr><td colspan="6" style="color:#aaa;">No posts yet.</td></tr>';
 
-  // User rows
+  // ── User rows ──
   const allComs = readData('comments.json');
   const userRows = users.length
     ? users.map(u => {
@@ -1009,9 +1051,10 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
       }).join('\n')
     : '<tr><td colspan="6" style="color:#aaa;">No registered users yet.</td></tr>';
 
-  // Editor
+  // ── Editor ──
   const ep    = editPost || {};
   const isNew = !ep.id;
+  const uploadAvailable = !!upload;
 
   const editor = `
 <h3 style="margin-top:0;">${isNew ? 'New Post' : `Editing: ${escapeHtml(ep.title || '')}`}</h3>
@@ -1035,10 +1078,24 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
           value="${escapeHtml(ep.date || today)}" /></td>
     </tr>
     <tr>
-      <td>Image URL</td>
-      <td><input class="admin-input" style="width:100%;" type="text" name="imageUrl"
-          value="${escapeHtml(ep.imageUrl || '')}"
-          placeholder="https://... or /resources/screenshots/screenshot1.png" /></td>
+      <td>Cover Image</td>
+      <td>
+        <div class="cover-row">
+          <input class="admin-input" type="text" name="imageUrl" id="imageUrlInput"
+              value="${escapeHtml(ep.imageUrl || '')}"
+              placeholder="https://... or /resources/screenshots/..."
+              oninput="updateCoverPreview(this.value)" />
+          ${uploadAvailable
+            ? `<button type="button" class="admin-btn small" id="coverUploadBtn"
+                  onclick="document.getElementById('coverFileInput').click()">&#128247; Upload</button>
+               <input type="file" id="coverFileInput" accept="image/*" style="display:none">`
+            : `<span style="color:#888;font-size:11px;">(install multer for upload)</span>`}
+          <span class="upload-status" id="coverStatus"></span>
+        </div>
+        <img id="coverPreview" src="${escapeHtml(ep.imageUrl || '')}"
+             class="cover-preview${ep.imageUrl ? ' show' : ''}"
+             style="margin-top:6px;" alt="Cover preview">
+      </td>
     </tr>
     <tr>
       <td>Summary</td>
@@ -1049,15 +1106,75 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
     <tr>
       <td>Published</td>
       <td><label><input type="checkbox" name="published" ${ep.published ? 'checked' : ''} />
-          &nbsp;Published (unchecked = draft, hidden from readers)</label></td>
+          &nbsp;Published (unchecked = draft)</label></td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td>
+        <div class="pin-row">
+          <label class="pin-label">
+            <input type="checkbox" name="pinned" id="pinnedCheck" ${ep.pinned ? 'checked' : ''} />
+            <span class="pin-icon">&#128204;</span>
+            <span>Pin this post to the top of the blog</span>
+          </label>
+          ${ep.pinned && ep.pinnedAt ? `<span style="color:#888;font-size:11px;">Pinned ${new Date(ep.pinnedAt).toLocaleDateString('en-GB')}</span>` : ''}
+        </div>
+      </td>
     </tr>
   </table>
+
   <br>
   <b>Content (Markdown):</b>
-  <div class="preview-wrap" style="margin-top:8px;">
+
+  <!-- ── Toolbar ── -->
+  <div class="md-toolbar" id="mdToolbar">
+    <div class="md-group">
+      <button type="button" class="md-btn" title="Bold (Ctrl+B)" onclick="mdFmt('bold')"><b>B</b></button>
+      <button type="button" class="md-btn" title="Italic (Ctrl+I)" onclick="mdFmt('italic')"><i>I</i></button>
+      <button type="button" class="md-btn" title="Strikethrough" onclick="mdFmt('strike')">~~S~~</button>
+    </div>
+    <div class="md-toolbar-sep"></div>
+    <div class="md-group">
+      <button type="button" class="md-btn" title="Heading 1" onclick="mdFmt('h1')">H1</button>
+      <button type="button" class="md-btn" title="Heading 2" onclick="mdFmt('h2')">H2</button>
+      <button type="button" class="md-btn" title="Heading 3" onclick="mdFmt('h3')">H3</button>
+    </div>
+    <div class="md-toolbar-sep"></div>
+    <div class="md-group">
+      <button type="button" class="md-btn" title="Bullet list" onclick="mdFmt('ul')">&bull; List</button>
+      <button type="button" class="md-btn" title="Numbered list" onclick="mdFmt('ol')">1. List</button>
+      <button type="button" class="md-btn" title="Blockquote" onclick="mdFmt('quote')">&ldquo; Quote</button>
+      <button type="button" class="md-btn" title="Horizontal rule" onclick="mdFmt('hr')">&mdash; HR</button>
+    </div>
+    <div class="md-toolbar-sep"></div>
+    <div class="md-group">
+      <button type="button" class="md-btn" title="Hyperlink" onclick="mdFmt('link')">&#128279; Link</button>
+      <button type="button" class="md-btn" title="Insert image URL" onclick="mdFmt('imgurl')">&#128247; URL</button>
+      <button type="button" class="md-btn" title="Inline code" onclick="mdFmt('code')">&grave;code&grave;</button>
+      <button type="button" class="md-btn" title="Code block" onclick="mdFmt('codeblock')">&#9998; Block</button>
+      <button type="button" class="md-btn" title="Table" onclick="mdFmt('table')">&#9776; Table</button>
+    </div>
+    ${uploadAvailable ? `
+    <div class="md-toolbar-sep"></div>
+    <div class="md-group">
+      <button type="button" class="md-btn upload-btn" id="mdImgUploadBtn"
+              title="Upload image and insert into post"
+              onclick="document.getElementById('mdImgFileInput').click()">
+        &#128228; Upload Img
+      </button>
+      <input type="file" id="mdImgFileInput" accept="image/*" style="display:none">
+    </div>` : `
+    <div class="md-toolbar-sep"></div>
+    <div class="md-group">
+      <span style="color:#666;font-size:11px;padding:0 6px;">run npm install multer for image upload</span>
+    </div>`}
+  </div>
+
+  <!-- ── Editor + Preview ── -->
+  <div class="preview-wrap md-editor-wrap" style="margin-top:0;">
     <div>
       <div style="color:#aaa;font-size:12px;margin-bottom:4px;">Editor</div>
-      <textarea name="content" id="mdEditor" rows="24"
+      <textarea name="content" id="mdEditor" rows="26"
         style="width:100%;background:#222;color:#FFF;border:1px solid #aaa;font-family:monospace;font-size:13px;padding:8px;box-sizing:border-box;resize:vertical;"
         oninput="updatePreview()">${escapeHtml(ep.content || '')}</textarea>
     </div>
@@ -1066,6 +1183,7 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
       <div class="preview-pane blog-entry" id="mdPreview"></div>
     </div>
   </div>
+
   <br>
   <button class="admin-btn" type="submit">[ ${isNew ? 'SAVE POST' : 'SAVE CHANGES'} ]</button>
   &nbsp;
@@ -1073,6 +1191,7 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
 </form>
 
 <script>
+// ── Slug auto-gen ──
 ${isNew ? `
 document.getElementById('titleInput').addEventListener('input', function() {
   var s = document.getElementById('slugInput');
@@ -1080,19 +1199,168 @@ document.getElementById('titleInput').addEventListener('input', function() {
 });
 document.getElementById('slugInput').addEventListener('input', function() { this._edited = true; });
 ` : ''}
+
+// ── Load marked for preview ──
 (function() {
   var ms = document.createElement('script');
   ms.src = 'https://cdn.jsdelivr.net/npm/marked@9/marked.min.js';
   ms.onload = function() { updatePreview(); };
   document.head.appendChild(ms);
 })();
+
 function updatePreview() {
   var src = document.getElementById('mdEditor').value;
   var pv  = document.getElementById('mdPreview');
   if (window.marked && pv) pv.innerHTML = window.marked.parse(src, {gfm:true, breaks:true});
 }
+
+// ── Cover image preview ──
+function updateCoverPreview(url) {
+  var img = document.getElementById('coverPreview');
+  if (url && url.trim()) {
+    img.src = url.trim();
+    img.classList.add('show');
+  } else {
+    img.classList.remove('show');
+    img.src = '';
+  }
+}
+
+// ── Cover upload ──
+var coverFileInput = document.getElementById('coverFileInput');
+if (coverFileInput) {
+  coverFileInput.addEventListener('change', async function() {
+    if (!this.files[0]) return;
+    var btn    = document.getElementById('coverUploadBtn');
+    var status = document.getElementById('coverStatus');
+    btn.disabled = true;
+    status.textContent = 'Uploading...';
+
+    var fd = new FormData();
+    fd.append('image', this.files[0]);
+    try {
+      var res  = await fetch('/blog/admin/upload', { method: 'POST', body: fd });
+      var data = await res.json();
+      if (data.url) {
+        document.getElementById('imageUrlInput').value = data.url;
+        updateCoverPreview(data.url);
+        status.textContent = 'Uploaded!';
+        setTimeout(function(){ status.textContent = ''; }, 2500);
+      } else {
+        status.textContent = 'Error: ' + (data.error || 'Upload failed');
+      }
+    } catch(e) {
+      status.textContent = 'Error: ' + e.message;
+    }
+    btn.disabled = false;
+    this.value = '';
+  });
+}
+
+// ── Inline image upload ──
+var mdImgInput = document.getElementById('mdImgFileInput');
+if (mdImgInput) {
+  mdImgInput.addEventListener('change', async function() {
+    if (!this.files[0]) return;
+    var btn = document.getElementById('mdImgUploadBtn');
+    btn.textContent = '⏳ Uploading...';
+    btn.disabled = true;
+
+    var fd = new FormData();
+    fd.append('image', this.files[0]);
+    try {
+      var res  = await fetch('/blog/admin/upload', { method: 'POST', body: fd });
+      var data = await res.json();
+      if (data.url) {
+        mdInsert('\\n![image](' + data.url + ')\\n', 0);
+      } else {
+        alert('Upload failed: ' + (data.error || 'Unknown error'));
+      }
+    } catch(e) {
+      alert('Upload error: ' + e.message);
+    }
+    btn.textContent = '\\u{1F4E4} Upload Img';
+    btn.disabled = false;
+    this.value = '';
+  });
+}
+
+// ── Keyboard shortcuts ──
+document.getElementById('mdEditor').addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+    if (e.key === 'b') { e.preventDefault(); mdFmt('bold'); }
+    if (e.key === 'i') { e.preventDefault(); mdFmt('italic'); }
+    if (e.key === 'k') { e.preventDefault(); mdFmt('link');  }
+  }
+});
+
+// ── Core formatting function ──
+function mdInsert(text, cursorDelta) {
+  var ta    = document.getElementById('mdEditor');
+  var start = ta.selectionStart;
+  var end   = ta.selectionEnd;
+  var before = ta.value.substring(0, start);
+  var after  = ta.value.substring(end);
+  ta.value   = before + text + after;
+  var pos    = start + text.length + (cursorDelta || 0);
+  ta.selectionStart = ta.selectionEnd = pos;
+  ta.focus();
+  updatePreview();
+}
+
+function mdWrap(before, after, placeholder) {
+  var ta    = document.getElementById('mdEditor');
+  var start = ta.selectionStart;
+  var end   = ta.selectionEnd;
+  var sel   = ta.value.substring(start, end) || placeholder;
+  var text  = before + sel + after;
+  var bText = ta.value.substring(0, start);
+  var aText = ta.value.substring(end);
+  ta.value  = bText + text + aText;
+  // Select the inserted content (excluding wrappers) so user can immediately retype
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd   = start + before.length + sel.length;
+  ta.focus();
+  updatePreview();
+}
+
+function mdFmt(action) {
+  var ta  = document.getElementById('mdEditor');
+  var sel = ta.value.substring(ta.selectionStart, ta.selectionEnd);
+
+  switch (action) {
+    case 'bold':      mdWrap('**', '**', 'bold text'); break;
+    case 'italic':    mdWrap('_', '_',   'italic text'); break;
+    case 'strike':    mdWrap('~~', '~~', 'strikethrough'); break;
+    case 'code':      { var bt = String.fromCharCode(96); mdWrap(bt, bt, 'code'); break; }
+    case 'h1':        mdInsert('\\n# '   + (sel || 'Heading 1') + '\\n', 0); break;
+    case 'h2':        mdInsert('\\n## '  + (sel || 'Heading 2') + '\\n', 0); break;
+    case 'h3':        mdInsert('\\n### ' + (sel || 'Heading 3') + '\\n', 0); break;
+    case 'ul':        mdInsert('\\n- '   + (sel || 'List item') + '\\n', 0); break;
+    case 'ol':        mdInsert('\\n1. '  + (sel || 'List item') + '\\n', 0); break;
+    case 'quote':     mdInsert('\\n> '   + (sel || 'Quoted text') + '\\n', 0); break;
+    case 'hr':        mdInsert('\\n\\n---\\n\\n', 0); break;
+    case 'codeblock': mdInsert('\\n\`\`\`\\n' + (sel || 'code here') + '\\n\`\`\`\\n', 0); break;
+    case 'table':
+      mdInsert('\\n| Column 1 | Column 2 | Column 3 |\\n|----------|----------|----------|\\n| Cell     | Cell     | Cell     |\\n', 0);
+      break;
+    case 'link': {
+      var url = prompt('URL:', 'https://');
+      if (!url) return;
+      mdInsert('[' + (sel || 'link text') + '](' + url + ')', 0);
+      break;
+    }
+    case 'imgurl': {
+      var iurl = prompt('Image URL:', 'https://');
+      if (!iurl) return;
+      mdInsert('\\n![' + (sel || 'alt text') + '](' + iurl + ')\\n', 0);
+      break;
+    }
+  }
+}
 </script>`;
 
+  // ── Full page ──
   res.send(page('Blog Admin - NT:NH', `
 ${topNav(req)}
 <div class="admin-wrap">
@@ -1121,7 +1389,7 @@ ${topNav(req)}
     <hr style="margin:28px 0 20px;">
     <h3>All Posts</h3>
     <table>
-      <tr><th>Date</th><th>Title</th><th>Author</th><th>Published</th><th>Actions</th></tr>
+      <tr><th>Date</th><th>Title</th><th>Author</th><th>Published</th><th>Pinned</th><th>Actions</th></tr>
       ${postRows}
     </table>
   </div>
