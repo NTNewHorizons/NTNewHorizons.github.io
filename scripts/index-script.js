@@ -298,4 +298,86 @@ if (subtitleEl) {
           </span>
         </div>`;
     });
+
+// ─── Video: click-to-load (privacy-friendly) ─────────
+(function () {
+  const thumb = document.getElementById('videoThumb');
+  const frame = document.getElementById('videoFrame');
+  if (!thumb || !frame) return;
+
+  thumb.addEventListener('click', function () {
+    const iframe = document.createElement('iframe');
+    // youtube-nocookie.com = no tracking cookies before user clicks
+    iframe.src =
+      'https://www.youtube-nocookie.com/embed/2cSn1n4V_x8' +
+      '?autoplay=1&rel=0&color=white&modestbranding=1';
+    iframe.allow =
+      'accelerometer; autoplay; clipboard-write; encrypted-media; ' +
+      'gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    frame.appendChild(iframe);
+    thumb.remove();
+  });
+})();
+
+
+// ─── Project Activity (GitHub API) ───────────────────
+(function () {
+  const dot     = document.getElementById('activityDot');
+  const label   = document.getElementById('activityLabel');
+  const elCommit  = document.getElementById('act-commit');
+  const elRelease = document.getElementById('act-release');
+  const elPRs     = document.getElementById('act-prs');
+  const elStars   = document.getElementById('act-stars');
+
+  if (!dot) return;
+
+  const REPO    = 'NTNewHorizons/NTNH';
+  const HEADERS = { 'Accept': 'application/vnd.github.v3+json' };
+
+  function timeAgo(isoDate) {
+    if (!isoDate) return '—';
+    const days = Math.floor((Date.now() - new Date(isoDate)) / 86400000);
+    if (days === 0) return 'Today';
+    if (days === 1) return 'Yesterday';
+    if (days < 7)  return days + 'd ago';
+    if (days < 30) return Math.floor(days / 7) + 'w ago';
+    return Math.floor(days / 30) + 'mo ago';
+  }
+
+  Promise.all([
+    fetch(`https://api.github.com/repos/${REPO}`,                         { headers: HEADERS }).then(r => r.json()),
+    fetch(`https://api.github.com/repos/${REPO}/commits?per_page=1`,      { headers: HEADERS }).then(r => r.json()),
+    fetch(`https://api.github.com/repos/${REPO}/releases?per_page=1`,     { headers: HEADERS }).then(r => r.json()),
+    fetch(`https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100`, { headers: HEADERS }).then(r => r.json()),
+  ]).then(([repo, commits, releases, openPRs]) => {
+
+    const lastCommitDate = commits[0]?.commit?.author?.date;
+    const daysSince = Math.floor((Date.now() - new Date(lastCommitDate)) / 86400000);
+
+    // Colour the health dot
+    if (daysSince < 7) {
+      dot.className = 'activity-dot';               // green (default)
+      label.textContent = 'Active Development';
+    } else if (daysSince < 30) {
+      dot.className = 'activity-dot dot-yellow';
+      label.textContent = 'Recently Updated';
+    } else {
+      dot.className = 'activity-dot dot-red';
+      label.textContent = 'Slow Period';
+    }
+
+    elCommit.textContent  = timeAgo(lastCommitDate);
+    elRelease.textContent = releases[0]?.tag_name ?? '—';
+    elPRs.textContent     = Array.isArray(openPRs) ? openPRs.length : '—';
+    elStars.textContent   = typeof repo.stargazers_count === 'number'
+      ? repo.stargazers_count.toLocaleString()
+      : '—';
+
+  }).catch(() => {
+    // Fail silently — the bar just stays in its placeholder state
+    label.textContent = 'GitHub';
+    if (dot) dot.style.display = 'none';
+  });
+})();
 })();

@@ -267,6 +267,53 @@
     </section>
 
     <div class="divider"></div>
+ 
+    <!-- ═══ TEASER VIDEO ═══ -->
+    <section id="teaser" class="section" style="padding-top:4rem;padding-bottom:2.5rem;">
+      <div class="section-inner">
+ 
+        <div class="section-header reveal">
+          <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Official Teaser</p>
+          <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">Watch the Teaser</h2>
+          <p style="margin-top:0.75rem;color:var(--text-mid);">
+            Two minutes. That's all it takes.
+          </p>
+        </div>
+ 
+        <div class="video-outer reveal" style="transition-delay:0.12s;">
+          <div class="video-frame" id="videoFrame">
+            <!-- Thumbnail layer — clicking it swaps in the real iframe -->
+            <div class="video-thumb" id="videoThumb">
+              <img
+                src="https://img.youtube.com/vi/2cSn1n4V_x8/maxresdefault.jpg"
+                alt="NT:NH Official Teaser"
+                loading="lazy"
+              >
+              <div class="video-vignette"></div>
+ 
+              <!-- Play button -->
+              <button class="video-play-btn" id="videoPlayBtn" aria-label="Play teaser">
+                <span class="video-play-ring"></span>
+                <i class="fas fa-play"></i>
+              </button>
+ 
+              <!-- Bottom-left caption -->
+              <div class="video-meta">
+                <span class="video-meta-label">☢ Official Teaser</span>
+                <span class="video-meta-title">Nuclear Tech: New Horizons</span>
+              </div>
+ 
+              <!-- HUD corner markers -->
+              <span class="video-corner vc-tl"></span>
+              <span class="video-corner vc-tr"></span>
+              <span class="video-corner vc-bl"></span>
+              <span class="video-corner vc-br"></span>
+            </div>
+          </div>
+        </div>
+ 
+      </div>
+    </section>
 
     <!-- ═══ PROGRESSION SHOWCASE ═══ -->
     <section id="progression" class="section" style="padding-top:4rem;">
@@ -344,6 +391,66 @@
     </section>
 
     <div class="divider"></div>
+ 
+    <!-- ═══ PROJECT ACTIVITY ═══ -->
+    <section id="pulse" class="section" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+      <div class="section-inner">
+ 
+        <div class="section-header reveal" style="margin-bottom:1.75rem;">
+          <p class="section-label" style="justify-content:center;margin-bottom:0.6rem;">Development</p>
+          <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);">Is the project alive?</h2>
+        </div>
+ 
+        <div class="activity-bar reveal" style="transition-delay:0.1s;">
+ 
+          <!-- Health pulse -->
+          <div class="activity-pulse-wrap">
+            <span class="activity-dot" id="activityDot"></span>
+            <span class="activity-label" id="activityLabel">Loading…</span>
+          </div>
+ 
+          <div class="act-divv"></div>
+ 
+          <div class="activity-stat">
+            <span class="act-val" id="act-commit">—</span>
+            <span class="act-key">Last commit</span>
+          </div>
+ 
+          <div class="act-divv"></div>
+ 
+          <div class="activity-stat">
+            <span class="act-val" id="act-release">—</span>
+            <span class="act-key">Latest release</span>
+          </div>
+ 
+          <div class="act-divv"></div>
+ 
+          <div class="activity-stat">
+            <span class="act-val" id="act-prs">—</span>
+            <span class="act-key">Open PRs</span>
+          </div>
+ 
+          <div class="act-divv"></div>
+ 
+          <div class="activity-stat">
+            <span class="act-val" id="act-stars">—</span>
+            <span class="act-key">GitHub stars</span>
+          </div>
+ 
+          <div class="act-divv"></div>
+ 
+          <a
+            href="https://github.com/NTNewHorizons/NTNH/commits"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="act-gh-link"
+          >
+            <i class="fab fa-github"></i> History
+          </a>
+ 
+        </div>
+      </div>
+    </section>
 
     <!-- ═══ DOWNLOAD ═══ -->
     <section id="download" class="section" style="padding-top:4rem;padding-bottom:4rem;">
