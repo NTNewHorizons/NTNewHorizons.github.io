@@ -140,7 +140,7 @@ function nickTimeRemaining(isoDate) {
 function isReservedNick(nick, admins) {
   const low = nick.toLowerCase();
   return admins
-    .flatMap(a => [a.username, a.displayName || ''].map(n => n.toLowerCase()).filter(Boolean))
+    .flatMap(a => [a.displayName || ''].map(n => n.toLowerCase()).filter(Boolean))
     .includes(low);
 }
 
@@ -335,7 +335,7 @@ function topNav(req) {
   let right = '';
   if (admin) {
     right = `
-      <span class="tnav-user">&#9733; ${escapeHtml(admin.displayName || admin.username)}</span>
+      <span class="tnav-user">&#9733; ${escapeHtml(admin.displayName)}</span>
       <a href="/blog/admin">Admin Panel</a>
       <form method="POST" action="/blog/admin/logout" style="display:contents;">
         <button type="submit" class="tnav-logout">[Logout]</button>
@@ -348,7 +348,7 @@ function topNav(req) {
         <button type="submit" class="tnav-logout">[Logout]</button>
       </form>`;
   } else {
-    right = `<a href="/blog/login">[Login]</a><a href="/blog/register">[Register]</a>`;
+    right = `<a href="/blog/login">[Login]</a><a href="/blog/register">[Register]</a><a href="/blog/admin">[Admin Panel]</a>`;
   }
   return `<nav class="blog-topnav">
   <a href="/blog" class="tnav-brand">&#9762; NT:NH Blog</a>
@@ -418,7 +418,7 @@ ${topNav(req)}
   const flash      = flashGet(req);
   const allComs    = readData('comments.json');
   const comments   = allComs[req.params.slug] || [];
-  const commenterId = user ? user.id : admin ? `admin:${admin.username}` : null;
+  const commenterId = user ? user.id : admin ? `admin:${admin.email}` : null;
 
   const commentsHtml = comments.length
     ? comments.map(c => {
@@ -445,7 +445,7 @@ ${topNav(req)}
   const commentFormHtml = (user || admin)
     ? (() => {
         const commentActorLabel = admin
-          ? `<b style="color:#4F4;">${escapeHtml(admin.displayName || admin.username)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
+          ? `<b style="color:#4F4;">${escapeHtml(admin.displayName)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
           : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> &mdash; <a href="/blog/profile">change nickname</a>`;
         return `<div class="comment-form" style="margin-top:20px;">
          <hr>
@@ -495,8 +495,8 @@ router.post('/post/:slug/comment', (req, res) => {
 
   const user      = getCurrentUser(req);
   const commenter = user || (admin && {
-    id:       `admin:${admin.username}`,
-    nickname: admin.displayName || admin.username,
+    id:       `admin:${admin.email}`,
+    nickname: admin.displayName,
   });
 
   if (!commenter) { req.session.destroy(); return res.redirect('/blog/login'); }
@@ -664,27 +664,40 @@ ${topNav(req)}
 });
 
 router.post('/login', async (req, res) => {
-  if (isUser(req)) return res.redirect('/blog');
+  if (isUser(req) || isAdmin(req)) return res.redirect('/blog');
 
   const email    = (req.body.email    || '').trim().toLowerCase();
   const password = (req.body.password || '');
   const FAIL     = 'Error: Invalid email or password.';
 
+  // Check regular users first
   const users = readData('users.json');
   const user  = users.find(u => u.email === email);
 
-  if (!user) {
-    await bcrypt.compare(password, '$2a$12$invalidhashplaceholderXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    flashSet(req, FAIL);
-    return res.redirect('/blog/login');
+  if (user) {
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if (!valid) { flashSet(req, FAIL); return res.redirect('/blog/login'); }
+    req.session.user = { id: user.id };
+    flashSet(req, `Welcome back, ${user.nickname}!`);
+    return res.redirect('/blog');
   }
 
-  const valid = await bcrypt.compare(password, user.passwordHash);
-  if (!valid) { flashSet(req, FAIL); return res.redirect('/blog/login'); }
+  // Check admins by email
+  const admins = readData('admins.json');
+  const admin  = admins.find(a => a.email === email);
 
-  req.session.user = { id: user.id };
-  flashSet(req, `Welcome back, ${user.nickname}!`);
-  res.redirect('/blog');
+  if (admin) {
+    const valid = await bcrypt.compare(password, admin.passwordHash);
+    if (!valid) { flashSet(req, FAIL); return res.redirect('/blog/login'); }
+    req.session.adminUser = { email: admin.email, displayName: admin.displayName };
+    flashSet(req, `Welcome, ${admin.displayName}!`);
+    return res.redirect('/blog/admin');
+  }
+
+  // Neither matched — run dummy hash to prevent timing attacks
+  await bcrypt.compare(password, '$2a$12$invalidhashplaceholderXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+  flashSet(req, FAIL);
+  res.redirect('/blog/login');
 });
 
 router.post('/user/logout', (req, res) => {
@@ -859,13 +872,13 @@ router.get('/admin/users', (req, res) => {
 });
 
 router.post('/admin/login', async (req, res) => {
-  const { username, password } = req.body || {};
+  const { email, password } = req.body || {};
   const admins = readData('admins.json');
-  const admin  = admins.find(a => a.username === username);
+  const admin  = admins.find(a => a.email === (email || '').trim().toLowerCase());
   if (!admin || !password) return renderAdminLogin(res, 'Invalid credentials.');
   const valid = await bcrypt.compare(password, admin.passwordHash);
   if (!valid) return renderAdminLogin(res, 'Invalid credentials.');
-  req.session.adminUser = { username: admin.username, displayName: admin.displayName || admin.username };
+  req.session.adminUser = { email: admin.email, displayName: admin.displayName };
   res.redirect('/blog/admin');
 });
 
@@ -932,7 +945,7 @@ router.post('/admin/post', (req, res) => {
         pinned:      isPinned,
         pinnedAt,
         updatedAt:   now,
-        updatedBy:   admin.username,
+        updatedBy:   admin.displayName,
       };
     } else {
       flashSet(req, 'Error: Post not found for editing.');
@@ -944,7 +957,7 @@ router.post('/admin/post', (req, res) => {
       slug:          finalSlug,
       title:         title.trim(),
       date:          date || now.slice(0, 10),
-      author:        admin.username,
+      author:        admin.displayName,
       authorDisplay: admin.displayName,
       summary:       (summary || '').trim(),
       imageUrl:      (imageUrl || '').trim(),
@@ -984,14 +997,16 @@ function renderAdminLogin(res, error = '') {
   <h2 style="margin-bottom:16px;font-variant:small-caps;">Admin Login</h2>
   ${error ? `<div class="msg error">${escapeHtml(error)}</div>` : ''}
   <form method="POST" action="/blog/admin/login">
-    <p>Username:<br>
-    <input class="admin-input" style="width:100%;margin-top:4px;" type="text"
-           name="username" autocomplete="username" required /></p>
+    <p>Email:<br>
+    <input class="admin-input" style="width:100%;margin-top:4px;" type="email"
+           name="email" autocomplete="email" required placeholder="admin@example.com" /></p>
     <p>Password:<br>
     <input class="admin-input" style="width:100%;margin-top:4px;" type="password"
            name="password" autocomplete="current-password" required /></p>
     <button class="admin-btn" type="submit" style="width:100%;margin-top:8px;">[ LOGIN ]</button>
   </form>
+  <br>
+  <p style="font-size:12px;color:#888;text-align:center;">You can also log in via <a href="/blog/login">/blog/login</a></p>
   <br><a href="/blog">&lt; Back to blog</a>
 </div>`));
 }
@@ -1366,7 +1381,7 @@ ${topNav(req)}
 <div class="admin-wrap">
   <h2 style="margin-bottom:4px;">Blog Admin Panel</h2>
   <p style="font-size:13px;color:#aaa;margin-bottom:16px;">
-    Logged in as <b style="color:#4F4;">${escapeHtml(admin.displayName || admin.username)}</b>
+    Logged in as <b style="color:#4F4;">${escapeHtml(admin.displayName)}</b>
     &nbsp;&mdash;&nbsp;
     <form method="POST" action="/blog/admin/logout" style="display:inline;">
       <button type="submit" class="admin-btn small danger">[Logout]</button>
