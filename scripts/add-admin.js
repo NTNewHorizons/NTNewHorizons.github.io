@@ -5,10 +5,9 @@
  * Interactive CLI tool to add or update admin accounts.
  * Run from the site root: node scripts/add-admin.js
  *
+ * Admins log in with their email address, just like regular users,
+ * but are checked against blog-data/admins.json instead of users.json.
  * Passwords are stored as bcrypt hashes (cost factor 12).
- * You can also manually edit blog-data/admins.json and run this
- * script to re-hash a plaintext password you've put there -
- * just delete the passwordHash field and re-run.
  */
 
 'use strict';
@@ -27,6 +26,7 @@ if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 let admins = [];
 try {
   admins = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+  if (!Array.isArray(admins)) admins = [];
 } catch {
   admins = [];
 }
@@ -34,14 +34,23 @@ try {
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const ask = (q) => new Promise(resolve => rl.question(q, resolve));
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
 async function main() {
   console.log('\n=== NT:NH Blog - Add/Update Admin ===\n');
 
-  const username    = (await ask('Username (alphanumeric, no spaces): ')).trim();
+  const email       = (await ask('Email address (used to log in): ')).trim().toLowerCase();
   const displayName = (await ask('Display name (shown on posts, e.g. "Bob"): ')).trim();
 
-  if (!username || !/^[a-zA-Z0-9_-]+$/.test(username)) {
-    console.error('Error: username must be alphanumeric (a-z, 0-9, _, -)');
+  if (!isValidEmail(email)) {
+    console.error('Error: please enter a valid email address.');
+    rl.close(); process.exit(1);
+  }
+
+  if (!displayName) {
+    console.error('Error: display name cannot be empty.');
     rl.close(); process.exit(1);
   }
 
@@ -56,20 +65,21 @@ async function main() {
   console.log('\nHashing password (this takes a moment)...');
   const passwordHash = await bcrypt.hash(password, 12);
 
-  const existing = admins.findIndex(a => a.username === username);
-  const record   = { username, displayName: displayName || username, passwordHash };
+  const existing = admins.findIndex(a => a.email === email);
+  const record   = { email, displayName, passwordHash };
 
   if (existing !== -1) {
     admins[existing] = record;
-    console.log(`\nUpdated admin: ${username}`);
+    console.log(`\nUpdated admin: ${email} (${displayName})`);
   } else {
     admins.push(record);
-    console.log(`\nAdded admin: ${username}`);
+    console.log(`\nAdded admin: ${email} (${displayName})`);
   }
 
   fs.writeFileSync(DATA_FILE, JSON.stringify(admins, null, 2));
   console.log(`Saved to ${DATA_FILE}`);
-  console.log('\nDone! Restart the server if it is running.\n');
+  console.log('\nAdmins can now log in via /blog/login or /blog/admin using their email.\n');
+  console.log('Restart the server if it is running.\n');
 
   rl.close();
 }
