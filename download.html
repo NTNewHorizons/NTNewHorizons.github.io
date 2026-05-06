@@ -56,8 +56,36 @@
           <i class="fab fa-github"></i>
         </a>
       </div>
+    
+      <button class="nav-burger" id="navBurger" aria-label="Open navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </header>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="/" class="mobile-menu-logo">
+      <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width:22px;height:22px;"></div>
+      <span class="nav-logo-text">NT:NH</span>
+    </a>
+    <ul class="mobile-nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#community">Community</a></li>
+      <li><a href="/guide">Guide</a></li>
+      <li><a href="https://ntnewhorizons.com/blog">Blog</a></li>
+      <li><a href="https://status.ntnewhorizons.com">Status</a></li>
+      <li><a href="/download" class="mobile-active">Downloads</a></li>
+    </ul>
+    <div class="mobile-nav-divider"></div>
+    <div class="mobile-nav-icons">
+      <a href="https://www.curseforge.com/minecraft/modpacks/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="CurseForge"><i class="fas fa-fire-flame-curved"></i></a>
+      <a href="https://www.youtube.com/@ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub"><i class="fab fa-github"></i></a>
+    </div>
+  </nav>
 
   <!-- ═══ HERO ═══ -->
   <main>
@@ -238,5 +266,6 @@
     })();
   </script>
 
+  <script src="scripts/nav.js"></script>
 </body>
 </html>
