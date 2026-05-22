@@ -1,0 +1,51 @@
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <p style="margin-bottom:0.4rem;">&copy; <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
+  <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
+  <p style="opacity:0.4;font-size:0.7rem;">Fan project &middot; Not affiliated with Mojang Studios or any trademark holders.</p>
+</footer>
+
+<!-- ═══ COOKIE BANNER ═══ -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie notice">
+  <div class="cookie-banner-header">
+    <span class="cookie-banner-title">&#x1F36A; Cookies</span>
+    <button class="cookie-banner-close" id="cookieClose" aria-label="Close">&times;</button>
+  </div>
+  <p class="cookie-banner-body">
+    This website uses cookies to enhance your experience. By clicking "Accept", you consent to our use of cookies. You can learn more about cookies and how we use them in our <a href="https://ntnewhorizons.com/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+  </p>
+  <div class="cookie-banner-actions">
+    <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept</button>
+    <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Decline</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const banner  = document.getElementById('cookieBanner');
+    const dismiss = () => {
+      banner.classList.add('hiding');
+      banner.addEventListener('animationend', () => banner.remove(), { once: true });
+    };
+    document.getElementById('cookieClose').addEventListener('click', dismiss);
+    document.getElementById('cookieAccept').addEventListener('click', () => {
+      window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
+      dismiss();
+    });
+    document.getElementById('cookieDecline').addEventListener('click', () => {
+      window.location.href = 'https://en.wikipedia.org/wiki/Diabetes';
+      dismiss();
+    });
+  })();
+</script>
+
+<script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+
+<% if (typeof scripts !== 'undefined' && scripts.length) { %>
+  <% scripts.forEach(function(s) { %>
+<script src="<%= s %>"></script>
+  <% }); %>
+<% } %>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downloads - Nuclear Tech: New Horizons</title>
+  <meta name="description" content="Download Nuclear Tech: New Horizons - all official releases, changelogs, and assets.">
+  <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/shared-styles.css">
+  <link rel="stylesheet" href="styles/download-styles.css">
+</head>
+<body class="bg-grid scanlines">
+
+  <!-- Black hole background -->
+  <div class="blackhole-bg" aria-hidden="true"></div>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <%- include('partials/header', { currentPage: 'download' }) %>
+
+  <!-- ═══ HERO ═══ -->
+  <main>
+    <div class="dl-hero">
+      <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">All Releases</p>
+      <h1 class="dl-hero-title">Downloads</h1>
+      <p class="dl-hero-sub">
+        Official releases pulled live from GitHub. Always up to date. Pick a version and get started.
+      </p>
+    </div>
+
+    <!-- ═══ RELEASES ═══ -->
+    <div class="releases-wrap">
+
+      <!-- Loading state -->
+      <div id="loadingState" class="state-center">
+        <i class="fas fa-circle-notch spin" style="color:var(--orange)"></i>
+        <p>Fetching releases from GitHub&hellip;</p>
+      </div>
+
+      <!-- Error state (hidden by default) -->
+      <div id="errorState" class="state-center" style="display:none;">
+        <i class="fas fa-triangle-exclamation" style="color:var(--crimson)"></i>
+        <p>Failed to load releases.<br>Check the console for details and try again later.</p>
+      </div>
+
+      <!-- Releases inserted here -->
+      <div id="releasesContainer"></div>
+    </div>
+  </main>
+
+  <%- include('partials/footer', { scripts: ['scripts/download-script.js'] }) %>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     RICKROLL EASTER EGG
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes rrFull {
+          0% {
+            transform: translateX(-520px) rotate(-28deg);
+            opacity: 0;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          10.8% {
+            transform: translateX(0px) rotate(7deg);
+            opacity: 1;
+            animation-timing-function: linear;
+          }
+          59.6% {
+            transform: translateX(0px) rotate(7deg);
+            opacity: 1;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          64.7% {
+            transform: translateX(-20px) rotate(-28deg);
+            opacity: 1;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          100% {
+            transform: translateX(-520px) rotate(-28deg);
+            opacity: 0;
+          }
+        }
+
+        #_rrWrap {
+          position: fixed;
+          left: 18px;
+          top: 20%;
+          z-index: 999999;
+          width: 272px;
+          display: none;
+          pointer-events: none;
+          will-change: transform;
+          filter:
+            drop-shadow(0 32px 60px rgba(0,0,0,0.92))
+            drop-shadow(0  0   28px rgba(255,80,0,0.5));
+        }
+        #_rrWrap img {
+          width: 100%;
+          border-radius: 14px;
+          display: block;
+          outline: 2px solid rgba(255,106,0,0.45);
+          outline-offset: 3px;
+        }
+        #_rrWrap.rr-play {
+          display: block;
+          animation: rrFull 5.1s linear forwards;
+        }
+      `;
+      document.head.appendChild(style);
+
+      const wrap = document.createElement('div');
+      wrap.id = '_rrWrap';
+      wrap.innerHTML =
+        '<img src="https://media.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif"' +
+        ' alt="Never Gonna Give You Up">';
+      document.body.appendChild(wrap);
+
+      wrap.addEventListener('animationend', function () {
+        wrap.className = '';
+      });
+
+      document.addEventListener('click', function (e) {
+        const link = e.target.closest('a[href*="privacy-policy"]');
+        if (!link) return;
+        e.preventDefault();
+
+        wrap.className = '';
+        void wrap.offsetWidth;
+        wrap.className = 'rr-play';
+      });
+
+    })();
+  </script>
+
+</body>
+</html>

@@ -349,39 +349,7 @@
   <!-- Floating debris -->
   <div class="particle-field" id="particleField" aria-hidden="true"></div>
 
-  <!-- ═══ NAVIGATION ═══ -->
-  <header>
-    <nav class="nav-bar">
-      <a href="index" class="nav-logo">
-        <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
-        <span class="nav-logo-text">NT:NH</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/#features">Features</a></li>
-        <li><a href="/#community">Community</a></li>
-        <li><a href="/guide">Guide</a></li>
-        <li><a href="https://ntnewhorizons.com/blog">Blog</a></li>
-        <li><a href="https://status.ntnewhorizons.com">Status</a></li>
-      </ul>
-
-      <div class="nav-icons">
-        <a href="https://www.curseforge.com/minecraft/modpacks/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="CurseForge">
-          <i class="fas fa-fire-flame-curved"></i>
-        </a>
-        <a href="https://www.youtube.com/@ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-        <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-    </nav>
-  </header>
+  <%- include('partials/header', { currentPage: '404' }) %>
 
   <!-- ═══ 404 CONTENT ═══ -->
   <main>
@@ -406,7 +374,7 @@
           </div>
         </div>
         <div class="reactor-core">
-          <span class="reactor-core-symbol">☢️</span>
+          <span class="reactor-core-symbol">&#x2622;</span>
         </div>
       </div>
 
@@ -426,12 +394,12 @@
           <span class="terminal-dot dot-green"></span>
           <span class="terminal-title">NTNH_DIAGNOSTIC.exe</span>
         </div>
-        <div class="terminal-line"><span class="prompt">▶</span> Scanning machine network… <span class="ok">NOMINAL</span></div>
-        <div class="terminal-line"><span class="prompt">▶</span> Checking pipeline status… <span class="ok">STABLE</span></div>
-        <div class="terminal-line"><span class="prompt">▶</span> Resolving URL path… <span class="err">NOT FOUND</span></div>
-        <div class="terminal-line"><span class="prompt">▶</span> Cross-ref page registry… <span class="err">NULL_REF [0x404]</span></div>
-        <div class="terminal-line"><span class="warn">⚠ WARNING:</span> Page does not exist. Check the URL.</div>
-        <div class="terminal-line"><span class="prompt">▶</span> Waiting for next action… <span class="cursor-blink"></span></div>
+        <div class="terminal-line"><span class="prompt">&#x25B6;</span> Scanning machine network&hellip; <span class="ok">NOMINAL</span></div>
+        <div class="terminal-line"><span class="prompt">&#x25B6;</span> Checking pipeline status&hellip; <span class="ok">STABLE</span></div>
+        <div class="terminal-line"><span class="prompt">&#x25B6;</span> Resolving URL path&hellip; <span class="err">NOT FOUND</span></div>
+        <div class="terminal-line"><span class="prompt">&#x25B6;</span> Cross-ref page registry&hellip; <span class="err">NULL_REF [0x404]</span></div>
+        <div class="terminal-line"><span class="warn">&#x26A0; WARNING:</span> Page does not exist. Check the URL.</div>
+        <div class="terminal-line"><span class="prompt">&#x25B6;</span> Waiting for next action&hellip; <span class="cursor-blink"></span></div>
       </div>
 
       <!-- CTA -->
@@ -453,32 +421,26 @@
     </div>
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer class="site-footer">
-    <p style="margin-bottom:0.4rem;">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
-    <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
-    <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
-  </footer>
+  <%- include('partials/footer') %>
 
   <script>
-    // Footer year
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    (function () {
+      // Spawn floating particles
+      const field = document.getElementById('particleField');
+      const colors = ['var(--orange)', 'var(--red)', 'var(--yellow)', 'rgba(255,80,0,0.6)'];
 
-    // Spawn floating particles
-    const field = document.getElementById('particleField');
-    const colors = ['var(--orange)', 'var(--red)', 'var(--yellow)', 'rgba(255,80,0,0.6)'];
-
-    for (let i = 0; i < 28; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left               = Math.random() * 100 + 'vw';
-      p.style.width              = (Math.random() * 3 + 1.5) + 'px';
-      p.style.height             = p.style.width;
-      p.style.background         = colors[Math.floor(Math.random() * colors.length)];
-      p.style.animationDuration  = (Math.random() * 14 + 8) + 's';
-      p.style.animationDelay     = (Math.random() * -20) + 's';
-      field.appendChild(p);
-    }
+      for (let i = 0; i < 28; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left               = Math.random() * 100 + 'vw';
+        p.style.width              = (Math.random() * 3 + 1.5) + 'px';
+        p.style.height             = p.style.width;
+        p.style.background         = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDuration  = (Math.random() * 14 + 8) + 's';
+        p.style.animationDelay     = (Math.random() * -20) + 's';
+        field.appendChild(p);
+      }
+    })();
   </script>
 </body>
 </html>

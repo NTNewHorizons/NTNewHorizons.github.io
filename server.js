@@ -8,6 +8,13 @@ const app  = express();
 const PORT = 3000;
 
 // ──────────────────────────────────────────────────────────
+// VIEW ENGINE — EJS with shared partials
+// ──────────────────────────────────────────────────────────
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// ──────────────────────────────────────────────────────────
 // MIDDLEWARE
 // ──────────────────────────────────────────────────────────
 
@@ -37,7 +44,7 @@ app.use(session({
 
 // Prevent blog-data JSON files from being served as static files
 app.use('/blog-data', (req, res) => {
-  res.status(403).sendFile(path.join(__dirname, '404.html'));
+  res.status(403).render('404', { currentPage: '404' });
 });
 
 // ──────────────────────────────────────────────────────────
@@ -48,7 +55,17 @@ const blogRouter = require('./blog/router');
 app.use('/blog', blogRouter);
 
 // ──────────────────────────────────────────────────────────
-// STATIC FILE SERVER  (existing site)
+// PAGE ROUTES  (EJS templates with shared header/footer)
+// ──────────────────────────────────────────────────────────
+
+app.get('/',        (req, res) => res.render('index',    { currentPage: 'index' }));
+app.get('/index',   (req, res) => res.render('index',    { currentPage: 'index' }));
+app.get('/about',   (req, res) => res.render('about',    { currentPage: 'about' }));
+app.get('/download',(req, res) => res.render('download', { currentPage: 'download' }));
+app.get('/guide',   (req, res) => res.render('guide',    { currentPage: 'guide' }));
+
+// ──────────────────────────────────────────────────────────
+// STATIC FILE SERVER  (CSS, JS, resources, old HTML fallback)
 // ──────────────────────────────────────────────────────────
 
 app.use(express.static(path.join(__dirname), {
@@ -60,7 +77,7 @@ app.use(express.static(path.join(__dirname), {
 // ──────────────────────────────────────────────────────────
 
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
+  res.status(404).render('404', { currentPage: '404' });
 });
 
 // ──────────────────────────────────────────────────────────

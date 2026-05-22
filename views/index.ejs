@@ -30,57 +30,12 @@
   <div class="orb orb-2" aria-hidden="true"></div>
   <div class="orb orb-3" aria-hidden="true"></div>
 
-  <!-- ═══ NAVIGATION ═══ -->
-  <header>
-    <nav class="nav-bar">
-      <a href="index" class="nav-logo" style="flex:1;">
-        <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
-        <span class="nav-logo-text">NT:NH</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#screenshots">Screenshots</a></li>
-        <li><a href="#progression">Progression</a></li>
-        <li><a href="#download">Download</a></li>
-        <li><a href="#community">Community</a></li>
-        <li><a href="/guide">Guide</a></li>
-        <li><a href="https://ntnewhorizons.com/blog">Blog</a></li>
-        <li><a href="https://status.ntnewhorizons.com">Status</a></li>
-        <li><a href="/about">Story</a></li>
-        <li><a href="#support" class="nav-link-support">☕ Support</a></li>
-      </ul>
-
-      <div class="nav-icons" style="flex:1;justify-content:flex-end;">
-        <a href="https://ko-fi.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn icon-btn-kofi" title="Support on Ko-fi">
-          <i class="fas fa-mug-hot"></i>
-        </a>
-        <a href="https://x.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="X / Twitter">
-          <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://www.curseforge.com/minecraft/modpacks/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="CurseForge">
-          <i class="fas fa-fire-flame-curved"></i>
-        </a>
-        <a href="https://www.youtube.com/@ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://www.technicpack.net/modpack/nuclear-tech-new-horizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Technic Launcher">
-          <i class="fas fa-wrench"></i>
-        </a>
-        <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-        <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-    </nav>
-  </header>
+  <%- include('partials/header', { currentPage: 'index' }) %>
 
   <!-- ═══ HERO ═══ -->
   <main>
     <section id="home" class="hero">
-      <p class="hero-eyebrow">Minecraft 1.7.10 · Quest-Based · Hardcore</p>
+      <p class="hero-eyebrow">Minecraft 1.7.10 &middot; Quest-Based &middot; Hardcore</p>
 
       <h1 class="hero-title">
         <span class="line-1">Nuclear Tech:</span>
@@ -112,7 +67,7 @@
 
       <div class="scroll-hint" aria-hidden="true" style="color: var(--text-mid);">
         <span>Scroll</span>
-        <span class="arrow">↓</span>
+        <span class="arrow">&darr;</span>
       </div>
     </section>
 
@@ -238,7 +193,7 @@
             <div class="slider-loading" id="sliderLoading">
               <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;color:var(--orange);"></i>
               <p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-mid);margin-top:0.75rem;letter-spacing:0.08em;">
-                Loading screenshots…
+                Loading screenshots&hellip;
               </p>
             </div>
           </div>
@@ -267,11 +222,11 @@
     </section>
 
     <div class="divider"></div>
- 
+
     <!-- ═══ TEASER VIDEO ═══ -->
     <section id="teaser" class="section" style="padding-top:4rem;padding-bottom:2.5rem;">
       <div class="section-inner">
- 
+
         <div class="section-header reveal">
           <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Official Teaser</p>
           <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.6rem);">Watch the Teaser</h2>
@@ -279,10 +234,9 @@
             Two minutes. That's all it takes.
           </p>
         </div>
- 
+
         <div class="video-outer reveal" style="transition-delay:0.12s;">
           <div class="video-frame" id="videoFrame">
-            <!-- Thumbnail layer — clicking it swaps in the real iframe -->
             <div class="video-thumb" id="videoThumb">
               <img
                 src="https://img.youtube.com/vi/2cSn1n4V_x8/maxresdefault.jpg"
@@ -290,20 +244,17 @@
                 loading="lazy"
               >
               <div class="video-vignette"></div>
- 
-              <!-- Play button -->
+
               <button class="video-play-btn" id="videoPlayBtn" aria-label="Play teaser">
                 <span class="video-play-ring"></span>
                 <i class="fas fa-play"></i>
               </button>
- 
-              <!-- Bottom-left caption -->
+
               <div class="video-meta">
-                <span class="video-meta-label">☢ Official Teaser</span>
+                <span class="video-meta-label">&#x2622; Official Teaser</span>
                 <span class="video-meta-title">Nuclear Tech: New Horizons</span>
               </div>
- 
-              <!-- HUD corner markers -->
+
               <span class="video-corner vc-tl"></span>
               <span class="video-corner vc-tr"></span>
               <span class="video-corner vc-bl"></span>
@@ -311,7 +262,7 @@
             </div>
           </div>
         </div>
- 
+
       </div>
     </section>
 
@@ -329,46 +280,45 @@
         <div class="tech-showcase reveal" style="transition-delay:0.15s">
           <div class="tech-stages">
             <div class="tech-stage">
-              <span class="tech-stage-icon">⛏️</span>
+              <span class="tech-stage-icon">&#x26CF;</span>
               <p class="tech-stage-name">Primitive</p>
-              <p class="tech-stage-sub">Stone · Wood · Survival</p>
+              <p class="tech-stage-sub">Stone &middot; Wood &middot; Survival</p>
             </div>
             <div class="tech-stage">
-              <span class="tech-stage-icon">⚙️</span>
+              <span class="tech-stage-icon">&#x2699;</span>
               <p class="tech-stage-name">Industrial</p>
-              <p class="tech-stage-sub">Alloys · Steam · Basic Machines</p>
+              <p class="tech-stage-sub">Alloys &middot; Steam &middot; Basic Machines</p>
             </div>
             <div class="tech-stage">
-              <span class="tech-stage-icon">⚡</span>
+              <span class="tech-stage-icon">&#x26A1;</span>
               <p class="tech-stage-name">Electric</p>
-              <p class="tech-stage-sub">Power Grids · Chemical Processing</p>
+              <p class="tech-stage-sub">Power Grids &middot; Chemical Processing</p>
             </div>
             <div class="tech-stage">
-              <span class="tech-stage-icon">☢️</span>
+              <span class="tech-stage-icon">&#x2622;</span>
               <p class="tech-stage-name">Atomic</p>
-              <p class="tech-stage-sub">Fission · Fuel Processing · Nuclear Reactors</p>
+              <p class="tech-stage-sub">Fission &middot; Fuel Processing &middot; Nuclear Reactors</p>
             </div>
             <div class="tech-stage">
-              <span class="tech-stage-icon">🔬</span>
+              <span class="tech-stage-icon">&#x1F52C;</span>
               <p class="tech-stage-name">Advanced</p>
-              <p class="tech-stage-sub">Fusion · Nuclear Weapons</p>
+              <p class="tech-stage-sub">Fusion &middot; Nuclear Weapons</p>
             </div>
             <div class="tech-stage">
-              <span class="tech-stage-icon">🚀</span>
+              <span class="tech-stage-icon">&#x1F680;</span>
               <p class="tech-stage-name">Beyond</p>
-              <p class="tech-stage-sub">Space · New Dimensions</p>
+              <p class="tech-stage-sub">Space &middot; New Dimensions</p>
             </div>
           </div>
         </div>
 
-        <!-- Philosophy block -->
         <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="reveal">
           <div class="card" style="transition-delay:0.1s">
-            <p class="feature-title" style="margin-bottom:0.75rem;">⚙️ Built for Engineers</p>
+            <p class="feature-title" style="margin-bottom:0.75rem;">&#x2699; Built for Engineers</p>
             <p class="feature-desc">NT:NH rewards players who think in systems. Your assembly line needs parts. Parts need refined materials. Refining needs power. Power needs fuel. Fuel needs its own production line. Plan the whole chain or fall behind.</p>
           </div>
           <div class="card" style="transition-delay:0.2s">
-            <p class="feature-title" style="margin-bottom:0.75rem;">🧬 Inspired by GTNH</p>
+            <p class="feature-title" style="margin-bottom:0.75rem;">&#x1F9EC; Inspired by GTNH</p>
             <p class="feature-desc">
               The name is no coincidence. <strong style="color:var(--yellow)">GregTech: New Horizons</strong> (GT:NH) built its identity around GregTech.
               <strong style="color:var(--yellow)">Nuclear Tech: New Horizons</strong> (NT:NH) does the same for HBM's Nuclear Tech Mod. Same philosophy of deep, structured progression. Entirely different mod at its core.
@@ -376,10 +326,9 @@
           </div>
         </div>
 
-        <!-- Who is this for? card -->
         <div style="margin-top:1.25rem;" class="reveal">
           <div class="card" style="transition-delay:0.15s">
-            <p class="feature-title" style="margin-bottom:0.75rem;">🎯 Who Is This For?</p>
+            <p class="feature-title" style="margin-bottom:0.75rem;">&#x1F3AF; Who Is This For?</p>
             <p class="feature-desc">
               NT:NH is primarily built for <strong style="color:var(--yellow)">newcomers to HBM's Nuclear Tech Mod</strong>. The 300+ quest questbook walks you through every system step by step, so you're never left guessing what to build next.
               Veteran NTM players will also find plenty to work through: deep automation layers, late-game machine chains, and a demanding progression that holds up even if you already know the mod well.
@@ -391,54 +340,53 @@
     </section>
 
     <div class="divider"></div>
- 
+
     <!-- ═══ PROJECT ACTIVITY ═══ -->
     <section id="pulse" class="section" style="padding-top:2.5rem;padding-bottom:2.5rem;">
       <div class="section-inner">
- 
+
         <div class="section-header reveal" style="margin-bottom:1.75rem;">
           <p class="section-label" style="justify-content:center;margin-bottom:0.6rem;">Development</p>
           <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);">Is the project alive?</h2>
         </div>
- 
+
         <div class="activity-bar reveal" style="transition-delay:0.1s;">
- 
-          <!-- Health pulse -->
+
           <div class="activity-pulse-wrap">
             <span class="activity-dot" id="activityDot"></span>
-            <span class="activity-label" id="activityLabel">Loading…</span>
+            <span class="activity-label" id="activityLabel">Loading&hellip;</span>
           </div>
- 
+
           <div class="act-divv"></div>
- 
+
           <div class="activity-stat">
-            <span class="act-val" id="act-commit">—</span>
+            <span class="act-val" id="act-commit">&mdash;</span>
             <span class="act-key">Last commit</span>
           </div>
- 
+
           <div class="act-divv"></div>
- 
+
           <div class="activity-stat">
-            <span class="act-val" id="act-release">—</span>
+            <span class="act-val" id="act-release">&mdash;</span>
             <span class="act-key">Latest release</span>
           </div>
- 
+
           <div class="act-divv"></div>
- 
+
           <div class="activity-stat">
-            <span class="act-val" id="act-prs">—</span>
+            <span class="act-val" id="act-prs">&mdash;</span>
             <span class="act-key">Open PRs</span>
           </div>
- 
+
           <div class="act-divv"></div>
- 
+
           <div class="activity-stat">
-            <span class="act-val" id="act-stars">—</span>
+            <span class="act-val" id="act-stars">&mdash;</span>
             <span class="act-key">GitHub stars</span>
           </div>
- 
+
           <div class="act-divv"></div>
- 
+
           <a
             href="https://github.com/NTNewHorizons/NTNH/commits"
             target="_blank"
@@ -447,7 +395,7 @@
           >
             <i class="fab fa-github"></i> History
           </a>
- 
+
         </div>
       </div>
     </section>
@@ -534,7 +482,6 @@
 
         <div class="support-layout reveal" style="transition-delay:0.1s;">
 
-          <!-- Left: why support -->
           <div class="support-reasons">
             <div class="support-reason-item">
               <div class="support-reason-icon"><i class="fas fa-server"></i></div>
@@ -566,12 +513,11 @@
             </div>
           </div>
 
-          <!-- Right: Ko-fi card -->
           <div class="kofi-card">
             <div class="kofi-card-inner">
               <div class="kofi-card-top">
                 <div class="kofi-mug-wrap" aria-hidden="true">
-                  <div class="kofi-mug">☕</div>
+                  <div class="kofi-mug">&#x2615;</div>
                   <div class="kofi-steam">
                     <span></span><span></span><span></span>
                   </div>
@@ -612,7 +558,6 @@
 
         </div>
 
-        <!-- bottom callout -->
         <div class="support-alt reveal" style="transition-delay:0.2s;">
           <p>Not in a position to donate? That's completely fine.</p>
           <p>The best support you can give is <strong style="color:var(--orange)">sharing the modpack</strong>, posting in our <a href="https://discord.gg/wtNVzeE5QB" style="color:var(--orange);text-decoration:none;" target="_blank" rel="noopener noreferrer">Discord</a>, or leaving a review on <a href="https://www.curseforge.com/minecraft/modpacks/ntnewhorizons" style="color:var(--orange);text-decoration:none;" target="_blank" rel="noopener noreferrer">CurseForge</a>.</p>
@@ -668,35 +613,99 @@
     </section>
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer class="site-footer">
-    <p style="margin-bottom:0.4rem;">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
-    <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
-    <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
-  </footer>
+  <%- include('partials/footer', { scripts: ['scripts/index-script.js'] }) %>
 
-  <!-- ═══ COOKIE BANNER ═══ -->
-  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie notice">
-    <div class="cookie-banner-header">
-      <span class="cookie-banner-title">🍪 Cookies</span>
-      <button class="cookie-banner-close" id="cookieClose" aria-label="Close">&times;</button>
-    </div>
-    <p class="cookie-banner-body">
-      This website uses cookies to enhance your experience. By clicking "Accept", you consent to our use of cookies. You can learn more about cookies and how we use them in our <a href="https://ntnewhorizons.com/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-    </p>
-    <div class="cookie-banner-actions">
-      <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept</button>
-      <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Decline</button>
-    </div>
-  </div>
-
-  <script src="scripts/index-script.js"></script>
+  <!-- ═══════════════════════════════════════════════════════════
+     RICKROLL EASTER EGG
+  ═══════════════════════════════════════════════════════════ -->
   <script>
-    // Blackhole cycling animation
+    (function () {
+
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes rrFull {
+          0% {
+            transform: translateX(-520px) rotate(-28deg);
+            opacity: 0;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          10.8% {
+            transform: translateX(0px) rotate(7deg);
+            opacity: 1;
+            animation-timing-function: linear;
+          }
+          59.6% {
+            transform: translateX(0px) rotate(7deg);
+            opacity: 1;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          64.7% {
+            transform: translateX(-20px) rotate(-28deg);
+            opacity: 1;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          100% {
+            transform: translateX(-520px) rotate(-28deg);
+            opacity: 0;
+          }
+        }
+
+        #_rrWrap {
+          position: fixed;
+          left: 18px;
+          top: 20%;
+          z-index: 999999;
+          width: 272px;
+          display: none;
+          pointer-events: none;
+          will-change: transform;
+          filter:
+            drop-shadow(0 32px 60px rgba(0,0,0,0.92))
+            drop-shadow(0  0   28px rgba(255,80,0,0.5));
+        }
+        #_rrWrap img {
+          width: 100%;
+          border-radius: 14px;
+          display: block;
+          outline: 2px solid rgba(255,106,0,0.45);
+          outline-offset: 3px;
+        }
+        #_rrWrap.rr-play {
+          display: block;
+          animation: rrFull 5.1s linear forwards;
+        }
+      `;
+      document.head.appendChild(style);
+
+      const wrap = document.createElement('div');
+      wrap.id = '_rrWrap';
+      wrap.innerHTML =
+        '<img src="https://media.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif"' +
+        ' alt="Never Gonna Give You Up">';
+      document.body.appendChild(wrap);
+
+      wrap.addEventListener('animationend', function () {
+        wrap.className = '';
+      });
+
+      document.addEventListener('click', function (e) {
+        const link = e.target.closest('a[href*="privacy-policy"]');
+        if (!link) return;
+        e.preventDefault();
+
+        wrap.className = '';
+        void wrap.offsetWidth;
+        wrap.className = 'rr-play';
+      });
+
+    })();
+  </script>
+
+  <script>
     (function () {
       const video = document.getElementById('blackholeVideo');
       const videoElement = document.querySelector('.blackhole-bg video');
-      
+
       if (!video || !videoElement) return;
 
       videoElement.style.opacity = '0';
@@ -734,136 +743,6 @@
       }
 
       startCycle();
-    })();
-  </script>
-  <script>
-    (function () {
-      const banner  = document.getElementById('cookieBanner');
-      const dismiss = () => {
-        banner.classList.add('hiding');
-        banner.addEventListener('animationend', () => banner.remove(), { once: true });
-      };
-      document.getElementById('cookieClose').addEventListener('click', dismiss);
-      document.getElementById('cookieAccept').addEventListener('click', () => {
-        window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
-        dismiss();
-      });
-      document.getElementById('cookieDecline').addEventListener('click', () => {
-        window.location.href = 'https://en.wikipedia.org/wiki/Diabetes';
-        dismiss();
-      });
-    })();
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-  </script>
-
-  <!-- ═══════════════════════════════════════════════════════════
-     RICKROLL EASTER EGG  —  paste this block before </body>
-     in both index.html and download.html
-═══════════════════════════════════════════════════════════ -->
-  <script>
-    (function () {
-
-      /*
-        Single continuous animation — avoids the "fill drops on class swap" bug.
-        Timeline (total 5.1 s):
-          0    – 10.8%  (0.55 s)  fly in   — bouncy cubic-bezier
-          10.8 – 59.6%  (2.50 s)  hold     — linear / no movement
-          59.6 – 64.7%  (0.26 s)  lean     — slight recoil before drop
-          64.7 – 100%   (1.80 s)  fall out — gravity cubic-bezier (slower)
-      */
-
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes rrFull {
-          /* fly in */
-          0% {
-            transform: translateX(-520px) rotate(-28deg);
-            opacity: 0;
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-          }
-          /* settled on screen */
-          10.8% {
-            transform: translateX(0px) rotate(7deg);
-            opacity: 1;
-            animation-timing-function: linear;
-          }
-          /* hold */
-          59.6% {
-            transform: translateX(0px) rotate(7deg);
-            opacity: 1;
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-          }
-          /* lean before drop */
-          64.7% {
-            transform: translateX(-20px) rotate(-28deg);
-            opacity: 1;
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-          }
-          /* fly out — exact reverse of fly in */
-          100% {
-            transform: translateX(-520px) rotate(-28deg);
-            opacity: 0;
-          }
-        }
-
-        #_rrWrap {
-          position: fixed;
-          left: 18px;
-          top: 20%;
-          z-index: 999999;
-          width: 272px;
-          display: none;
-          pointer-events: none;
-          will-change: transform;
-          filter:
-            drop-shadow(0 32px 60px rgba(0,0,0,0.92))
-            drop-shadow(0  0   28px rgba(255,80,0,0.5));
-        }
-        #_rrWrap img {
-          width: 100%;
-          border-radius: 14px;
-          display: block;
-          outline: 2px solid rgba(255,106,0,0.45);
-          outline-offset: 3px;
-        }
-        #_rrWrap.rr-play {
-          display: block;
-          animation: rrFull 5.1s linear forwards;
-        }
-      `;
-      document.head.appendChild(style);
-
-      /* ── GIF element ── */
-      const wrap = document.createElement('div');
-      wrap.id = '_rrWrap';
-      wrap.innerHTML =
-        '<img src="https://media.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif"' +
-        ' alt="Never Gonna Give You Up">';
-      document.body.appendChild(wrap);
-
-      /* clean up after animation finishes so it can replay */
-      wrap.addEventListener('animationend', function () {
-        wrap.className = '';
-        /* never touch wrap.style.display — base CSS rule handles display:none */
-      });
-
-      /* ── Intercept the Privacy Policy link ── */
-      document.addEventListener('click', function (e) {
-        const link = e.target.closest('a[href*="privacy-policy"]');
-        if (!link) return;
-        e.preventDefault();
-
-        /*
-          Only touch className — never style.display.
-          Inline styles have higher specificity than class rules, so
-          style.display='none' would permanently block the CSS class
-          from un-hiding the element.
-        */
-        wrap.className = '';
-        void wrap.offsetWidth; /* force reflow so animation restarts cleanly */
-        wrap.className = 'rr-play';
-      });
-
     })();
   </script>
 

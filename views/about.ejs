@@ -16,50 +16,7 @@
   <div class="orb orb-1" aria-hidden="true"></div>
   <div class="orb orb-2" aria-hidden="true"></div>
 
-  <!-- ═══ NAVIGATION ═══ -->
-  <header>
-    <nav class="nav-bar">
-      <a href="index" class="nav-logo" style="flex:1;">
-        <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width:24px;height:24px;"></div>
-        <span class="nav-logo-text">NT:NH</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/#features">Features</a></li>
-        <li><a href="/#community">Community</a></li>
-        <li><a href="/download">Downloads</a></li>
-        <li><a href="/guide">Guide</a></li>
-        <li><a href="https://ntnewhorizons.com/blog">Blog</a></li>
-        <li><a href="https://status.ntnewhorizons.com">Status</a></li>
-        <li><a href="/about" style="color:var(--orange);">Story</a></li>
-      </ul>
-
-      <div class="nav-icons" style="flex:1;justify-content:flex-end;">
-        <a href="https://ko-fi.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn icon-btn-kofi" title="Support on Ko-fi">
-          <i class="fas fa-mug-hot"></i>
-        </a>
-        <a href="https://x.com/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="X / Twitter">
-          <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://www.curseforge.com/minecraft/modpacks/ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="CurseForge">
-          <i class="fas fa-fire-flame-curved"></i>
-        </a>
-        <a href="https://www.youtube.com/@ntnewhorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://www.technicpack.net/modpack/nuclear-tech-new-horizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Technic Launcher">
-          <i class="fas fa-wrench"></i>
-        </a>
-        <a href="https://discord.gg/wtNVzeE5QB" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-        <a href="https://github.com/NTNewHorizons" target="_blank" rel="noopener noreferrer" class="icon-btn" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-    </nav>
-  </header>
+  <%- include('partials/header', { currentPage: 'about' }) %>
 
   <!-- ═══ MAIN ═══ -->
   <main>
@@ -71,9 +28,9 @@
         <h1 class="journal-title">Why This Exists</h1>
         <div class="journal-sig">
           <span class="sig-name">Alex</span>
-          <span class="sig-sep">·</span>
+          <span class="sig-sep">&middot;</span>
           <span class="sig-handle">Bufka2011</span>
-          <span class="sig-sep">·</span>
+          <span class="sig-sep">&middot;</span>
           <span class="sig-role">Born 2011, Ukraine</span>
         </div>
         <p class="journal-intro">
@@ -88,7 +45,7 @@
         </nav>
       </header>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ══ CHAPTER 1 ══ -->
       <article id="ch1" class="chapter reveal">
@@ -96,7 +53,7 @@
         <h2 class="chapter-title">The Beginning</h2>
 
         <p>
-          Around 2016–2017, my parents bought a cracked Xbox 360. I want to be upfront about that - it wasn't a legitimate console, and we weren't a wealthy family. But on that thing, I played Minecraft for the very first time. I was maybe five or six years old. And something happened to me that day that I genuinely don't know how to explain to someone who hasn't felt it. I just fell completely in love. Not with a game mechanic. With the idea of it. The fact that you could build anything. That there was no ceiling.
+          Around 2016&ndash;2017, my parents bought a cracked Xbox 360. I want to be upfront about that - it wasn't a legitimate console, and we weren't a wealthy family. But on that thing, I played Minecraft for the very first time. I was maybe five or six years old. And something happened to me that day that I genuinely don't know how to explain to someone who hasn't felt it. I just fell completely in love. Not with a game mechanic. With the idea of it. The fact that you could build anything. That there was no ceiling.
         </p>
         <p>
           I've been playing Minecraft on and off ever since. Different versions, different devices, different stages of my life. But that love never really went anywhere.
@@ -123,7 +80,7 @@
         </p>
       </article>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ══ CHAPTER 2 ══ -->
       <article id="ch2" class="chapter reveal">
@@ -140,9 +97,9 @@
         <div class="gen-timeline">
 
           <div class="gen-item gen-special">
-            <div class="gen-marker">★</div>
+            <div class="gen-marker">&#x2605;</div>
             <div class="gen-body">
-              <div class="gen-id">September 11, 2023 · Origin</div>
+              <div class="gen-id">September 11, 2023 &middot; Origin</div>
               <div class="gen-name">NTM RP <span class="gen-mc">1.12.2</span></div>
               <p>A roleplay modpack. Nations, cities, war. The concept had heart; the execution didn't. Lasted about a month before I scrapped the direction entirely.</p>
             </div>
@@ -194,7 +151,7 @@
           </div>
 
           <div class="gen-item gen-special">
-            <div class="gen-marker">★</div>
+            <div class="gen-marker">&#x2605;</div>
             <div class="gen-body">
               <div class="gen-id">The Rebirth</div>
               <div class="gen-name">Nuclear Tech: New Horizons <span class="gen-mc">1.7.10</span></div>
@@ -205,7 +162,7 @@
         </div>
       </article>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ══ CHAPTER 3 ══ -->
       <article id="ch3" class="chapter reveal">
@@ -245,7 +202,7 @@
         </p>
       </article>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ══ CHAPTER 4 ══ -->
       <article id="ch4" class="chapter reveal">
@@ -289,7 +246,7 @@
         </p>
       </article>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ══ CHAPTER 5 ══ -->
       <article id="ch5" class="chapter reveal">
@@ -319,7 +276,7 @@
         </div>
       </article>
 
-      <div class="journal-divider" aria-hidden="true">✦</div>
+      <div class="journal-divider" aria-hidden="true">&#x2726;</div>
 
       <!-- ── Closing ── -->
       <footer class="journal-footer reveal">
@@ -335,13 +292,7 @@
     </div>
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer class="site-footer">
-    <p style="margin-bottom:0.4rem;">© <span id="currentYear"></span> Nuclear Tech: New Horizons. All rights reserved.</p>
-    <p style="opacity:0.6;margin-bottom:0.4rem;">Inspired by the spirit of GTNH - built on HBM's Nuclear Tech Mod.</p>
-    <p style="opacity:0.4;font-size:0.7rem;">Fan project · Not affiliated with Mojang Studios or any trademark holders.</p>
-  </footer>
+  <%- include('partials/footer', { scripts: ['scripts/about-script.js'] }) %>
 
-  <script src="scripts/about-script.js"></script>
 </body>
 </html>
