@@ -128,5 +128,32 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && menu.classList.contains('open')) close();
   });
+
+  // Scroll hide/show
+  var navBar = document.querySelector('.nav-bar');
+  var lastScroll = 0;
+  var scrollThreshold = 10;
+  if (navBar) {
+    window.addEventListener('scroll', function() {
+      var currentScroll = window.pageYOffset;
+      var delta = currentScroll - lastScroll;
+
+      if (currentScroll <= 0) {
+        navBar.classList.remove('nav-hidden');
+        lastScroll = currentScroll;
+        return;
+      }
+
+      if (Math.abs(delta) < scrollThreshold) return;
+
+      if (delta > 0) {
+        navBar.classList.add('nav-hidden');
+      } else {
+        navBar.classList.remove('nav-hidden');
+      }
+
+      lastScroll = currentScroll;
+    }, { passive: true });
+  }
 })();
 </script>

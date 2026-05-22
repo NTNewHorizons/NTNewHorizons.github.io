@@ -128,8 +128,10 @@ body {
 
 /* ─── Nav ─── */
 .nav-bar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   padding: 1.1rem 2rem;
   background: rgba(0,0,0,0.80);
@@ -138,6 +140,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.nav-bar.nav-hidden {
+  transform: translateY(-100%);
+}
+
+body {
+  padding-top: 76px;
 }
 
 .nav-logo {
@@ -580,7 +591,7 @@ body {
 
 .hamburger-menu {
   position: fixed;
-  top: 72px;
+  top: 76px;
   left: 0;
   bottom: 0;
   width: 280px;
@@ -622,5 +633,7 @@ body {
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .nav-bar { padding: 1rem; }
+  body { padding-top: 72px; }
+  .hamburger-menu { top: 72px; }
   .cookie-banner { left: 1rem; right: 1rem; max-width: none; bottom: 1rem; }
 }
