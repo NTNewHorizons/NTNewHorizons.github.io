@@ -1,10 +1,40 @@
 <!-- ═══ NAVIGATION ═══ -->
+<%
+  const menuLinks = {
+    index: [
+      { href: '#home', label: 'Home' },
+      { href: '#features', label: 'Core Features' },
+      { href: '#screenshots', label: 'Screenshots' },
+      { href: '#teaser', label: 'Teaser Video' },
+      { href: '#progression', label: 'Tech Progression' },
+      { href: '#pulse', label: 'Development' },
+      { href: '#download', label: 'Download' },
+      { href: '#support', label: 'Support' },
+      { href: '#community', label: 'Community' },
+    ],
+    guide: [
+      { href: '#community', label: 'Community' },
+      { href: '#requirements', label: 'Requirements' },
+      { href: '#install', label: 'Install Guide' },
+      { href: '#launchers', label: 'Launcher Comparison' },
+      { href: '#faq', label: 'FAQ' },
+    ],
+    about: [
+      { href: '#ch1', label: 'I. The Beginning' },
+      { href: '#ch2', label: 'II. Generations' },
+      { href: '#ch3', label: 'III. Burnout' },
+      { href: '#ch4', label: 'IV. Philosophy' },
+      { href: '#ch5', label: 'V. Today' },
+    ],
+  };
+  const links = menuLinks[currentPage] || [];
+%>
 <header>
   <nav class="nav-bar">
-    <a href="/" class="nav-logo" style="flex:1;">
+    <button class="nav-logo-btn" id="hamburgerToggle" style="flex:1;" aria-label="Open page menu">
       <div class="nav-logo-icon"><img src="resources/favicon.ico" alt="NT:NH Logo" style="width: 24px; height: 24px;"></div>
       <span class="nav-logo-text">NT:NH</span>
-    </a>
+    </button>
 
     <ul class="nav-links">
       <li><a href="/" <%= currentPage === 'index' ? 'style="color:var(--orange);"' : '' %>>Home</a></li>
@@ -41,3 +71,62 @@
     </div>
   </nav>
 </header>
+
+<div class="hamburger-overlay" id="hamburgerOverlay"></div>
+<nav class="hamburger-menu" id="hamburgerMenu" aria-label="Page sections">
+  <% if (links.length) { %>
+    <% links.forEach(function(link) { %>
+      <a href="<%= link.href %>"><%= link.label %></a>
+    <% }); %>
+  <% } else { %>
+    <a href="/">Home</a>
+    <a href="/#features">Features</a>
+    <a href="/download">Downloads</a>
+    <a href="/guide">Guide</a>
+    <a href="https://ntnewhorizons.com/blog">Blog</a>
+    <a href="https://status.ntnewhorizons.com">Status</a>
+    <a href="/about">Story</a>
+  <% } %>
+</nav>
+
+<script>
+(function() {
+  var btn = document.getElementById('hamburgerToggle');
+  var menu = document.getElementById('hamburgerMenu');
+  var overlay = document.getElementById('hamburgerOverlay');
+  if (!btn || !menu || !overlay) return;
+
+  function open() {
+    menu.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('spinning');
+    btn.setAttribute('aria-expanded', 'true');
+    setTimeout(function() { btn.classList.remove('spinning'); }, 600);
+  }
+
+  function close() {
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (menu.classList.contains('open')) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  overlay.addEventListener('click', close);
+
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', close);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) close();
+  });
+})();
+</script>
