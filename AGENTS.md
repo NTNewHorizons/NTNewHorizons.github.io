@@ -13,13 +13,12 @@ No build tooling, no linter, no formatter, no typechecker, no test suite. `npm t
 npm start                                        # node server.js (port 3000)
 pm2 start server.js --name ntnewHorizons         # launch as PM2 daemon
 pm2 restart ntnewHorizons                        # restart the PM2 instance
-npm run dev                                      # does not exist - just run npm start
 ```
 
 ## Architecture
 
 | Entrypoint | Purpose |
-|---|---|---|
+|---|---|
 | `server.js` | Express app, port 3000. EJS templating with shared partials (`views/partials/`). Page routes render EJS views. `express.static` serves static assets. |
 | `views/partials/header.ejs` | **Shared nav bar** — included by every page. Home, Features, Downloads, Guide, Blog, Status, Story links + 7 social icons. Pass `currentPage` for active highlight. |
 | `views/partials/footer.ejs` | **Shared footer + cookie banner** — included by every page. Pass `scripts: ['...']` array for page-specific JS files. |
@@ -34,7 +33,7 @@ JSON files in `blog-data/` (no database):
 - `admins.json`, `users.json`, `comments.json` — gitignored (contain credentials/auth data)
 
 Session: `express-session`, 1-day cookie, `httpOnly`, `secure: false` by default (set `true` if TLS terminates in Express).  
-`SESSION_SECRET` env var required; has a dev fallback in `server.js:24`.
+`SESSION_SECRET` env var required; has a dev fallback in `server.js:31`.
 
 Admin credentials are stored as bcrypt hashes in `admins.json`. First admin must be created manually or via an admin creation script.
 
@@ -55,13 +54,13 @@ Admin credentials are stored as bcrypt hashes in `admins.json`. First admin must
 ## Important quirks
 
 - **No build step** — edit EJS/CSS/JS directly, refresh browser (EJS templates are compiled at runtime)
-- **Blog CSS is embedded in `blog/router.js`** as a template string (`BLOG_CSS`), not in the `styles/` directory
+- **Blog CSS is embedded in `blog/router.js`** as a template string (`BLOG_CSS`), not in `styles/`
 - `express.static` still serves static files (CSS, JS, images, resources); page routes are handled by EJS
-- `/blog-data/` is blocked from direct access (`server.js:45`)
+- `/blog-data/` is blocked from direct access (`server.js:46`)
 - Image uploads require `multer` (included in package.json); stored to `resources/blog-uploads/`
 - `Cookie` banner links "Accept" to Wikipedia/Cookie and "Decline" to Wikipedia/Diabetes (intentional joke)
 - Privacy policy link triggers a rickroll animation (easter egg in `views/index.ejs` and `views/download.ejs`)
-- `about.html` `<meta name="author">` contains a base64-encoded message
+- `views/about.ejs` `<meta name="author">` contains a base64-encoded message
 - "42_4C_??.html" is a puzzle/easter egg page
 
 ## Deployment
