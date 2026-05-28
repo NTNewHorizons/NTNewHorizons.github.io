@@ -331,7 +331,7 @@ function page(title, body, ogMeta) {
 <meta property="og:description" content="${ogDescription}">
 <meta property="og:image" content="${ogImage}">
 <meta property="og:url" content="${ogUrl}">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${ogTitle}">
 <meta name="twitter:description" content="${ogDescription}">
 <meta name="twitter:image" content="${ogImage}">
