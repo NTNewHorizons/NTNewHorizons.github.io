@@ -314,13 +314,27 @@ a:hover{color:#FF8;text-decoration:underline;}
 // PAGE SHELL + NAVIGATION BAR
 // ──────────────────────────────────────────────────────────────────────────────
 
-function page(title, body) {
+function page(title, body, ogMeta) {
+  const ogTitle       = escapeHtml(ogMeta?.title       ?? title);
+  const ogDescription = escapeHtml(ogMeta?.description ?? 'The official NT:NH blog - news, updates, and community spotlights.');
+  const ogImage       = 'https://ntnewhorizons.com/resources/favicon.ico';
+  const ogUrl         = 'https://ntnewhorizons.com/blog';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(title)}</title>
+<meta property="og:site_name" content="Nuclear Tech: New Horizons">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${ogTitle}">
+<meta property="og:description" content="${ogDescription}">
+<meta property="og:image" content="${ogImage}">
+<meta property="og:url" content="${ogUrl}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${ogTitle}">
+<meta name="twitter:description" content="${ogDescription}">
+<meta name="twitter:image" content="${ogImage}">
 <style>${BLOG_CSS}</style>
 </head>
 <body>
