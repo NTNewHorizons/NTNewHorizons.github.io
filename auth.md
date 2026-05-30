@@ -1,28 +1,51 @@
-# Auth.md — NTNewHorizons Agent Registration
+# Auth.md — NTNewHorizons
 
-## Status
+This site is the public website for the **Nuclear Tech: New Horizons** Minecraft modpack.
+AI agents can access public content freely. The blog admin panel requires registration.
 
-This site currently uses **session-based authentication** for its admin blog panel at `/blog/login`.
-OAuth 2.0 / OpenID Connect endpoints listed in `/.well-known/` are **placeholders** for a future
-agent authentication system and are not yet functional.
+## Agent Audience
 
-## Agent Access
+This auth.md is for AI agents that want to:
+- Read public pages (no auth needed)
+- Register for a blog user account
+- Manage blog content via the admin panel
 
-| Endpoint | Access | Auth Required |
+## Public Access (No Auth Required)
+
+| Resource | URL |
+|---|---|
+| Homepage | `/` |
+| Download | `/download` |
+| Guide | `/guide` |
+| About | `/about` |
+| Blog (read) | `/blog/*` |
+
+## Registration
+
+Human users can register a blog account at:
+
+| Endpoint | Method | Description |
 |---|---|---|
-| `/` ` /about` `/download` `/guide` | Public | No |
-| `/blog/*` (read) | Public | No |
-| `/blog/admin` | Admin panel | Session (email + password) |
-| `/blog/login` | Login form | — |
-| `/blog/register` | Registration | — |
+| `/blog/register` | GET + POST | Registration form (email, password, username) |
 
-## Plans
+After registration the user logs in at `/blog/login` and receives a session cookie.
 
-We intend to add OAuth 2.0 support in a future update so that AI agents can programmatically
-authenticate. When available, the `/blog/admin` API will accept bearer tokens issued by the
-authorization server advertised at `/.well-known/oauth-authorization-server`.
+## Supported Methods
+
+- **Identity type:** email
+- **Credential type:** password (bcryptjs-hashed)
+- **Auth scheme:** session cookie (`express-session`, httpOnly, 1-day expiry)
+- **OAuth 2.0 / OIDC:** Not yet available. The `/.well-known/` metadata endpoints are placeholders for future implementation.
+
+## Session Details
+
+| Property | Value |
+|---|---|
+| Cookie | `connect.sid` |
+| httpOnly | true |
+| secure | false (terminated at nginx) |
+| maxAge | 24 hours |
 
 ## Contact
 
-For questions about agent access or automation, join our Discord:
 <https://discord.gg/wtNVzeE5QB>

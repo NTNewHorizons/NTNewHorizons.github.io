@@ -42,9 +42,9 @@ GET  /<static file>         → express.static (dotfiles excluded)
 GET  404                    → views/404.ejs (embedded CSS, no partials)
 ```
 
-## Blog subsystem (`blog/router.js`, ~1450 lines)
+## Blog subsystem (`blog/router.js`, ~1460 lines)
 
-- **Not EJS** — generates raw HTML via `page(title, body)` and `topNav(req)`. Blog CSS is a template string (`BLOG_CSS`) embedded in `router.js`, not in `styles/`.
+- **Not EJS** — generates raw HTML via `page(title, body, ogMeta)` and `topNav(req)`. Blog CSS is a template string (`BLOG_CSS`) embedded in `router.js`, not in `styles/`.
 - Routes at `/blog/*`. JSON flat-file storage in `blog-data/`:
   - `posts.json` — **tracked in git** (published posts)
   - `admins.json`, `users.json`, `comments.json` — **gitignored**
@@ -61,12 +61,12 @@ Wired into `server.js` as middleware and explicit routes:
 - **Markdown for Agents** — if `Accept: text/markdown` wins content negotiation, `res.render` output is piped through `turndown` and served as `Content-Type: text/markdown` with `X-Markdown-Tokens: turndown`.
 - **`.well-known/` endpoints** — api-catalog (RFC 9727), agent-card (A2A), agent-skills index, MCP server card, OIDC config, OAuth authorization server (RFC 8414), OAuth protected resource (RFC 9728). All are placeholder/mock metadata — the site does not yet have real OAuth.
 - **robots.txt** — includes `Content-Signal: ai-train=yes, search=yes, ai-input=yes`.
-- **auth.md** — at site root, describes current session-based auth and plans for OAuth.
+- **auth.md** — at site root, documents registration endpoint, supported methods, and credential use for agents.
 - **WebMCP** — `scripts/webmcp.js` calls `navigator.modelContext.provideContext()` with navigate/search/guide/discord tools. Included on every EJS page via footer scripts array.
 
 ## Quirks
 
-- Cookie banner "Privacy Policy" link triggers a rickroll animation (inline JS in `views/index.ejs` catches any `a[href*="privacy-policy"]` click — don't add real privacy-policy links without thinking).
+- Cookie banner "Privacy Policy" link triggers a rickroll animation (inline JS in `views/index.ejs` and `views/download.ejs` catches any `a[href*="privacy-policy"]` click — don't add real privacy-policy links without thinking).
 - `views/about.ejs` `<meta name="author">` has a base64-encoded message.
 - `42_4C_??.html` — standalone static puzzle page (no EJS, no header).
 - `blog.db` — orphan SQLite file, unused (JSON flat-file only).
