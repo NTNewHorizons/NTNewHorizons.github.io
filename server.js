@@ -52,6 +52,7 @@ app.use(session({
 app.use((req, res, next) => {
   res.set('Link', [
     '</.well-known/api-catalog>; rel="api-catalog"',
+    '</.well-known/agent-card.json>; rel="http://a2a-protocol.org/rel/agent-card"',
     '</.well-known/agent-skills/index.json>; rel="http://agentskills.io/rel/skills-index"',
     '</.well-known/mcp/server-card.json>; rel="http://modelcontextprotocol.io/rel/server-card"',
     '</auth.md>; rel="http://workos.com/auth-md"',
@@ -189,6 +190,76 @@ app.get('/.well-known/mcp/server-card.json', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
+// WELL-KNOWN — A2A Agent Card (Agent-to-Agent Discovery)
+// ──────────────────────────────────────────────────────────
+
+app.get('/.well-known/agent-card.json', (req, res) => {
+  res.type('application/a2a+json').json({
+    name: 'NTNewHorizons',
+    description: 'The public website for the Nuclear Tech: New Horizons Minecraft modpack. Provides modpack downloads, getting-started guide, blog, story, and community server discovery.',
+    supportedInterfaces: [
+      {
+        url: 'https://ntnewhorizons.com/.well-known/agent-skills/index.json',
+        protocolBinding: 'HTTP+JSON',
+        protocolVersion: '1.0'
+      }
+    ],
+    provider: {
+      organization: 'NTNewHorizons Community',
+      url: 'https://github.com/NTNewHorizons'
+    },
+    version: '1.0.0',
+    documentationUrl: 'https://ntnewhorizons.com/guide',
+    capabilities: {
+      streaming: false,
+      pushNotifications: false
+    },
+    securitySchemes: {},
+    security: [],
+    defaultInputModes: ['text/plain'],
+    defaultOutputModes: ['text/plain', 'application/json'],
+    skills: [
+      {
+        id: 'modpack-guide',
+        name: 'Modpack Guidance',
+        description: 'Provides installation instructions, getting-started guide, and answers about the NT:NH modpack progression.',
+        tags: ['minecraft', 'modpack', 'guide', 'ntnh'],
+        examples: ['How do I install NTNH?', 'What are the tech tiers?'],
+        inputModes: ['text/plain'],
+        outputModes: ['text/plain']
+      },
+      {
+        id: 'modpack-download',
+        name: 'Download Information',
+        description: 'Provides download links and availability for the NT:NH modpack client and server files.',
+        tags: ['download', 'release', 'client', 'server'],
+        examples: ['Where can I download the latest release?'],
+        inputModes: ['text/plain'],
+        outputModes: ['text/plain']
+      },
+      {
+        id: 'blog',
+        name: 'Blog Reading',
+        description: 'Reads and summarizes blog posts about NT:NH development progress.',
+        tags: ['blog', 'news', 'development'],
+        examples: ['What are the latest blog posts?'],
+        inputModes: ['text/plain'],
+        outputModes: ['text/plain']
+      },
+      {
+        id: 'community-servers',
+        name: 'Community Servers',
+        description: 'Lists official community multiplayer servers for NT:NH.',
+        tags: ['servers', 'multiplayer', 'community'],
+        examples: ['What multiplayer servers are available?'],
+        inputModes: ['text/plain'],
+        outputModes: ['text/plain', 'application/json']
+      }
+    ]
+  });
+});
+
+// ──────────────────────────────────────────────────────────
 // WELL-KNOWN — OIDC Discovery (OpenID Connect)
 // ──────────────────────────────────────────────────────────
 
@@ -242,7 +313,7 @@ app.get('/.well-known/oauth-protected-resource', (req, res) => {
       'https://ntnewhorizons.com'
     ],
     scopes_supported: [],
-    bearer_methods_supported: []
+    bearer_methods_supported: ['header']
   });
 });
 

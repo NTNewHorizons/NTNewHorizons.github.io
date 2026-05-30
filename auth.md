@@ -1,4 +1,4 @@
-# Authentication for AI Agents — NTNewHorizons
+# Auth.md — NTNewHorizons Agent Registration
 
 ## Status
 

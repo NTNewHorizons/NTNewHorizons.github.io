@@ -18,37 +18,28 @@
 const DOMAIN = 'ntnewhorizons.com';
 
 const records = [
-  // SVCB/HTTPS record advertising the A2A (Agent-to-Agent) endpoint
-  {
-    name: `_a2a._agents.${DOMAIN}`,
-    type: 'HTTPS',
-    params: {
-      alpn: 'http/1.1',
-      endpoint: `https://${DOMAIN}/.well-known/agent-endpoint`
-    },
-    description: 'Agent-to-Agent communication endpoint'
-  },
-
-  // SVCB/HTTPS record for the agent index (discovery entry point)
   {
     name: `_index._agents.${DOMAIN}`,
-    type: 'HTTPS',
-    params: {
-      alpn: 'http/1.1',
-      endpoint: `https://${DOMAIN}/.well-known/agent-skills/index.json`
-    },
+    svcPriority: 1,
+    target: DOMAIN,
+    params: 'alpn="http/1.1" port=443',
     description: 'Agent skills discovery index'
+  },
+  {
+    name: `_a2a._agents.${DOMAIN}`,
+    svcPriority: 1,
+    target: DOMAIN,
+    params: 'alpn="a2a" port=443',
+    description: 'A2A Agent Card endpoint'
   },
 ];
 
 console.log('=== DNS-AID Records for', DOMAIN, '===\n');
-console.log('Add the following records to your authoritative DNS zone:\n');
+console.log('Add the following SVCB/HTTPS records to your authoritative DNS zone:\n');
 
 for (const r of records) {
   console.log(`--- ${r.description} ---`);
-  console.log(`Name:  ${r.name}`);
-  console.log(`Type:  ${r.type}`);
-  console.log(`Value: alpn="${r.params.alpn}" endpoint="${r.params.endpoint}"`);
+  console.log(`${r.name}. 3600 IN HTTPS ${r.svcPriority} ${r.target} ( ${r.params} )`);
   console.log();
 }
 

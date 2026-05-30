@@ -21,7 +21,7 @@ node scripts/add-dns-aid.js               # prints DNS-AID SVCB/HTTPS records to
 |---|---|
 | `server.js` | Express 5 on port 3000. `trust proxy` set for nginx. EJS views in `views/`. Blog mounted at `/blog`. Static files via `express.static` from project root (also serves `.html` without extension). Static does **not** serve dotfiles — all `/.well-known/` paths are explicit routes in `server.js`. |
 | `views/partials/header.ejs` | Shared nav + hamburger menu. Pass `currentPage` for section link logic. |
-| `views/partials/footer.ejs` | Shared footer + cookie banner. Pass `scripts: ['...']` array to load per-page JS (no bundler). Cookie "Privacy Policy" link triggers rickroll (inline JS on index/download). |
+| `views/partials/footer.ejs` | Shared footer + cookie banner. Pass `scripts: ['...']` array to load per-page JS (no bundler). |
 | `styles/` | `shared-styles.css` global, `{page}-styles.css` per page. |
 | `scripts/` | Per-page JS plus `webmcp.js` (loaded on every page via footer scripts array). |
 | `resources/` | **Gitignored.** Favicon, screenshots, video, blog uploads. |
@@ -35,8 +35,9 @@ GET  /download              → views/download.ejs
 GET  /guide                 → views/guide.ejs
 GET  /blog/*                → blog/router.js (own HTML shell — NOT EJS)
 GET  /auth.md               → static file (agent registration info)
-GET  /.well-known/*         → JSON routes in server.js (api-catalog, agent-skills/index, mcp/server-card,
-                               openid-configuration, oauth-authorization-server, oauth-protected-resource)
+GET  /.well-known/*         → JSON routes in server.js (api-catalog, agent-card, agent-skills/index,
+                               mcp/server-card, openid-configuration, oauth-authorization-server,
+                               oauth-protected-resource)
 GET  /<static file>         → express.static (dotfiles excluded)
 GET  404                    → views/404.ejs (embedded CSS, no partials)
 ```
@@ -54,19 +55,19 @@ GET  404                    → views/404.ejs (embedded CSS, no partials)
 
 ## Agent discovery features
 
-These are wired into `server.js` as middleware and explicit routes:
+Wired into `server.js` as middleware and explicit routes:
 
-- **Link headers** (RFC 8288) — every response gets a `Link` header pointing to api-catalog, agent-skills index, MCP server card, auth.md, sitemap, OAuth protected resource.
+- **Link headers** (RFC 8288) — every response gets a `Link` header pointing to api-catalog, agent-card, agent-skills index, MCP server card, auth.md, sitemap, OAuth protected resource.
 - **Markdown for Agents** — if `Accept: text/markdown` wins content negotiation, `res.render` output is piped through `turndown` and served as `Content-Type: text/markdown` with `X-Markdown-Tokens: turndown`.
-- **`.well-known/` endpoints** — api-catalog (RFC 9727), agent-skills index, MCP server card, OIDC config, OAuth authorization server (RFC 8414), OAuth protected resource (RFC 9728). All are placeholder/mock metadata — the site does not yet have real OAuth.
+- **`.well-known/` endpoints** — api-catalog (RFC 9727), agent-card (A2A), agent-skills index, MCP server card, OIDC config, OAuth authorization server (RFC 8414), OAuth protected resource (RFC 9728). All are placeholder/mock metadata — the site does not yet have real OAuth.
 - **robots.txt** — includes `Content-Signal: ai-train=yes, search=yes, ai-input=yes`.
 - **auth.md** — at site root, describes current session-based auth and plans for OAuth.
 - **WebMCP** — `scripts/webmcp.js` calls `navigator.modelContext.provideContext()` with navigate/search/guide/discord tools. Included on every EJS page via footer scripts array.
 
-## Easter eggs and quirks
+## Quirks
 
-- Cookie banner "Privacy Policy" link triggers a rickroll animation (inline JS in `views/index.ejs`, `views/download.ejs`).
-- `view/about.ejs` `<meta name="author">` has a base64-encoded message.
+- Cookie banner "Privacy Policy" link triggers a rickroll animation (inline JS in `views/index.ejs` catches any `a[href*="privacy-policy"]` click — don't add real privacy-policy links without thinking).
+- `views/about.ejs` `<meta name="author">` has a base64-encoded message.
 - `42_4C_??.html` — standalone static puzzle page (no EJS, no header).
 - `blog.db` — orphan SQLite file, unused (JSON flat-file only).
 - `README.md` is intentionally crude, not a documentation gap.
