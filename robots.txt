@@ -19,4 +19,6 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+
 Sitemap: https://ntnewhorizons.com/sitemap.xml
