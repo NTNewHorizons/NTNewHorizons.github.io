@@ -110,6 +110,8 @@ app.get('/index',   (req, res) => res.render('index',    { currentPage: 'index' 
 app.get('/about',   (req, res) => res.render('about',    { currentPage: 'about' }));
 app.get('/download',(req, res) => res.render('download', { currentPage: 'download' }));
 app.get('/guide',   (req, res) => res.render('guide',    { currentPage: 'guide' }));
+app.get('/privacy-policy',  (req, res) => res.render('privacy-policy',  { currentPage: 'privacy-policy' }));
+app.get('/terms-of-service',(req, res) => res.render('terms-of-service',{ currentPage: 'terms-of-service' }));
 
 // ──────────────────────────────────────────────────────────
 // WELL-KNOWN — API Catalog (RFC 9727)
