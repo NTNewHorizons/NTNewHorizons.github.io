@@ -307,10 +307,11 @@ if (subtitleEl) {
 
   thumb.addEventListener('click', function () {
     const iframe = document.createElement('iframe');
+    iframe.id = 'trailerPlayer';
     // youtube-nocookie.com = no tracking cookies before user clicks
     iframe.src =
       'https://www.youtube-nocookie.com/embed/2cSn1n4V_x8' +
-      '?autoplay=1&rel=0&color=white&modestbranding=1';
+      '?autoplay=1&rel=0&color=white&modestbranding=1&enablejsapi=1';
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; ' +
       'gyroscope; picture-in-picture; web-share';
@@ -318,6 +319,29 @@ if (subtitleEl) {
     frame.appendChild(iframe);
     thumb.remove();
   });
+
+  // Load YouTube IFrame API, then set volume to 25%
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScript = document.getElementsByTagName('script')[0];
+  firstScript.parentNode.insertBefore(tag, firstScript);
+
+  var player;
+  window.onYouTubeIframeAPIReady = function () {
+    var el = document.getElementById('trailerPlayer');
+    if (!el) {
+      // Poll until the iframe exists
+      var wait = setInterval(function () {
+        el = document.getElementById('trailerPlayer');
+        if (el) {
+          clearInterval(wait);
+          player = new YT.Player('trailerPlayer', { events: { 'onReady': function (e) { e.target.setVolume(25); } } });
+        }
+      }, 200);
+    } else {
+      player = new YT.Player('trailerPlayer', { events: { 'onReady': function (e) { e.target.setVolume(25); } } });
+    }
+  };
 })();
 
 
