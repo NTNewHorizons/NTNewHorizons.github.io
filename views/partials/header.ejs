@@ -73,19 +73,23 @@
 </header>
 
 <div class="hamburger-overlay" id="hamburgerOverlay"></div>
-<nav class="hamburger-menu" id="hamburgerMenu" aria-label="Page sections">
+<nav class="hamburger-menu" id="hamburgerMenu" aria-label="Site navigation">
+  <div class="hamburger-global">
+    <a href="/" class="hamburger-global-link">Home</a>
+    <a href="/download" class="hamburger-global-link">Downloads</a>
+    <a href="/guide" class="hamburger-global-link">Guide</a>
+    <a href="https://ntnewhorizons.com/blog" class="hamburger-global-link">Blog</a>
+    <a href="https://status.ntnewhorizons.com" class="hamburger-global-link">Status</a>
+    <a href="/about" class="hamburger-global-link">About</a>
+  </div>
   <% if (links.length) { %>
-    <% links.forEach(function(link) { %>
-      <a href="<%= link.href %>"><%= link.label %></a>
-    <% }); %>
-  <% } else { %>
-    <a href="/">Home</a>
-    <a href="/#features">Features</a>
-    <a href="/download">Downloads</a>
-    <a href="/guide">Guide</a>
-    <a href="https://ntnewhorizons.com/blog">Blog</a>
-    <a href="https://status.ntnewhorizons.com">Status</a>
-    <a href="/about">About</a>
+    <div class="hamburger-divider"></div>
+    <div class="hamburger-sections">
+      <span class="hamburger-sections-label">On this page</span>
+      <% links.forEach(function(link) { %>
+        <a href="<%= link.href %>" class="hamburger-section-link"><%= link.label %></a>
+      <% }); %>
+    </div>
   <% } %>
 </nav>
 

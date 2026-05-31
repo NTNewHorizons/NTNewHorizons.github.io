@@ -85,7 +85,7 @@
           <span class="stat-value" data-count="100" data-suffix="+">0</span>
           <span class="stat-label">Mods</span>
         </div>
-        <div class="stat-item" style="display:flex;align-items:center;justify-content:center;margin-top:-50px;">
+        <div class="stat-item stat-moddex">
           <a href="https://moddex.gg/modpack/ntnewhorizons" target="_blank" rel="noopener noreferrer">
             <img src="https://moddex.gg/badges/projects/ntnewhorizons/rating.svg?style=devin" alt="ModDex rating" style="height:48px;">
           </a>
@@ -289,51 +289,52 @@
         </div>
 
         <div class="tech-showcase reveal" style="transition-delay:0.15s">
-          <div class="tech-stages">
-            <div class="tech-stage">
+          <div class="tech-stages" id="techStages">
+            <div class="tech-stage" data-stage="0">
               <span class="tech-stage-icon">&#x26CF;</span>
               <p class="tech-stage-name">Stone Age</p>
               <p class="tech-stage-sub">Flint &middot; Survival Basics &middot; Exploration</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="1">
               <span class="tech-stage-icon">&#x1F527;</span>
               <p class="tech-stage-name">Forging Age</p>
               <p class="tech-stage-sub">Burner Press &middot; Blast Furnace &middot; Steel</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="2">
               <span class="tech-stage-icon">&#x2668;</span>
               <p class="tech-stage-name">Steam Age</p>
               <p class="tech-stage-sub">Stirling &middot; Boilers &middot; First Power</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="3">
               <span class="tech-stage-icon">&#x2699;</span>
               <p class="tech-stage-name">Machine Age</p>
               <p class="tech-stage-sub">Assembly &middot; Circuits &middot; Automation</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="4">
               <span class="tech-stage-icon">&#x1F6E2;</span>
               <p class="tech-stage-name">Oil Age</p>
               <p class="tech-stage-sub">Derrick &middot; Refinery &middot; Petrochemicals</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="5">
               <span class="tech-stage-icon">&#x2622;</span>
               <p class="tech-stage-name">Nuclear Age</p>
               <p class="tech-stage-sub">RBMK &middot; PWR &middot; Fusion Reactors</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="6">
               <span class="tech-stage-icon">&#x1F680;</span>
               <p class="tech-stage-name">Space Age</p>
               <p class="tech-stage-sub">Orbital Stations &middot; Planets &middot; Interplanetary</p>
             </div>
-            <div class="tech-stage">
+            <div class="tech-stage" data-stage="7">
               <span class="tech-stage-icon">&#x221E;</span>
               <p class="tech-stage-name">The Beyond</p>
               <p class="tech-stage-sub">DFC &middot; FEnSU &middot; Dineutronium</p>
             </div>
           </div>
+          <div class="tech-progress-bar" id="techProgressBar" aria-hidden="true"></div>
         </div>
 
-        <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="reveal">
+        <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="reveal progression-cards">
           <div class="card" style="transition-delay:0.1s">
             <p class="feature-title" style="margin-bottom:0.75rem;">&#x1F4E6; Not a Quest Pack. A Fork.</p>
             <p class="feature-desc">
