@@ -594,30 +594,28 @@ body {
   position: fixed;
   top: 72px;
   left: 0;
-  right: 0;
+  bottom: 0;
+  width: 280px;
   overflow-y: auto;
   background: rgba(8,2,0,0.97);
-  border-bottom: none;
+  border-right: 1px solid var(--border-hot);
   backdrop-filter: blur(20px);
   z-index: 99;
-  max-height: 0;
-  padding: 0;
-  transform: none;
-  transition: max-height 0.4s ease, padding 0.3s ease;
-  box-shadow: 0 20px 48px rgba(0,0,0,0.6);
+  padding: 0.75rem 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .hamburger-menu.open {
-  max-height: 85vh;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border-hot);
+  transform: translateX(0);
 }
 
 .hamburger-global {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  padding: 0 0.75rem;
+  display: none;
+}
+
+.hamburger-divider {
+  display: none;
 }
 
 .hamburger-global-link {
@@ -645,12 +643,6 @@ body {
   background: var(--red-glow);
   border-color: var(--border-hot);
   outline: none;
-}
-
-.hamburger-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-hot), transparent);
-  margin: 0.75rem 1rem;
 }
 
 .hamburger-sections-label {
@@ -688,9 +680,40 @@ body {
   .nav-links { display: none; }
   .nav-bar { padding: 1rem; }
   body { padding-top: 72px; }
-  .hamburger-menu { top: 72px; }
-  .hamburger-global { grid-template-columns: 1fr 1fr; }
   .cookie-banner { left: 1rem; right: 1rem; max-width: none; bottom: 1rem; }
+
+  /* Mobile: dropdown panel instead of sidebar */
+  .hamburger-menu {
+    top: 72px;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: auto;
+    border-right: none;
+    max-height: 0;
+    padding: 0;
+    transform: none;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    box-shadow: 0 20px 48px rgba(0,0,0,0.6);
+  }
+  .hamburger-menu.open {
+    max-height: 85vh;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-hot);
+    transform: none;
+  }
+  .hamburger-global {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+    padding: 0 0.75rem;
+  }
+  .hamburger-divider {
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-hot), transparent);
+    margin: 0.75rem 1rem;
+  }
 }
 
 @media (max-width: 400px) {
