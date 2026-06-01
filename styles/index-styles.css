@@ -1396,3 +1396,136 @@
   .activity-pulse-wrap { width: 100%; }
   .act-gh-link       { width: 100%; justify-content: center; border-top: 1px solid var(--border); }
 }
+
+/* ═══ ModDex Reviews Section ═══ */
+.reviews-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.reviews-scroll {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.reviews-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.reviews-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.reviews-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.reviews-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hot);
+}
+
+.reviews-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  gap: 0.5rem;
+}
+
+.review-card {
+  background: rgba(10,3,0,0.75);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.review-card:hover {
+  border-color: var(--border-hot);
+  background: rgba(10,3,0,0.88);
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.review-author {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.review-stars {
+  font-size: 0.85rem;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+.review-stars .star-empty {
+  color: var(--text-muted);
+  opacity: 0.35;
+}
+
+.review-text {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+
+.review-text::before {
+  content: '\201C';
+  color: var(--orange);
+  opacity: 0.5;
+  margin-right: 0.15rem;
+}
+
+.review-text::after {
+  content: '\201D';
+  color: var(--orange);
+  opacity: 0.5;
+  margin-left: 0.15rem;
+}
+
+.reviews-empty {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.reviews-empty i {
+  font-size: 2rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+
+.reviews-error {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+
+.reviews-error i {
+  font-size: 1.5rem;
+  color: var(--red-dim);
+  display: block;
+  margin-bottom: 0.5rem;
+}

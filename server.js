@@ -95,6 +95,55 @@ app.use('/blog-data', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────
+// MODDEX REVIEWS PROXY  (server-side to keep API key hidden)
+// ──────────────────────────────────────────────────────────
+
+app.get('/api/moddex/reviews', async (req, res) => {
+  try {
+    const token = process.env.MODDEX_API_KEY || '';
+
+    if (!token) {
+      return res.status(500).json({ error: 'MODDEX_API_KEY not configured' });
+    }
+
+    const allReviews = [];
+    let page = 1;
+    let lastPage = 1;
+
+    do {
+      const url = new URL('https://moddex.gg/api/v1/projects/ntnewhorizons/reviews');
+      url.searchParams.set('page', page);
+      url.searchParams.set('per_page', 50);
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'User-Agent': 'NTNewHorizons-website/1.0 (review-proxy)',
+          'Accept-Language': 'en-US,en;q=0.9',
+        }
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`ModDex API ${response.status}: ${text.slice(0, 200)}`);
+      }
+
+      const data = await response.json();
+
+      if (data.data) allReviews.push(...data.data);
+      if (data.meta) lastPage = data.meta.last_page;
+      page++;
+    } while (page <= lastPage);
+
+    res.json({ data: allReviews });
+  } catch (err) {
+    console.error('ModDex proxy error:', err.message);
+    res.status(502).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
 // BLOG ROUTES  (must come before express.static)
 // ──────────────────────────────────────────────────────────
 

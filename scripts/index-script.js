@@ -345,6 +345,73 @@ if (subtitleEl) {
 })();
 
 
+  // ─── ModDex Reviews ─────────────────────────────────
+(function () {
+  const scrollEl = document.getElementById('reviewsScroll');
+  if (!scrollEl) return;
+
+  function starsHtml(rating) {
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.5;
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+      if (i < full) html += '<span class="star-full">★</span>';
+      else if (i === full && half) html += '<span class="star-half">★</span>';
+      else html += '<span class="star-empty">★</span>';
+    }
+    return html;
+  }
+
+  function render(reviews) {
+    scrollEl.innerHTML = '';
+
+    if (!reviews.length) {
+      scrollEl.innerHTML = `
+        <div class="reviews-empty">
+          <i class="fas fa-comment-slash"></i>
+          No high-rated reviews yet.
+        </div>`;
+      return;
+    }
+
+    reviews.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="review-card-header">
+          <span class="review-author">${escapeHtml(r.author?.name || 'Anonymous')}</span>
+          <span class="review-stars">${starsHtml(r.rating)}</span>
+        </div>
+        <div class="review-text">${escapeHtml(r.content || r.title || '')}</div>`;
+      scrollEl.appendChild(card);
+    });
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  fetch('/api/moddex/reviews')
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      const reviews = (data.data || [])
+        .filter(r => r.rating > 3.0 && r.content)
+        .sort((a, b) => b.rating - a.rating);
+      render(reviews);
+    })
+    .catch(err => {
+      console.warn('[Reviews]', err);
+      scrollEl.innerHTML = `
+        <div class="reviews-error">
+          <i class="fas fa-triangle-exclamation"></i>
+          Could not load reviews.<br>
+          <span style="opacity:0.55;">Make sure MODDEX_API_KEY is set on the server.</span>
+        </div>`;
+    });
+})();
+
   // ─── Tech progression scroll-snap sync (mobile only) ──
   if (window.innerWidth <= 768) {
     (function () {
