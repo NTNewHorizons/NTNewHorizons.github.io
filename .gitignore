@@ -3,3 +3,4 @@ blog-data/admins.json
 blog-data/comments.json
 blog-data/users.json
 resources/
+.env
