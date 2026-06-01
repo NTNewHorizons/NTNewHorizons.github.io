@@ -345,50 +345,52 @@ if (subtitleEl) {
 })();
 
 
-  // ─── Tech progression scroll-snap sync ───────────────
-  (function () {
-    const container = document.getElementById('techStages');
-    const bar = document.getElementById('techProgressBar');
-    if (!container || !bar) return;
+  // ─── Tech progression scroll-snap sync (mobile only) ──
+  if (window.innerWidth <= 768) {
+    (function () {
+      const container = document.getElementById('techStages');
+      const bar = document.getElementById('techProgressBar');
+      if (!container || !bar) return;
 
-    const stages = container.querySelectorAll('.tech-stage');
-    const dots = [];
+      const stages = container.querySelectorAll('.tech-stage');
+      const dots = [];
 
-    stages.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
-      dot.addEventListener('click', function () {
-        const target = container.children[i];
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      });
-      bar.appendChild(dot);
-      dots.push(dot);
-    });
-
-    function syncDots() {
-      if (stages.length === 0) return;
-      let activeIdx = 0;
-      let minDist = Infinity;
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.left + containerRect.width / 2;
-
-      stages.forEach((stage, i) => {
-        const rect = stage.getBoundingClientRect();
-        const stageCenter = rect.left + rect.width / 2;
-        const dist = Math.abs(stageCenter - containerCenter);
-        if (dist < minDist) {
-          minDist = dist;
-          activeIdx = i;
-        }
+      stages.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
+        dot.addEventListener('click', function () {
+          const target = container.children[i];
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+        bar.appendChild(dot);
+        dots.push(dot);
       });
 
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
-    }
+      function syncDots() {
+        if (stages.length === 0) return;
+        let activeIdx = 0;
+        let minDist = Infinity;
+        const containerRect = container.getBoundingClientRect();
+        const containerCenter = containerRect.left + containerRect.width / 2;
 
-    container.addEventListener('scroll', syncDots, { passive: true });
-    syncDots();
-  })();
+        stages.forEach((stage, i) => {
+          const rect = stage.getBoundingClientRect();
+          const stageCenter = rect.left + rect.width / 2;
+          const dist = Math.abs(stageCenter - containerCenter);
+          if (dist < minDist) {
+            minDist = dist;
+            activeIdx = i;
+          }
+        });
+
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
+      }
+
+      container.addEventListener('scroll', syncDots, { passive: true });
+      syncDots();
+    })();
+  }
 
   // ─── Project Activity (GitHub API) ───────────────────
 (function () {
