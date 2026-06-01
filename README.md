@@ -1,1 +1,1 @@
-Yeah I know AI is shit and vibecoding is bad but hey I dont know html and javascript, I am more of a minecraft person, so at least ai did a decent website by MY personal plan
+Yeah I know AI is shit and vibecoding is bad but hey I dont know html and javascript, I am more of a minecraft person, so at least ai made a decent website following MY personal plan
