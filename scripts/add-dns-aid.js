@@ -1,5 +1,5 @@
 /**
- * DNS-AID (DNS for AI Discovery) — helper script
+ * DNS-AID (DNS for AI Discovery) - helper script
  *
  * This script prints the DNS records you need to publish in your
  * authoritative DNS zone to support agent discovery via DNS-AID

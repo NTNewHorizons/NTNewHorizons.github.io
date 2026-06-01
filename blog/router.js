@@ -708,7 +708,7 @@ router.post('/login', async (req, res) => {
     return res.redirect('/blog/admin');
   }
 
-  // Neither matched — run dummy hash to prevent timing attacks
+  // Neither matched - run dummy hash to prevent timing attacks
   await bcrypt.compare(password, '$2a$12$invalidhashplaceholderXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
   flashSet(req, FAIL);
   res.redirect('/blog/login');
@@ -1042,7 +1042,7 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
     : `<span style="color:#888;">${escapeHtml(p.title)} [draft]</span>`}</td>
   <td>${escapeHtml(p.authorDisplay || p.author)}</td>
   <td>${p.published ? '<span style="color:#4F4;">Yes</span>' : '<span style="color:#F88;">Draft</span>'}</td>
-  <td>${p.pinned ? '<span style="color:#FF8;">&#128204; Pinned</span>' : '<span style="color:#888;">—</span>'}</td>
+  <td>${p.pinned ? '<span style="color:#FF8;">&#128204; Pinned</span>' : '<span style="color:#888;">-</span>'}</td>
   <td>
     <a href="/blog/admin/edit/${escapeHtml(p.id)}" class="admin-btn small">[Edit]</a>
     &nbsp;

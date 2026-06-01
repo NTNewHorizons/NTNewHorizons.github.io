@@ -1,4 +1,4 @@
-# Auth.md — NTNewHorizons
+# Auth.md - NTNewHorizons
 
 This site is the public website for the **Nuclear Tech: New Horizons** Minecraft modpack.
 AI agents can access public content freely. The blog admin panel requires registration.

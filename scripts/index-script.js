@@ -518,7 +518,7 @@ if (subtitleEl) {
   const HEADERS = { 'Accept': 'application/vnd.github.v3+json' };
 
   function timeAgo(isoDate) {
-    if (!isoDate) return '—';
+    if (!isoDate) return '-';
     const days = Math.floor((Date.now() - new Date(isoDate)) / 86400000);
     if (days === 0) return 'Today';
     if (days === 1) return 'Yesterday';
@@ -550,14 +550,14 @@ if (subtitleEl) {
     }
 
     elCommit.textContent  = timeAgo(lastCommitDate);
-    elRelease.textContent = releases[0]?.tag_name ?? '—';
-    elPRs.textContent     = Array.isArray(openPRs) ? openPRs.length : '—';
+    elRelease.textContent = releases[0]?.tag_name ?? '-';
+    elPRs.textContent     = Array.isArray(openPRs) ? openPRs.length : '-';
     elStars.textContent   = typeof repo.stargazers_count === 'number'
       ? repo.stargazers_count.toLocaleString()
-      : '—';
+      : '-';
 
   }).catch(() => {
-    // Fail silently — the bar just stays in its placeholder state
+    // Fail silently - the bar just stays in its placeholder state
     label.textContent = 'GitHub';
     if (dot) dot.style.display = 'none';
   });

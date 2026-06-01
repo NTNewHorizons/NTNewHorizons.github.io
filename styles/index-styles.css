@@ -275,7 +275,7 @@
   100% { background-position: 200% center; }
 }
 
-/* ─── Tech Progression — Single Row (Desktop) ─── */
+/* ─── Tech Progression - Single Row (Desktop) ─── */
 .tech-stages {
   display: flex;
   gap: 0.75rem;
@@ -312,7 +312,7 @@
   pointer-events: none;
 }
 
-/* ─── Tech Progression — Carousel (Mobile, ≤768px) ─── */
+/* ─── Tech Progression - Carousel (Mobile, ≤768px) ─── */
 @media (max-width: 768px) {
   .tech-stages {
     display: flex;
@@ -1121,7 +1121,7 @@
     0 32px 80px rgba(0, 0, 0, 0.7);
 }
 
-/* Top gradient bar — reuses the shimmer keyframe already defined in shared-styles.css */
+/* Top gradient bar - reuses the shimmer keyframe already defined in shared-styles.css */
 .video-frame::before {
   content: '';
   position: absolute;

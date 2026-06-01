@@ -15,7 +15,7 @@ const turndown = new TurndownService({
 });
 
 // ──────────────────────────────────────────────────────────
-// VIEW ENGINE — EJS with shared partials
+// VIEW ENGINE - EJS with shared partials
 // ──────────────────────────────────────────────────────────
 
 app.set('view engine', 'ejs');
@@ -46,7 +46,7 @@ app.use(session({
 }));
 
 // ──────────────────────────────────────────────────────────
-// AGENT DISCOVERY — Link headers (RFC 8288)
+// AGENT DISCOVERY - Link headers (RFC 8288)
 // ──────────────────────────────────────────────────────────
 
 app.use((req, res, next) => {
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// AGENT DISCOVERY — Markdown for Agents (Accept: text/markdown)
+// AGENT DISCOVERY - Markdown for Agents (Accept: text/markdown)
 // ──────────────────────────────────────────────────────────
 
 app.use((req, res, next) => {
@@ -163,7 +163,7 @@ app.get('/privacy-policy',  (req, res) => res.render('privacy-policy',  { curren
 app.get('/terms-of-service',(req, res) => res.render('terms-of-service',{ currentPage: 'terms-of-service' }));
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — API Catalog (RFC 9727)
+// WELL-KNOWN - API Catalog (RFC 9727)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/api-catalog', (req, res) => {
@@ -193,7 +193,7 @@ app.get('/.well-known/api-catalog', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — Agent Skills Discovery Index
+// WELL-KNOWN - Agent Skills Discovery Index
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/agent-skills/index.json', (req, res) => {
@@ -219,7 +219,7 @@ app.get('/.well-known/agent-skills/index.json', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — MCP Server Card (SEP-1649)
+// WELL-KNOWN - MCP Server Card (SEP-1649)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/mcp/server-card.json', (req, res) => {
@@ -241,7 +241,7 @@ app.get('/.well-known/mcp/server-card.json', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — A2A Agent Card (Agent-to-Agent Discovery)
+// WELL-KNOWN - A2A Agent Card (Agent-to-Agent Discovery)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/agent-card.json', (req, res) => {
@@ -311,7 +311,7 @@ app.get('/.well-known/agent-card.json', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — OIDC Discovery (OpenID Connect)
+// WELL-KNOWN - OIDC Discovery (OpenID Connect)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/openid-configuration', (req, res) => {
@@ -330,7 +330,7 @@ app.get('/.well-known/openid-configuration', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — OAuth Authorization Server (RFC 8414)
+// WELL-KNOWN - OAuth Authorization Server (RFC 8414)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/oauth-authorization-server', (req, res) => {
@@ -354,7 +354,7 @@ app.get('/.well-known/oauth-authorization-server', (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────
-// WELL-KNOWN — OAuth Protected Resource (RFC 9728)
+// WELL-KNOWN - OAuth Protected Resource (RFC 9728)
 // ──────────────────────────────────────────────────────────
 
 app.get('/.well-known/oauth-protected-resource', (req, res) => {
