@@ -456,7 +456,51 @@ if (subtitleEl) {
 
       container.addEventListener('scroll', syncDots, { passive: true });
       syncDots();
-    })();
+})();
+
+// ─── Blackhole video cycle ───
+(function () {
+  const video = document.getElementById('blackholeVideo');
+  const videoElement = document.querySelector('.blackhole-bg video');
+
+  if (!video || !videoElement) return;
+
+  videoElement.style.opacity = '0';
+  videoElement.classList.add('blackhole-hidden');
+
+  function startCycle() {
+    video.currentTime = 0;
+    video.play().catch(err => console.log('Video play error:', err));
+
+    videoElement.classList.remove('blackhole-hidden', 'blackhole-fading-out');
+    videoElement.classList.add('blackhole-fading-in');
+
+    const fadeOutTime = video.duration - 1.5;
+
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= fadeOutTime) {
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        fadeOut();
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+  }
+
+  function fadeOut() {
+    videoElement.classList.remove('blackhole-fading-in');
+    videoElement.classList.add('blackhole-fading-out');
+
+    setTimeout(() => {
+      videoElement.classList.remove('blackhole-fading-out');
+      videoElement.classList.add('blackhole-hidden');
+      video.pause();
+      setTimeout(startCycle, 10000);
+    }, 1500);
+  }
+
+  startCycle();
+})();
   }
 
   // ─── Project Activity (GitHub API) ───────────────────

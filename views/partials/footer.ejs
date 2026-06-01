@@ -25,26 +25,7 @@
   </div>
 </div>
 
-<script>
-  (function () {
-    const banner  = document.getElementById('cookieBanner');
-    if (localStorage.getItem('cookiesAccepted')) { banner.remove(); return; }
-    const dismiss = () => {
-      banner.classList.add('hiding');
-      banner.addEventListener('animationend', () => banner.remove(), { once: true });
-    };
-    document.getElementById('cookieAccept').addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'true');
-      dismiss();
-    });
-    document.getElementById('cookieDecline').addEventListener('click', () => {
-      window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
-      dismiss();
-    });
-  })();
-</script>
-
-<script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+<script src="scripts/footer-script.js"></script>
 
 <% if (typeof scripts !== 'undefined' && scripts.length) { %>
   <% scripts.forEach(function(s) { %>
