@@ -407,7 +407,7 @@ router.get('/', (req, res) => {
   </div>
 </div>`;
       }).join('\n')
-    : '<p style="margin-top:20px;color:#222;">No posts yet &mdash; check back soon.</p>';
+    : '<p style="margin-top:20px;color:#222;">No posts yet - check back soon.</p>';
 
   res.send(page('NT:NH Dev Blog', `
 ${topNav(req)}
@@ -459,8 +459,8 @@ ${topNav(req)}
   const commentFormHtml = (user || admin)
     ? (() => {
         const commentActorLabel = admin
-          ? `<b style="color:#4F4;">${escapeHtml(admin.displayName)}</b> &mdash; <a href="/blog/admin">Admin panel</a>`
-          : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> &mdash; <a href="/blog/profile">change nickname</a>`;
+          ? `<b style="color:#4F4;">${escapeHtml(admin.displayName)}</b> - <a href="/blog/admin">Admin panel</a>`
+          : `<b style="color:#4F4;">${escapeHtml(user.nickname)}</b> - <a href="/blog/profile">change nickname</a>`;
         return `<div class="comment-form" style="margin-top:20px;">
          <hr>
          <p>Commenting as ${commentActorLabel}</p>
@@ -484,7 +484,7 @@ ${topNav(req)}
 <div class="content">
   <h1 style="text-align:center;">${pinBadge}${escapeHtml(post.title)}</h1>
   <div class="blog-entry">
-    <h3>${escapeHtml(post.authorDisplay || post.author)} &mdash; ${escapeHtml(post.date)}</h3>
+    <h3>${escapeHtml(post.authorDisplay || post.author)} - ${escapeHtml(post.date)}</h3>
     ${marked(post.content || '')}
   </div>
   <div class="comments" id="comments">
@@ -671,7 +671,7 @@ ${topNav(req)}
     <button class="auth-submit full" type="submit">[ LOGIN ]</button>
   </form>
   <div class="auth-switch">
-    No account yet? <a href="/blog/register">[Create one &mdash; it&apos;s free]</a><br><br>
+    No account yet? <a href="/blog/register">[Create one - it&apos;s free]</a><br><br>
     <a href="/blog">&lt; Back to blog</a>
   </div>
 </div>`));
@@ -1173,7 +1173,7 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
       <button type="button" class="md-btn" title="Bullet list" onclick="mdFmt('ul')">&bull; List</button>
       <button type="button" class="md-btn" title="Numbered list" onclick="mdFmt('ol')">1. List</button>
       <button type="button" class="md-btn" title="Blockquote" onclick="mdFmt('quote')">&ldquo; Quote</button>
-      <button type="button" class="md-btn" title="Horizontal rule" onclick="mdFmt('hr')">&mdash; HR</button>
+      <button type="button" class="md-btn" title="Horizontal rule" onclick="mdFmt('hr')">- HR</button>
     </div>
     <div class="md-toolbar-sep"></div>
     <div class="md-group">
@@ -1396,11 +1396,11 @@ ${topNav(req)}
   <h2 style="margin-bottom:4px;">Blog Admin Panel</h2>
   <p style="font-size:13px;color:#aaa;margin-bottom:16px;">
     Logged in as <b style="color:#4F4;">${escapeHtml(admin.displayName)}</b>
-    &nbsp;&mdash;&nbsp;
+    &nbsp;-&nbsp;
     <form method="POST" action="/blog/admin/logout" style="display:inline;">
       <button type="submit" class="admin-btn small danger">[Logout]</button>
     </form>
-    &nbsp;&mdash;&nbsp;
+    &nbsp;-&nbsp;
     <a href="/blog">View blog</a>
   </p>
 
@@ -1454,7 +1454,7 @@ router.use((req, res) => {
   res.status(404).send(page('404 - NT:NH Blog', `
 ${topNav(req)}
 <div class="content">
-  <h1>404 &mdash; Not Found</h1>
+  <h1>404 - Not Found</h1>
   <p>This page doesn&apos;t exist.</p>
   <br>
   <a href="/blog" class="return">&lt; Back to blog</a>
