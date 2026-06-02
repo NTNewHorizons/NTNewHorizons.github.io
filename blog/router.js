@@ -413,7 +413,8 @@ router.get('/', (req, res) => {
 ${topNav(req)}
 <div class="content">
   <h1 style="text-align:center;">NT:NH Dev Blog</h1>
-  <p>The official development blog for Nuclear Tech: New Horizons.</p>
+  <p>Devs talk shiiiiiiiiiiiiiiiiiiiiiiiiiiiiit</p>
+  <p>Weekly dev sneakpeeks are being post here, but also some random stuff</p>
   ${flashHtml(flash)}
   ${panels}
 </div>`));
