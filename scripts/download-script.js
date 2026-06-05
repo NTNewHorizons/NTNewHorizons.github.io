@@ -95,18 +95,21 @@ async function fetchReleases() {
     if (!res.ok) throw new Error(`GitHub API error ${res.status}`);
     const releases = await res.json();
 
+    // Filter out pre-releases and drafts
+    const stableReleases = releases.filter(r => !r.prerelease && !r.draft);
+
     // Always sort by published_at descending so the newest release is first,
     // regardless of the order GitHub returns them
-    releases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+    stableReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
 
     loading.style.display = 'none';
 
-    if (!releases.length) {
-      container.innerHTML = '<p class="state-center" style="display:block"><i class="fas fa-inbox"></i>No releases found.</p>';
+    if (!stableReleases.length) {
+      container.innerHTML = '<p class="state-center" style="display:block"><i class="fas fa-inbox"></i>No stable releases found.</p>';
       return;
     }
 
-    releases.forEach(r => container.appendChild(buildReleaseCard(r)));
+    stableReleases.forEach(r => container.appendChild(buildReleaseCard(r)));
 
     // Trigger reveal animations
     const observer = new IntersectionObserver(entries => {
