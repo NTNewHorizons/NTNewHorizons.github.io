@@ -137,7 +137,8 @@ app.get('/api/moddex/reviews', async (req, res) => {
       page++;
     } while (page <= lastPage);
 
-    res.json({ data: allReviews });
+    const good = allReviews.filter(r => r.rating >= 3.5 && r.content);
+    res.json({ data: good });
   } catch (err) {
     console.error('ModDex proxy error:', err.message);
     res.status(502).json({ error: 'Failed to fetch reviews' });

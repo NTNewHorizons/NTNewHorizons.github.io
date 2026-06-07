@@ -1399,33 +1399,33 @@
 
 /* ═══ ModDex Reviews Section ═══ */
 .reviews-container {
-  max-width: 700px;
+  max-width: 100%;
   margin: 0 auto;
+  overflow: hidden;
 }
 
-.reviews-scroll {
-  max-height: 520px;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+.reviews-viewport {
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
 }
 
-.reviews-scroll::-webkit-scrollbar {
-  width: 6px;
+.reviews-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: reviews-scroll var(--scroll-duration, 30s) linear infinite;
+  will-change: transform;
 }
 
-.reviews-scroll::-webkit-scrollbar-track {
-  background: transparent;
+.reviews-viewport:hover .reviews-track {
+  animation-play-state: paused;
 }
 
-.reviews-scroll::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-.reviews-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hot);
+@keyframes reviews-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .reviews-loading {
@@ -1438,11 +1438,12 @@
 }
 
 .review-card {
+  flex-shrink: 0;
+  width: 300px;
   background: rgba(10,3,0,0.75);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
-  margin-bottom: 1rem;
   transition: border-color 0.25s, background 0.25s;
 }
 
@@ -1463,6 +1464,9 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .review-stars {
@@ -1470,6 +1474,7 @@
   color: var(--yellow);
   letter-spacing: 2px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .review-stars .star-empty {
@@ -1481,6 +1486,10 @@
   font-size: 0.85rem;
   color: var(--text-mid);
   line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .review-text::before {
@@ -1504,6 +1513,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
   line-height: 1.7;
+  width: 100%;
 }
 
 .reviews-empty i {
