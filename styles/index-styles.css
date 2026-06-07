@@ -1439,7 +1439,7 @@
 
 .review-card {
   flex-shrink: 0;
-  width: 340px;
+  width: 680px;
   background: rgba(10,3,0,0.75);
   border: 1px solid var(--border);
   border-radius: 12px;
