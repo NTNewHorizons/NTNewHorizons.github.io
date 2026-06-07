@@ -112,7 +112,7 @@ app.get('/api/moddex/reviews', async (req, res) => {
     let lastPage = 1;
 
     do {
-      const url = new URL('https://moddex.gg/api/v1/projects/ntnewhorizons/reviews');
+      const url = new URL('https://moddex.gg/api/v1/modpacks/ntnewhorizons/reviews');
       url.searchParams.set('page', page);
       url.searchParams.set('per_page', 50);
 
