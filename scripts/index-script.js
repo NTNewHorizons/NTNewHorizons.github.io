@@ -367,13 +367,14 @@ if (subtitleEl) {
   function cardHtml(r) {
     const author = escapeHtml(r.author?.name || 'Anonymous');
     const text = escapeHtml(r.content || r.title || '');
-    return `<div class="review-card">
+    const url = `https://moddex.gg/modpack/ntnewhorizons/reviews/${r.id}`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="review-card">
       <div class="review-card-header">
         <span class="review-author">${author}</span>
         <span class="review-stars">${starsHtml(r.rating)}</span>
       </div>
       <div class="review-text">${text}</div>
-    </div>`;
+    </a>`;
   }
 
   function render(reviews) {

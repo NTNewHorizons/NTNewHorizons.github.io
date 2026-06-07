@@ -1438,6 +1438,7 @@
 }
 
 .review-card {
+  display: block;
   flex-shrink: 0;
   width: 340px;
   background: rgba(10,3,0,0.75);
@@ -1445,6 +1446,9 @@
   border-radius: 12px;
   padding: 1.75rem 1.75rem;
   transition: border-color 0.25s, background 0.25s;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .review-card:hover {
