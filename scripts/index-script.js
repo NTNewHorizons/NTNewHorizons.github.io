@@ -345,7 +345,7 @@ if (subtitleEl) {
 })();
 
 
-  // ─── ModDex Reviews + Hardcoded Bobcat Card ─────────────────────────────
+// ─── ModDex Reviews + Hardcoded Bobcat Card ─────────────────────────────
 (function () {
   const viewport = document.getElementById('reviewsViewport');
   const track = document.getElementById('reviewsTrack');
@@ -369,7 +369,7 @@ if (subtitleEl) {
     return `<div class="review-card bobcat-card" style="cursor: default;">
       <div class="review-card-header">
         <span class="review-author">The Bobcat</span>
-        <span class="review-stars" style="letter-spacing: 0.25em; font-size: 1.1em;">????‌?</span>
+        <span class="review-stars" style="letter-spacing: 0.25em; font-size: 1.1em;">?????</span>
       </div>
       <div class="review-text">i see it popping up on github fork list on occasion and im scared</div>
     </div>`;
@@ -426,51 +426,52 @@ if (subtitleEl) {
     });
 })();
 
-  // ─── Tech progression scroll-snap sync (mobile only) ──
-  if (window.innerWidth <= 768) {
-    (function () {
-      const container = document.getElementById('techStages');
-      const bar = document.getElementById('techProgressBar');
-      if (!container || !bar) return;
+// ─── Tech progression scroll-snap sync (mobile only) ──
+if (window.innerWidth <= 768) {
+  (function () {
+    const container = document.getElementById('techStages');
+    const bar = document.getElementById('techProgressBar');
+    if (!container || !bar) return;
 
-      const stages = container.querySelectorAll('.tech-stage');
-      const dots = [];
+    const stages = container.querySelectorAll('.tech-stage');
+    const dots = [];
 
-      stages.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
-        dot.addEventListener('click', function () {
-          const target = container.children[i];
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        });
-        bar.appendChild(dot);
-        dots.push(dot);
+    stages.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
+      dot.addEventListener('click', function () {
+        const target = container.children[i];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+      bar.appendChild(dot);
+      dots.push(dot);
+    });
+
+    function syncDots() {
+      if (stages.length === 0) return;
+      let activeIdx = 0;
+      let minDist = Infinity;
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      stages.forEach((stage, i) => {
+        const rect = stage.getBoundingClientRect();
+        const stageCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(stageCenter - containerCenter);
+        if (dist < minDist) {
+          minDist = dist;
+          activeIdx = i;
+        }
       });
 
-      function syncDots() {
-        if (stages.length === 0) return;
-        let activeIdx = 0;
-        let minDist = Infinity;
-        const containerRect = container.getBoundingClientRect();
-        const containerCenter = containerRect.left + containerRect.width / 2;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
+    }
 
-        stages.forEach((stage, i) => {
-          const rect = stage.getBoundingClientRect();
-          const stageCenter = rect.left + rect.width / 2;
-          const dist = Math.abs(stageCenter - containerCenter);
-          if (dist < minDist) {
-            minDist = dist;
-            activeIdx = i;
-          }
-        });
-
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
-      }
-
-      container.addEventListener('scroll', syncDots, { passive: true });
-      syncDots();
-})();
+    container.addEventListener('scroll', syncDots, { passive: true });
+    syncDots();
+  })();
+}
 
 // ─── Blackhole video cycle ───
 (function () {
@@ -515,9 +516,8 @@ if (subtitleEl) {
 
   startCycle();
 })();
-  }
 
-  // ─── Project Activity (GitHub API) ───────────────────
+// ─── Project Activity (GitHub API) ───────────────────
 (function () {
   const dot     = document.getElementById('activityDot');
   const label   = document.getElementById('activityLabel');
@@ -576,4 +576,3 @@ if (subtitleEl) {
     if (dot) dot.style.display = 'none';
   });
 })();
-});
