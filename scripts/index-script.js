@@ -345,7 +345,7 @@ if (subtitleEl) {
 })();
 
 
-  // ─── ModDex Reviews ─────────────────────────────────
+  // ─── ModDex Reviews + Hardcoded Bobcat Card ─────────────────────────────
 (function () {
   const viewport = document.getElementById('reviewsViewport');
   const track = document.getElementById('reviewsTrack');
@@ -364,6 +364,17 @@ if (subtitleEl) {
     return html;
   }
 
+  function bobcatCardHtml() {
+    // Special hardcoded card for "The Bobcat" with question marks
+    return `<div class="review-card bobcat-card" style="cursor: default;">
+      <div class="review-card-header">
+        <span class="review-author">The Bobcat</span>
+        <span class="review-stars" style="letter-spacing: 0.25em; font-size: 1.1em;">????‌?</span>
+      </div>
+      <div class="review-text">i see it popping up on github fork list on occasion and im scared</div>
+    </div>`;
+  }
+
   function cardHtml(r) {
     const author = escapeHtml(r.author?.name || 'Anonymous');
     const text = escapeHtml(r.content || r.title || '');
@@ -378,17 +389,15 @@ if (subtitleEl) {
   }
 
   function render(reviews) {
-    if (!reviews.length) {
-      track.innerHTML = '';
-      if (loading) loading.style.display = 'none';
-      track.innerHTML = '<div class="reviews-empty"><i class="fas fa-comment-slash"></i>No reviews yet.</div>';
-      return;
-    }
-
+    // Insert Bobcat card at the beginning, then ModDex reviews
+    const bobcatHtml = bobcatCardHtml();
     const cards = reviews.map(cardHtml);
-    track.innerHTML = cards.join('') + cards.join('');
+    const allCards = [bobcatHtml, ...cards];
+    
+    // Double the cards for infinite loop effect
+    track.innerHTML = allCards.join('') + allCards.join('');
 
-    const duration = Math.max(20, Math.round(reviews.length * 6));
+    const duration = Math.max(20, Math.round(allCards.length * 6));
     track.style.setProperty('--scroll-duration', duration + 's');
 
     if (loading) loading.style.display = 'none';
@@ -411,7 +420,9 @@ if (subtitleEl) {
     .catch(err => {
       console.warn('[Reviews]', err);
       if (loading) loading.style.display = 'none';
-      track.innerHTML = '<div class="reviews-error"><i class="fas fa-triangle-exclamation"></i>Could not load reviews.<br><span style="opacity:0.55;">Make sure MODDEX_API_KEY is set on the server.</span></div>';
+      // Still render the Bobcat card even if ModDex fails
+      track.innerHTML = bobcatCardHtml() + bobcatCardHtml();
+      track.style.setProperty('--scroll-duration', '12s');
     });
 })();
 
@@ -565,4 +576,4 @@ if (subtitleEl) {
     if (dot) dot.style.display = 'none';
   });
 })();
-})();
+});
