@@ -345,6 +345,17 @@ if (subtitleEl) {
 })();
 
 
+  // ─── Special review card: The Bobcat ────────────────
+  function theBobcatCardHtml() {
+    return `<div class="review-card review-card-special">
+      <div class="review-card-header">
+        <span class="review-author">The Bobcat</span>
+        <span class="review-stars">?????</span>
+      </div>
+      <div class="review-text">i see it popping up on github fork list on occasion and im scared</div>
+    </div>`;
+  }
+
   // ─── ModDex Reviews ─────────────────────────────────
 (function () {
   const viewport = document.getElementById('reviewsViewport');
@@ -378,17 +389,20 @@ if (subtitleEl) {
   }
 
   function render(reviews) {
+    const bobcat = theBobcatCardHtml();
     if (!reviews.length) {
       track.innerHTML = '';
       if (loading) loading.style.display = 'none';
-      track.innerHTML = '<div class="reviews-empty"><i class="fas fa-comment-slash"></i>No reviews yet.</div>';
+      track.innerHTML = bobcat + bobcat;
+      const duration = 20;
+      track.style.setProperty('--scroll-duration', duration + 's');
       return;
     }
 
-    const cards = reviews.map(cardHtml);
+    const cards = [bobcat, ...reviews.map(cardHtml)];
     track.innerHTML = cards.join('') + cards.join('');
 
-    const duration = Math.max(20, Math.round(reviews.length * 6));
+    const duration = Math.max(20, Math.round((reviews.length + 1) * 6));
     track.style.setProperty('--scroll-duration', duration + 's');
 
     if (loading) loading.style.display = 'none';
