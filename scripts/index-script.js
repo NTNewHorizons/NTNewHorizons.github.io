@@ -345,7 +345,7 @@ if (subtitleEl) {
 })();
 
 
-// ─── ModDex Reviews + Hardcoded Bobcat Card ─────────────────────────────
+  // ─── ModDex Reviews ─────────────────────────────────
 (function () {
   const viewport = document.getElementById('reviewsViewport');
   const track = document.getElementById('reviewsTrack');
@@ -364,17 +364,6 @@ if (subtitleEl) {
     return html;
   }
 
-  function bobcatCardHtml() {
-    // Special hardcoded card for "The Bobcat" with question marks
-    return `<div class="review-card bobcat-card" style="cursor: default;">
-      <div class="review-card-header">
-        <span class="review-author">The Bobcat</span>
-        <span class="review-stars" style="letter-spacing: 0.25em; font-size: 1.1em;">?????</span>
-      </div>
-      <div class="review-text">i see it popping up on github fork list on occasion and im scared</div>
-    </div>`;
-  }
-
   function cardHtml(r) {
     const author = escapeHtml(r.author?.name || 'Anonymous');
     const text = escapeHtml(r.content || r.title || '');
@@ -389,15 +378,17 @@ if (subtitleEl) {
   }
 
   function render(reviews) {
-    // Insert Bobcat card at the beginning, then ModDex reviews
-    const bobcatHtml = bobcatCardHtml();
-    const cards = reviews.map(cardHtml);
-    const allCards = [bobcatHtml, ...cards];
-    
-    // Double the cards for infinite loop effect
-    track.innerHTML = allCards.join('') + allCards.join('');
+    if (!reviews.length) {
+      track.innerHTML = '';
+      if (loading) loading.style.display = 'none';
+      track.innerHTML = '<div class="reviews-empty"><i class="fas fa-comment-slash"></i>No reviews yet.</div>';
+      return;
+    }
 
-    const duration = Math.max(20, Math.round(allCards.length * 6));
+    const cards = reviews.map(cardHtml);
+    track.innerHTML = cards.join('') + cards.join('');
+
+    const duration = Math.max(20, Math.round(reviews.length * 6));
     track.style.setProperty('--scroll-duration', duration + 's');
 
     if (loading) loading.style.display = 'none';
@@ -420,58 +411,55 @@ if (subtitleEl) {
     .catch(err => {
       console.warn('[Reviews]', err);
       if (loading) loading.style.display = 'none';
-      // Still render the Bobcat card even if ModDex fails
-      track.innerHTML = bobcatCardHtml() + bobcatCardHtml();
-      track.style.setProperty('--scroll-duration', '12s');
+      track.innerHTML = '<div class="reviews-error"><i class="fas fa-triangle-exclamation"></i>Could not load reviews.<br><span style="opacity:0.55;">Make sure MODDEX_API_KEY is set on the server.</span></div>';
     });
 })();
 
-// ─── Tech progression scroll-snap sync (mobile only) ──
-if (window.innerWidth <= 768) {
-  (function () {
-    const container = document.getElementById('techStages');
-    const bar = document.getElementById('techProgressBar');
-    if (!container || !bar) return;
+  // ─── Tech progression scroll-snap sync (mobile only) ──
+  if (window.innerWidth <= 768) {
+    (function () {
+      const container = document.getElementById('techStages');
+      const bar = document.getElementById('techProgressBar');
+      if (!container || !bar) return;
 
-    const stages = container.querySelectorAll('.tech-stage');
-    const dots = [];
+      const stages = container.querySelectorAll('.tech-stage');
+      const dots = [];
 
-    stages.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
-      dot.addEventListener('click', function () {
-        const target = container.children[i];
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      });
-      bar.appendChild(dot);
-      dots.push(dot);
-    });
-
-    function syncDots() {
-      if (stages.length === 0) return;
-      let activeIdx = 0;
-      let minDist = Infinity;
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.left + containerRect.width / 2;
-
-      stages.forEach((stage, i) => {
-        const rect = stage.getBoundingClientRect();
-        const stageCenter = rect.left + rect.width / 2;
-        const dist = Math.abs(stageCenter - containerCenter);
-        if (dist < minDist) {
-          minDist = dist;
-          activeIdx = i;
-        }
+      stages.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'tech-progress-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to stage ' + (i + 1));
+        dot.addEventListener('click', function () {
+          const target = container.children[i];
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+        bar.appendChild(dot);
+        dots.push(dot);
       });
 
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
-    }
+      function syncDots() {
+        if (stages.length === 0) return;
+        let activeIdx = 0;
+        let minDist = Infinity;
+        const containerRect = container.getBoundingClientRect();
+        const containerCenter = containerRect.left + containerRect.width / 2;
 
-    container.addEventListener('scroll', syncDots, { passive: true });
-    syncDots();
-  })();
-}
+        stages.forEach((stage, i) => {
+          const rect = stage.getBoundingClientRect();
+          const stageCenter = rect.left + rect.width / 2;
+          const dist = Math.abs(stageCenter - containerCenter);
+          if (dist < minDist) {
+            minDist = dist;
+            activeIdx = i;
+          }
+        });
+
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
+      }
+
+      container.addEventListener('scroll', syncDots, { passive: true });
+      syncDots();
+})();
 
 // ─── Blackhole video cycle ───
 (function () {
@@ -516,8 +504,9 @@ if (window.innerWidth <= 768) {
 
   startCycle();
 })();
+  }
 
-// ─── Project Activity (GitHub API) ───────────────────
+  // ─── Project Activity (GitHub API) ───────────────────
 (function () {
   const dot     = document.getElementById('activityDot');
   const label   = document.getElementById('activityLabel');
@@ -575,4 +564,5 @@ if (window.innerWidth <= 768) {
     label.textContent = 'GitHub';
     if (dot) dot.style.display = 'none';
   });
+})();
 })();
