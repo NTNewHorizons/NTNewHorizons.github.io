@@ -352,7 +352,7 @@ if (subtitleEl) {
         <span class="review-author">The Bobcat</span>
         <span class="review-stars">?????</span>
       </div>
-      <div class="review-text">i see it popping up on github fork list on occasion and im scared</div>
+      <div class="review-text">i see it popping up in the github fork graph on occasion and i'm scared</div>
     </div>`;
   }
 
