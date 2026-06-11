@@ -1072,7 +1072,7 @@ function renderAdminDashboard(req, res, editPost, activeTab) {
   <td>${count}</td>
   <td>
     <form method="POST" action="/blog/admin/users/delete" style="display:inline;"
-          onsubmit="return confirm('Delete user &quot;${escapeHtml(u.nickname).replace(/'/g, "\\'")} &quot;?')">
+          onsubmit="return confirm('Delete user &quot;${escapeHtml(u.nickname).replace(/\\/g, "\\\\").replace(/'/g, "\\'")} &quot;?')">
       <input type="hidden" name="userId" value="${escapeHtml(u.id)}" />
       <button type="submit" class="admin-btn small danger">[Delete]</button>
     </form>
