@@ -473,52 +473,90 @@ if (subtitleEl) {
 
       container.addEventListener('scroll', syncDots, { passive: true });
       syncDots();
-})();
+  })();
+  }
 
 // ─── Blackhole video cycle ───
 (function () {
-  const video = document.getElementById('blackholeVideo');
-  const videoElement = document.querySelector('.blackhole-bg video');
+  var video = document.getElementById('blackholeVideo');
+  if (!video) return;
 
-  if (!video || !videoElement) return;
+  var FADE_MS = 1500;
+  var PAUSE_MS = 10000;
+  var FADE_OUT_BEFORE_END = 1.5;
 
-  videoElement.style.opacity = '0';
-  videoElement.classList.add('blackhole-hidden');
+  var rafId = null;
+  var pauseTimer = null;
+
+  video.load();
+  video.classList.add('blackhole-hidden');
+
+  function cancelPending() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    if (pauseTimer) { clearTimeout(pauseTimer); pauseTimer = null; }
+  }
 
   function startCycle() {
+    cancelPending();
+
     video.currentTime = 0;
-    video.play().catch(err => console.log('Video play error:', err));
+    video.play()['catch'](function () {});
 
-    videoElement.classList.remove('blackhole-hidden', 'blackhole-fading-out');
-    videoElement.classList.add('blackhole-fading-in');
+    video.classList.remove('blackhole-hidden', 'blackhole-fading-out');
+    video.classList.add('blackhole-fading-in');
 
-    const fadeOutTime = video.duration - 1.5;
+    if (!isNaN(video.duration) && video.duration > 0) {
+      watchForFadeOut(video.duration - FADE_OUT_BEFORE_END);
+    } else {
+      waitForDuration();
+    }
+  }
 
-    const handleTimeUpdate = () => {
-      if (video.currentTime >= fadeOutTime) {
-        video.removeEventListener('timeupdate', handleTimeUpdate);
-        fadeOut();
+  function waitForDuration() {
+    function poll() {
+      if (!isNaN(video.duration) && video.duration > 0) {
+        watchForFadeOut(video.duration - FADE_OUT_BEFORE_END);
+      } else {
+        rafId = requestAnimationFrame(poll);
       }
-    };
-
-    video.addEventListener('timeupdate', handleTimeUpdate);
+    }
+    rafId = requestAnimationFrame(poll);
   }
 
-  function fadeOut() {
-    videoElement.classList.remove('blackhole-fading-in');
-    videoElement.classList.add('blackhole-fading-out');
+  function watchForFadeOut(fadeOutTime) {
+    function poll() {
+      if (video.currentTime >= fadeOutTime) {
+        beginFadeOut();
+      } else {
+        rafId = requestAnimationFrame(poll);
+      }
+    }
+    rafId = requestAnimationFrame(poll);
+  }
 
-    setTimeout(() => {
-      videoElement.classList.remove('blackhole-fading-out');
-      videoElement.classList.add('blackhole-hidden');
+  function beginFadeOut() {
+    cancelPending();
+
+    video.classList.remove('blackhole-fading-in');
+    video.classList.add('blackhole-fading-out');
+
+    pauseTimer = setTimeout(function () {
+      video.classList.remove('blackhole-fading-out');
+      video.classList.add('blackhole-hidden');
       video.pause();
-      setTimeout(startCycle, 10000);
-    }, 1500);
+      pauseTimer = setTimeout(startCycle, PAUSE_MS);
+    }, FADE_MS);
   }
 
-  startCycle();
-})();
+  if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    startCycle();
+  } else {
+    video.addEventListener('loadedmetadata', startCycle, { once: true });
+    video.addEventListener('error', function () {
+      video.classList.remove('blackhole-hidden');
+    }, { once: true });
   }
+})();
 
   // ─── Project Activity (GitHub API) ───────────────────
 (function () {
