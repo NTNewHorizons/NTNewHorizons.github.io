@@ -486,14 +486,17 @@ if (subtitleEl) {
   var FADE_OUT_BEFORE_END = 1.5;
 
   var rafId = null;
-  var pauseTimer = null;
+  var fadeTimer = null;
+  var cycleTimer = null;
+  var safetyTimer = null;
 
-  video.load();
   video.classList.add('blackhole-hidden');
 
   function cancelPending() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    if (pauseTimer) { clearTimeout(pauseTimer); pauseTimer = null; }
+    if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
+    if (cycleTimer) { clearTimeout(cycleTimer); cycleTimer = null; }
+    if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
   }
 
   function startCycle() {
@@ -506,7 +509,9 @@ if (subtitleEl) {
     video.classList.add('blackhole-fading-in');
 
     if (!isNaN(video.duration) && video.duration > 0) {
-      watchForFadeOut(video.duration - FADE_OUT_BEFORE_END);
+      var fadeOutTime = video.duration - FADE_OUT_BEFORE_END;
+      watchForFadeOut(fadeOutTime);
+      safetyTimer = setTimeout(beginFadeOut, (video.duration + 3) * 1000);
     } else {
       waitForDuration();
     }
@@ -515,7 +520,9 @@ if (subtitleEl) {
   function waitForDuration() {
     function poll() {
       if (!isNaN(video.duration) && video.duration > 0) {
-        watchForFadeOut(video.duration - FADE_OUT_BEFORE_END);
+        var fadeOutTime = video.duration - FADE_OUT_BEFORE_END;
+        watchForFadeOut(fadeOutTime);
+        safetyTimer = setTimeout(beginFadeOut, (video.duration + 3) * 1000);
       } else {
         rafId = requestAnimationFrame(poll);
       }
@@ -525,7 +532,7 @@ if (subtitleEl) {
 
   function watchForFadeOut(fadeOutTime) {
     function poll() {
-      if (video.currentTime >= fadeOutTime) {
+      if (video.ended || video.currentTime >= fadeOutTime) {
         beginFadeOut();
       } else {
         rafId = requestAnimationFrame(poll);
@@ -540,11 +547,11 @@ if (subtitleEl) {
     video.classList.remove('blackhole-fading-in');
     video.classList.add('blackhole-fading-out');
 
-    pauseTimer = setTimeout(function () {
+    fadeTimer = setTimeout(function () {
       video.classList.remove('blackhole-fading-out');
       video.classList.add('blackhole-hidden');
       video.pause();
-      pauseTimer = setTimeout(startCycle, PAUSE_MS);
+      cycleTimer = setTimeout(startCycle, PAUSE_MS);
     }, FADE_MS);
   }
 
