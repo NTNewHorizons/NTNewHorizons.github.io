@@ -476,91 +476,22 @@ if (subtitleEl) {
   })();
   }
 
-// ─── Blackhole video cycle ───
+// ─── Blackhole background video ───
 (function () {
   var video = document.getElementById('blackholeVideo');
   if (!video) return;
 
-  var FADE_MS = 1500;
-  var PAUSE_MS = 10000;
-  var FADE_OUT_BEFORE_END = 1.5;
-
-  var rafId = null;
-  var fadeTimer = null;
-  var cycleTimer = null;
-  var safetyTimer = null;
-
-  video.classList.add('blackhole-hidden');
-
-  function cancelPending() {
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    if (fadeTimer) { clearTimeout(fadeTimer); fadeTimer = null; }
-    if (cycleTimer) { clearTimeout(cycleTimer); cycleTimer = null; }
-    if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
-  }
-
-  function startCycle() {
-    cancelPending();
-
-    video.currentTime = 0;
+  function onCanPlay() {
     video.play()['catch'](function () {});
-
-    video.classList.remove('blackhole-hidden', 'blackhole-fading-out');
-    video.classList.add('blackhole-fading-in');
-
-    if (!isNaN(video.duration) && video.duration > 0) {
-      var fadeOutTime = video.duration - FADE_OUT_BEFORE_END;
-      watchForFadeOut(fadeOutTime);
-      safetyTimer = setTimeout(beginFadeOut, (video.duration + 3) * 1000);
-    } else {
-      waitForDuration();
-    }
+    video.classList.add('video-loaded');
   }
 
-  function waitForDuration() {
-    function poll() {
-      if (!isNaN(video.duration) && video.duration > 0) {
-        var fadeOutTime = video.duration - FADE_OUT_BEFORE_END;
-        watchForFadeOut(fadeOutTime);
-        safetyTimer = setTimeout(beginFadeOut, (video.duration + 3) * 1000);
-      } else {
-        rafId = requestAnimationFrame(poll);
-      }
-    }
-    rafId = requestAnimationFrame(poll);
-  }
-
-  function watchForFadeOut(fadeOutTime) {
-    function poll() {
-      if (video.ended || video.currentTime >= fadeOutTime) {
-        beginFadeOut();
-      } else {
-        rafId = requestAnimationFrame(poll);
-      }
-    }
-    rafId = requestAnimationFrame(poll);
-  }
-
-  function beginFadeOut() {
-    cancelPending();
-
-    video.classList.remove('blackhole-fading-in');
-    video.classList.add('blackhole-fading-out');
-
-    fadeTimer = setTimeout(function () {
-      video.classList.remove('blackhole-fading-out');
-      video.classList.add('blackhole-hidden');
-      video.pause();
-      cycleTimer = setTimeout(startCycle, PAUSE_MS);
-    }, FADE_MS);
-  }
-
-  if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-    startCycle();
+  if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+    onCanPlay();
   } else {
-    video.addEventListener('loadedmetadata', startCycle, { once: true });
+    video.addEventListener('canplay', onCanPlay, { once: true });
     video.addEventListener('error', function () {
-      video.classList.remove('blackhole-hidden');
+      video.classList.add('video-loaded');
     }, { once: true });
   }
 })();

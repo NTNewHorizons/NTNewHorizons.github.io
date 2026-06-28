@@ -33,6 +33,7 @@ html { scroll-behavior: smooth; }
   z-index: -100;
   overflow: hidden;
   transform: scale(1.05); /* hide blur edges */
+  background: radial-gradient(ellipse at center, #0a0a12 0%, #000 100%);
 }
 
 .blackhole-bg video {
@@ -40,6 +41,11 @@ html { scroll-behavior: smooth; }
   height: 100%;
   object-fit: cover;
   filter: blur(8px) brightness(0.35) saturate(1.4);
+  opacity: 0;
+  transition: opacity 1.5s ease-in;
+}
+
+.blackhole-bg video.video-loaded {
   opacity: 0.75;
 }
 
@@ -103,28 +109,7 @@ body {
   50%       { opacity: 1;   transform: scale(1.1); }
 }
 
-/* ─── Blackhole fade animations ─── */
-@keyframes blackholeFadeIn {
-  from { opacity: 0; }
-  to { opacity: 0.75; }
-}
 
-@keyframes blackholeFadeOut {
-  from { opacity: 0.75; }
-  to { opacity: 0; }
-}
-
-.blackhole-fading-in {
-  animation: blackholeFadeIn 1.5s ease-in forwards !important;
-}
-
-.blackhole-fading-out {
-  animation: blackholeFadeOut 1.5s ease-out forwards !important;
-}
-
-.blackhole-hidden {
-  opacity: 0 !important;
-}
 
 /* ─── Nav ─── */
 .nav-bar {
