@@ -399,7 +399,7 @@ if (subtitleEl) {
       return;
     }
 
-    const cards = [bobcat, ...reviews.map(cardHtml)];
+    const cards = [...reviews.slice(0, 4).map(cardHtml), bobcat, ...reviews.slice(4).map(cardHtml)];
     track.innerHTML = cards.join('') + cards.join('');
 
     const duration = Math.max(20, Math.round((reviews.length + 1) * 6));
