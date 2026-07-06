@@ -310,7 +310,7 @@ if (subtitleEl) {
     iframe.id = 'trailerPlayer';
     // youtube-nocookie.com = no tracking cookies before user clicks
     iframe.src =
-      'https://www.youtube-nocookie.com/embed/2cSn1n4V_x8' +
+      'https://www.youtube-nocookie.com/embed/vRPZX2XQVxk' +
       '?autoplay=1&rel=0&color=white&modestbranding=1&enablejsapi=1';
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; ' +
