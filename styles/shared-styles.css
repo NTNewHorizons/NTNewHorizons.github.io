@@ -32,8 +32,15 @@ html { scroll-behavior: smooth; }
   inset: 0;
   z-index: -100;
   overflow: hidden;
-  transform: scale(1.05); /* hide blur edges */
+  transform: scale(1.05);
   background: radial-gradient(ellipse at center, #0a0a12 0%, #000 100%);
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.blackhole-bg.bg-active {
+  opacity: 1;
 }
 
 .blackhole-bg video {
@@ -41,11 +48,6 @@ html { scroll-behavior: smooth; }
   height: 100%;
   object-fit: cover;
   filter: blur(8px) brightness(0.35) saturate(1.4);
-  opacity: 0;
-  transition: opacity 1.5s ease-in;
-}
-
-.blackhole-bg video.video-loaded {
   opacity: 0.75;
 }
 
@@ -56,6 +58,13 @@ html { scroll-behavior: smooth; }
   z-index: -100;
   overflow: hidden;
   background: #000;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.youtube-bg.bg-active {
+  opacity: 1;
 }
 
 .youtube-bg #ytBgPlayer {

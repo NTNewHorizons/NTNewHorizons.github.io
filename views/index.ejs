@@ -29,51 +29,106 @@
 </head>
 <body class="bg-grid scanlines">
 
-<% if (bgType === 'blackhole') { %>
   <!-- Black hole background -->
   <div class="blackhole-bg" aria-hidden="true" id="blackholeContainer">
-    <video muted playsinline preload="auto" loop id="blackholeVideo">
+    <video muted playsinline preload="auto" id="blackholeVideo">
       <source src="/resources/blackhole.webm" type="video/webm">
       <source src="/resources/blackhole_web.mp4" type="video/mp4">
     </video>
   </div>
-<% } else { %>
-  <!-- YouTube background (teaser video, muted, no controls) -->
-  <div class="youtube-bg" aria-hidden="true">
+
+  <!-- YouTube background player -->
+  <div class="youtube-bg" aria-hidden="true" id="youtubeBg">
     <div id="ytBgPlayer"></div>
   </div>
+
   <script>
-    (function() {
-      var el = document.getElementById('ytBgPlayer');
-      if (!el) return;
-      var attempts = 0, max = 30;
-      function tryInit() {
-        if (typeof YT !== 'undefined' && typeof YT.Player !== 'undefined') {
-          try {
-            new YT.Player('ytBgPlayer', {
-              videoId: 'vRPZX2XQVxk',
-              playerVars: {
-                autoplay: 1, mute: 1, controls: 0,
-                modestbranding: 1, rel: 0,
-                iv_load_policy: 3, disablekb: 1, fs: 0, playsinline: 1,
-                cc_load_policy: 0
-              },
-              events: {
-                onReady: function(e) { e.target.playVideo(); },
-                onStateChange: function(e) {
-                  if (e.data === YT.PlayerState.ENDED) e.target.playVideo();
-                }
-              }
-            });
-          } catch(e) {}
-          return;
-        }
-        if (++attempts < max) setTimeout(tryInit, 300);
+  (function() {
+    var VIDEOS = ['blackhole', 'a9n6abjdiKI', 'wMe3Qcc5_Ns'];
+    var currentIdx = -1;
+    var ytPlayer = null, ytReady = false;
+    var bhVideo = document.getElementById('blackholeVideo');
+    var bhBg = document.getElementById('blackholeContainer');
+    var ytBg = document.getElementById('youtubeBg');
+    var busy = false;
+
+    function pickNext() {
+      var pool = [];
+      for (var i = 0; i < VIDEOS.length; i++) {
+        if (i !== currentIdx) pool.push(i);
       }
-      tryInit();
-    })();
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function showBg(idx) {
+      if (idx === currentIdx || busy) return;
+      busy = true;
+      var prev = currentIdx;
+      currentIdx = idx;
+
+      if (prev !== -1) {
+        var prevEl = VIDEOS[prev] === 'blackhole' ? bhBg : ytBg;
+        prevEl.classList.remove('bg-active');
+        if (VIDEOS[prev] !== 'blackhole' && ytPlayer && ytPlayer.pauseVideo) {
+          ytPlayer.pauseVideo();
+        }
+      }
+
+      setTimeout(function() {
+        if (VIDEOS[idx] === 'blackhole') {
+          bhVideo.currentTime = 0;
+          bhVideo.play();
+          bhBg.classList.add('bg-active');
+        } else if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
+          ytPlayer.loadVideoById(VIDEOS[idx]);
+          ytBg.classList.add('bg-active');
+        } else {
+          currentIdx = 0;
+          bhVideo.currentTime = 0;
+          bhVideo.play();
+          bhBg.classList.add('bg-active');
+        }
+        busy = false;
+      }, 800);
+    }
+
+    function nextBg() { showBg(pickNext()); }
+
+    bhVideo.addEventListener('ended', nextBg);
+
+    function onYtState(e) {
+      if (e.data === YT.PlayerState.ENDED) nextBg();
+    }
+
+    function initYt() {
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        setTimeout(initYt, 300);
+        return;
+      }
+      ytPlayer = new YT.Player('ytBgPlayer', {
+        videoId: 'a9n6abjdiKI',
+        playerVars: {
+          autoplay: 0, mute: 1, controls: 0,
+          modestbranding: 1, rel: 0,
+          iv_load_policy: 3, disablekb: 1, fs: 0,
+          playsinline: 1, cc_load_policy: 0
+        },
+        events: {
+          onReady: function() { ytReady = true; },
+          onStateChange: onYtState
+        }
+      });
+    }
+    initYt();
+
+    setTimeout(function() {
+      currentIdx = 0;
+      bhVideo.currentTime = 0;
+      bhVideo.play();
+      bhBg.classList.add('bg-active');
+    }, 300);
+  })();
   </script>
-<% } %>
 
   <!-- Background orbs -->
   <div class="orb orb-1" aria-hidden="true"></div>

@@ -10,19 +10,6 @@ const TurndownService = require('turndown');
 
 const app  = express();
 
-// ─── Background alternator ───
-const BG_COUNTER_PATH = path.join(__dirname, 'bg-counter.json');
-function getBgType() {
-  let counter = 0;
-  try {
-    const data = JSON.parse(require('fs').readFileSync(BG_COUNTER_PATH, 'utf-8'));
-    counter = data.next || 0;
-  } catch (e) {}
-  const types = ['youtube', 'blackhole'];
-  const bgType = types[counter % 2];
-  require('fs').writeFileSync(BG_COUNTER_PATH, JSON.stringify({ next: counter + 1 }));
-  return bgType;
-}
 const PORT = 3000;
 
 const turndown = new TurndownService({
@@ -171,8 +158,8 @@ app.use('/blog', blogRouter);
 // PAGE ROUTES  (EJS templates with shared header/footer)
 // ──────────────────────────────────────────────────────────
 
-app.get('/',        (req, res) => res.render('index',    { currentPage: 'index', bgType: getBgType() }));
-app.get('/index',   (req, res) => res.render('index',    { currentPage: 'index', bgType: getBgType() }));
+app.get('/',        (req, res) => res.render('index',    { currentPage: 'index' }));
+app.get('/index',   (req, res) => res.render('index',    { currentPage: 'index' }));
 app.get('/about',   (req, res) => res.render('about',    { currentPage: 'about' }));
 app.get('/download',(req, res) => res.render('download', { currentPage: 'download' }));
 app.get('/guide',   (req, res) => res.render('guide',    { currentPage: 'guide' }));
