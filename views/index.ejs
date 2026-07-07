@@ -69,13 +69,16 @@
       if (prev !== -1) {
         var prevEl = VIDEOS[prev] === 'blackhole' ? bhBg : ytBg;
         prevEl.classList.remove('bg-active');
-        if (VIDEOS[prev] !== 'blackhole' && ytPlayer && ytPlayer.pauseVideo) {
+        if (VIDEOS[prev] === 'blackhole') {
+          bhVideo.pause();
+        } else if (ytPlayer && ytPlayer.pauseVideo) {
           ytPlayer.pauseVideo();
         }
       }
 
       setTimeout(function() {
         if (VIDEOS[idx] === 'blackhole') {
+          bhVideo.loop = false;
           bhVideo.currentTime = 0;
           bhVideo.play();
           bhBg.classList.add('bg-active');
@@ -84,6 +87,7 @@
           ytBg.classList.add('bg-active');
         } else {
           currentIdx = 0;
+          bhVideo.loop = true;
           bhVideo.currentTime = 0;
           bhVideo.play();
           bhBg.classList.add('bg-active');
@@ -114,19 +118,38 @@
           playsinline: 1, cc_load_policy: 0
         },
         events: {
-          onReady: function() { ytReady = true; },
+          onReady: function() {
+            ytReady = true;
+            if (currentIdx === 0 && bhVideo.loop) {
+              bhVideo.loop = false;
+              bhVideo.pause();
+              nextBg();
+            }
+          },
           onStateChange: onYtState
         }
       });
     }
     initYt();
 
-    setTimeout(function() {
-      currentIdx = 0;
-      bhVideo.currentTime = 0;
-      bhVideo.play();
-      bhBg.classList.add('bg-active');
-    }, 300);
+    // Start with blackhole immediately while YT loads
+    currentIdx = 0;
+    bhVideo.currentTime = 0;
+    bhVideo.play();
+    bhBg.classList.add('bg-active');
+
+    // Poll for YT readiness, then switch to a random background (never blackhole)
+    var ytWaited = 0;
+    (function pollYt() {
+      if (ytReady && ytPlayer) {
+        nextBg();
+      } else if (ytWaited < 24) {
+        ytWaited++;
+        setTimeout(pollYt, 500);
+      } else {
+        bhVideo.loop = true;
+      }
+    })();
   })();
   </script>
 
