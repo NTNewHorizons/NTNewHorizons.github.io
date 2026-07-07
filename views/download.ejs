@@ -31,7 +31,12 @@
 <body class="bg-grid scanlines">
 
   <!-- Black hole background -->
-  <div class="blackhole-bg" aria-hidden="true"></div>
+  <div class="blackhole-bg bg-active" aria-hidden="true">
+    <video muted playsinline preload="auto" loop autoplay>
+      <source src="/resources/blackhole.webm" type="video/webm">
+      <source src="/resources/blackhole_web.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Background orbs -->
   <div class="orb orb-1" aria-hidden="true"></div>
