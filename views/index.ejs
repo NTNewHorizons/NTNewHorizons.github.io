@@ -29,6 +29,7 @@
 </head>
 <body class="bg-grid scanlines">
 
+<% if (bgType === 'blackhole') { %>
   <!-- Black hole background -->
   <div class="blackhole-bg" aria-hidden="true" id="blackholeContainer">
     <video muted playsinline preload="auto" loop id="blackholeVideo">
@@ -36,6 +37,37 @@
       <source src="/resources/blackhole_web.mp4" type="video/mp4">
     </video>
   </div>
+<% } else { %>
+  <!-- YouTube background (teaser video, muted, no controls) -->
+  <div class="youtube-bg" aria-hidden="true">
+    <div id="ytBgPlayer"></div>
+  </div>
+  <script>
+    (function() {
+      var el = document.getElementById('ytBgPlayer');
+      if (!el) return;
+      var attempts = 0, max = 30;
+      function tryInit() {
+        if (typeof YT !== 'undefined' && typeof YT.Player !== 'undefined') {
+          try {
+            new YT.Player('ytBgPlayer', {
+              videoId: 'vRPZX2XQVxk',
+              playerVars: {
+                autoplay: 1, mute: 1, controls: 0, loop: 1,
+                playlist: 'vRPZX2XQVxk', modestbranding: 1, rel: 0,
+                iv_load_policy: 3, disablekb: 1, fs: 0, playsinline: 1
+              },
+              events: { onReady: function(e) { e.target.playVideo(); } }
+            });
+          } catch(e) {}
+          return;
+        }
+        if (++attempts < max) setTimeout(tryInit, 300);
+      }
+      tryInit();
+    })();
+  </script>
+<% } %>
 
   <!-- Background orbs -->
   <div class="orb orb-1" aria-hidden="true"></div>
