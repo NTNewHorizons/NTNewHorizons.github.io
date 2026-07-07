@@ -53,12 +53,17 @@
             new YT.Player('ytBgPlayer', {
               videoId: 'vRPZX2XQVxk',
               playerVars: {
-                autoplay: 1, mute: 1, controls: 0, loop: 1,
-                playlist: 'vRPZX2XQVxk', modestbranding: 1, rel: 0,
+                autoplay: 1, mute: 1, controls: 0,
+                modestbranding: 1, rel: 0,
                 iv_load_policy: 3, disablekb: 1, fs: 0, playsinline: 1,
                 cc_load_policy: 0
               },
-              events: { onReady: function(e) { e.target.playVideo(); } }
+              events: {
+                onReady: function(e) { e.target.playVideo(); },
+                onStateChange: function(e) {
+                  if (e.data === YT.PlayerState.ENDED) e.target.playVideo();
+                }
+              }
             });
           } catch(e) {}
           return;
