@@ -2,6 +2,7 @@ node_modules/
 blog-data/admins.json
 blog-data/comments.json
 blog-data/users.json
+blog-data/posts.json
 resources/
 .env
 bg-counter.json
