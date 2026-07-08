@@ -1,6 +1,7 @@
 (function () {
   const banner  = document.getElementById('cookieBanner');
-  if (localStorage.getItem('cookiesAccepted')) { if (banner) banner.remove(); return; }
+  const dismissed = localStorage.getItem('cookiesAccepted') || localStorage.getItem('cookiesDismissed');
+  if (dismissed) { if (banner) banner.remove(); return; }
   const dismiss = () => {
     if (!banner) return;
     banner.classList.add('hiding');
@@ -13,7 +14,7 @@
     dismiss();
   });
   if (declineBtn) declineBtn.addEventListener('click', () => {
-    window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
+    localStorage.setItem('cookiesDismissed', 'true');
     dismiss();
   });
 })();
