@@ -35,7 +35,7 @@ html { scroll-behavior: smooth; }
   transform: scale(1.05);
   background: radial-gradient(ellipse at center, #0a0a12 0%, #000 100%);
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 5s ease;
   pointer-events: none;
 }
 
@@ -59,7 +59,7 @@ html { scroll-behavior: smooth; }
   overflow: hidden;
   background: #000;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 5s ease;
   pointer-events: none;
 }
 
