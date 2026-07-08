@@ -7,6 +7,7 @@ const path       = require('path');
 const bcrypt     = require('bcryptjs');
 const { marked } = require('marked');
 const crypto     = require('crypto');
+const dns = require('dns').promises;
 
 // ──────────────────────────────────────────────────────────────────────────────
 // IMAGE UPLOAD SETUP (requires: npm install multer)
@@ -115,8 +116,51 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
+async function hasEmailDomain(email) {
+  const domain = email.split('@')[1];
+  if (!domain) return false;
+  try {
+    const mx = await dns.resolveMx(domain);
+    return Array.isArray(mx) && mx.length > 0;
+  } catch {
+    return true; // fail open - DNS errors may be temporary
+  }
+}
+
 function isValidNickname(nick) {
   return /^[a-zA-Z0-9_\- ]{1,30}$/.test(nick);
+}
+
+const RESEND_API_KEY     = () => process.env.RESEND_API_KEY || '';
+const RESEND_FROM_EMAIL  = () => process.env.RESEND_FROM_EMAIL || 'noreply@ntnewhorizons.com';
+const VERIFICATION_EXPIRY_HOURS = 48;
+
+async function sendVerificationEmail(email, token) {
+  const apiKey = RESEND_API_KEY();
+  if (!apiKey) return false;
+  const verifyUrl = `https://ntnewhorizons.com/blog/verify/${token}`;
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: RESEND_FROM_EMAIL(),
+        to: email,
+        subject: 'Verify your email - NT:NH Blog',
+        html: `<p>Thanks for registering on the Nuclear Tech: New Horizons blog!</p>
+<p>Please verify your email by clicking the link below:</p>
+<p><a href="${verifyUrl}">${verifyUrl}</a></p>
+<p>This link expires in ${VERIFICATION_EXPIRY_HOURS} hours.</p>
+<p>If you did not create an account, you can ignore this email.</p>`,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 const NICK_COOLDOWN_DAYS = 7;
@@ -220,7 +264,7 @@ a:hover{color:#FF8;text-decoration:underline;}
 /* flash */
 .msg{padding:8px 12px;margin:10px 0;background:#333;border-left:3px solid #FF8;}
 .msg.error{border-color:#F44;color:#F88;}
-.msg.ok{border-color:#4F4;color:#8F8;}
+.msg.ok,.msg.success{border-color:#4F4;color:#8F8;}
 .msg.info{border-color:#88F;color:#aaf;}
 
 /* top nav */
@@ -621,6 +665,7 @@ router.post('/register', async (req, res) => {
   const password2 = (req.body.password2 || '');
 
   if (!isValidEmail(email)) { flashSet(req, 'Error: Please enter a valid email address.'); return res.redirect('/blog/register'); }
+  if (!(await hasEmailDomain(email))) { flashSet(req, 'Error: Email domain does not exist or does not accept mail.'); return res.redirect('/blog/register'); }
   if (!isValidNickname(nickname)) { flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).'); return res.redirect('/blog/register'); }
   if (password.length < 8) { flashSet(req, 'Error: Password must be at least 8 characters.'); return res.redirect('/blog/register'); }
   if (password !== password2) { flashSet(req, 'Error: Passwords do not match.'); return res.redirect('/blog/register'); }
@@ -633,21 +678,51 @@ router.post('/register', async (req, res) => {
   if (users.find(u => u.nickname.toLowerCase() === nickname.toLowerCase())) { flashSet(req, 'Error: That nickname is already taken. Please choose another.'); return res.redirect('/blog/register'); }
 
   const passwordHash = await bcrypt.hash(password, 12);
-  const newUser = {
-    id:                crypto.randomBytes(12).toString('hex'),
-    email,
-    nickname,
-    passwordHash,
-    registeredAt:      new Date().toISOString(),
-    nicknameChangedAt: null,
-  };
+  const hasResend = !!RESEND_API_KEY();
 
-  users.push(newUser);
-  writeData('users.json', users);
+  if (hasResend) {
+    // Email verification flow
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const newUser = {
+      id:                     crypto.randomBytes(12).toString('hex'),
+      email,
+      nickname,
+      passwordHash,
+      verified:               false,
+      verificationToken,
+      verificationTokenExpiresAt: new Date(Date.now() + VERIFICATION_EXPIRY_HOURS * 3600000).toISOString(),
+      registeredAt:           new Date().toISOString(),
+      nicknameChangedAt:      null,
+    };
 
-  req.session.user = { id: newUser.id };
-  flashSet(req, `Welcome, ${nickname}! Your account has been created.`);
-  res.redirect('/blog');
+    users.push(newUser);
+    writeData('users.json', users);
+
+    const sent = await sendVerificationEmail(email, verificationToken);
+    if (sent) {
+      flashSet(req, 'Account created! Check your email for a verification link.');
+    } else {
+      flashSet(req, 'Account created, but we could not send the verification email. Visit /blog/resend-verification to try again.');
+    }
+    res.redirect('/blog/verify-sent');
+  } else {
+    // Fallback: auto-login (no Resend configured)
+    const newUser = {
+      id:                crypto.randomBytes(12).toString('hex'),
+      email,
+      nickname,
+      passwordHash,
+      registeredAt:      new Date().toISOString(),
+      nicknameChangedAt: null,
+    };
+
+    users.push(newUser);
+    writeData('users.json', users);
+
+    req.session.user = { id: newUser.id };
+    flashSet(req, `Welcome, ${nickname}! Your account has been created.`);
+    res.redirect('/blog');
+  }
 });
 
 router.get('/login', (req, res) => {
@@ -692,6 +767,10 @@ router.post('/login', async (req, res) => {
   if (user) {
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) { flashSet(req, FAIL); return res.redirect('/blog/login'); }
+    if (user.verified === false) {
+      flashSet(req, 'Error: Please verify your email before logging in. <a href="/blog/verify-sent">Resend verification email</a>.');
+      return res.redirect('/blog/login');
+    }
     req.session.user = { id: user.id };
     flashSet(req, `Welcome back, ${user.nickname}!`);
     return res.redirect('/blog');
@@ -719,6 +798,142 @@ router.post('/user/logout', (req, res) => {
   delete req.session.user;
   flashSet(req, 'You have been logged out.');
   res.redirect('/blog');
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// EMAIL VERIFICATION
+// ──────────────────────────────────────────────────────────────────────────────
+
+router.get('/verify-sent', (req, res) => {
+  const flash = flashGet(req);
+  res.send(page('Verify your email - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Check your email</h2>
+  ${flashHtml(flash)}
+  <p>We sent a verification link to the email address you registered with.</p>
+  <p>Click the link in the email to activate your account.</p>
+  <p style="margin-top:20px;">
+    <a href="/blog/resend-verification" class="auth-submit" style="display:inline-block;text-decoration:none;padding:6px 20px;">[ Resend verification email ]</a>
+  </p>
+  <div class="auth-switch">
+    <a href="/blog/login">[Back to Login]</a>
+  </div>
+</div>`));
+});
+
+router.get('/verify/:token', async (req, res) => {
+  const token = req.params.token;
+  if (!token) return res.redirect('/blog');
+
+  const users = readData('users.json');
+  const idx   = users.findIndex(u => u.verificationToken === token);
+
+  if (idx === -1) {
+    return res.send(page('Verification failed - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Verification failed</h2>
+  <div class="msg error">Invalid or expired verification link.</div>
+  <div class="auth-switch">
+    <a href="/blog/register">[Create a new account]</a><br>
+    <a href="/blog">[Back to blog]</a>
+  </div>
+</div>`));
+  }
+
+  const user = users[idx];
+  if (user.verified) {
+    return res.send(page('Already verified - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Already verified</h2>
+  <div class="msg success">Your email is already verified. You can log in.</div>
+  <div class="auth-switch">
+    <a href="/blog/login">[Go to Login]</a>
+  </div>
+</div>`));
+  }
+
+  const expiresAt = new Date(user.verificationTokenExpiresAt).getTime();
+  if (Date.now() > expiresAt) {
+    return res.send(page('Link expired - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Link expired</h2>
+  <div class="msg error">This verification link has expired.</div>
+  <div class="auth-switch">
+    <a href="/blog/resend-verification">[Resend verification email]</a><br>
+    <a href="/blog">[Back to blog]</a>
+  </div>
+</div>`));
+  }
+
+  users[idx].verified               = true;
+  users[idx].verificationToken      = null;
+  users[idx].verificationTokenExpiresAt = null;
+  writeData('users.json', users);
+
+  res.send(page('Email verified - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Email verified!</h2>
+  <div class="msg success">Your email has been verified. You can now log in.</div>
+  <div class="auth-switch">
+    <a href="/blog/login">[Go to Login]</a>
+  </div>
+</div>`));
+});
+
+router.all('/resend-verification', async (req, res) => {
+  const email = ((req.body && req.body.email) || req.query.email || '').trim().toLowerCase();
+  const flash = flashGet(req);
+
+  if (!email) {
+    return res.send(page('Resend verification - NT:NH Blog', `
+${topNav(req)}
+<div class="auth-wrap">
+  <h2>Resend verification email</h2>
+  ${flashHtml(flash)}
+  <form method="POST" action="/blog/resend-verification">
+    <div class="field-group">
+      <label class="field-label" for="rv-email">Your email address</label>
+      <input class="auth-input" id="rv-email" type="email" name="email" required placeholder="you@example.com" />
+    </div>
+    <button class="auth-submit full" type="submit">[ RESEND ]</button>
+  </form>
+  <div class="auth-switch">
+    <a href="/blog/login">[Back to Login]</a>
+  </div>
+</div>`));
+  }
+
+  const users = readData('users.json');
+  const user  = users.find(u => u.email === email);
+
+  if (!user) {
+    flashSet(req, 'Error: No account found with that email address.');
+    return res.redirect('/blog/resend-verification');
+  }
+
+  if (user.verified) {
+    flashSet(req, 'That email is already verified. You can log in.');
+    return res.redirect('/blog/login');
+  }
+
+  const verificationToken = crypto.randomBytes(32).toString('hex');
+  const idx = users.findIndex(u => u.id === user.id);
+  users[idx].verificationToken           = verificationToken;
+  users[idx].verificationTokenExpiresAt  = new Date(Date.now() + VERIFICATION_EXPIRY_HOURS * 3600000).toISOString();
+  writeData('users.json', users);
+
+  const sent = await sendVerificationEmail(email, verificationToken);
+  if (sent) {
+    flashSet(req, 'Verification email sent! Check your inbox.');
+  } else {
+    flashSet(req, 'Error: Could not send verification email. Please try again later.');
+  }
+  res.redirect('/blog/verify-sent');
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -846,6 +1061,7 @@ router.post('/profile/password', async (req, res) => {
   const newPassword     = req.body.newPassword     || '';
   const newPassword2    = req.body.newPassword2    || '';
 
+  if (!currentPassword) { flashSet(req, 'Error: Current password is required.'); return res.redirect('/blog/profile'); }
   if (newPassword.length < 8) { flashSet(req, 'Error: New password must be at least 8 characters.'); return res.redirect('/blog/profile'); }
   if (newPassword !== newPassword2) { flashSet(req, 'Error: New passwords do not match.'); return res.redirect('/blog/profile'); }
 
