@@ -1,16 +1,14 @@
 # Auth.md - NTNewHorizons
 
-This site is the public website for the **Nuclear Tech: New Horizons** Minecraft modpack.
-AI agents can access public content freely. The blog admin panel requires registration.
+This auth.md describes how AI agents can register and authenticate with the **Nuclear Tech: New Horizons** website.
 
 ## Agent Audience
 
-This auth.md is for AI agents that want to:
-- Read public pages (no auth needed)
+- Read public pages (no auth required)
 - Register for a blog user account
 - Manage blog content via the admin panel
 
-## Public Access (No Auth Required)
+## Public Access
 
 | Resource | URL |
 |---|---|
@@ -22,29 +20,37 @@ This auth.md is for AI agents that want to:
 
 ## Registration
 
-Human users can register a blog account at:
+Agents register blog accounts via the following endpoints.
 
-| Endpoint | Method | Description |
-|---|---|---|
-| `/blog/register` | GET + POST | Registration form (email, password, username) |
+| Step | Endpoint | Method | Description |
+|---|---|---|---|
+| Register | `/blog/register` | GET + POST | Create account (email, password, nickname) |
+| Login | `/blog/login` | GET + POST | Authenticate, receive session cookie |
+| Logout | `/blog/user/logout` | POST | Destroy session |
 
-After registration the user logs in at `/blog/login` and receives a session cookie.
+After successful login, the agent holds an `express-session` cookie (`connect.sid`, httpOnly, 24-hour expiry).
 
 ## Supported Methods
 
-- **Identity type:** email
-- **Credential type:** password (bcryptjs-hashed)
-- **Auth scheme:** session cookie (`express-session`, httpOnly, 1-day expiry)
-- **OAuth 2.0 / OIDC:** Not yet available. The `/.well-known/` metadata endpoints are placeholders for future implementation.
-
-## Session Details
-
-| Property | Value |
+| Method | Detail |
 |---|---|
-| Cookie | `connect.sid` |
-| httpOnly | true |
-| secure | false (terminated at nginx) |
-| maxAge | 24 hours |
+| Identity type | email (verified_email assertion) |
+| Credential type | password (bcryptjs-hashed) |
+| Auth scheme | session cookie (`connect.sid`, httpOnly) |
+| AS metadata | `/.well-known/oauth-authorization-server` |
+| PR metadata | `/.well-known/oauth-protected-resource` |
+
+## Revocation
+
+Session revocation is available via the admin panel or by posting to `/blog/user/logout`. Contact the site admin on Discord for manual revocation.
+
+## Well-Known Endpoints
+
+| Endpoint | Description |
+|---|---|
+| `/.well-known/oauth-authorization-server` | Authorization server metadata with `agent_auth` block |
+| `/.well-known/oauth-protected-resource` | Protected resource metadata |
+| `/.well-known/openid-configuration` | OIDC discovery (placeholder) |
 
 ## Contact
 

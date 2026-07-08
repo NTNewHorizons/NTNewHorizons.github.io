@@ -349,10 +349,19 @@ app.get('/.well-known/oauth-authorization-server', (req, res) => {
     code_challenge_methods_supported: [],
     token_endpoint_auth_methods_supported: [],
     agent_auth: {
+      skill: 'auth-md',
       register_uri: 'https://ntnewhorizons.com/blog/register',
-      identity_types: ['email'],
-      credential_types: ['password'],
-      claim_revocation_url: ''
+      identity_types_supported: ['identity_assertion'],
+      identity_assertion: {
+        assertion_types_supported: [
+          'verified_email',
+          'urn:ietf:params:oauth:token-type:id-jag'
+        ],
+        credential_types_supported: ['password'],
+        claim_uri: 'https://ntnewhorizons.com/blog/login',
+        revocation_uri: 'https://ntnewhorizons.com/blog/user/logout'
+      },
+      events_supported: ['revocation']
     }
   });
 });
