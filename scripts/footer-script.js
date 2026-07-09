@@ -13,8 +13,11 @@
     localStorage.setItem('cookiesAccepted', 'true');
     dismiss();
   });
-  if (declineBtn) declineBtn.addEventListener('click', () => {
+  if (declineBtn) declineBtn.addEventListener('click', (e) => {
     localStorage.setItem('cookiesDismissed', 'true');
+    if (e.isTrusted) {
+      window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
+    }
     dismiss();
   });
 })();
