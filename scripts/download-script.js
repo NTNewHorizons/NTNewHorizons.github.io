@@ -90,9 +90,9 @@ async function fetchReleases() {
     loading.style.display = 'block';
     error.style.display   = 'none';
 
-    // Fetch up to 100 releases (GitHub max per page), sorted newest-first by published_at
-    const res = await fetch('https://api.github.com/repos/NTNewHorizons/NTNH/releases?per_page=100');
-    if (!res.ok) throw new Error(`GitHub API error ${res.status}`);
+    // Fetch via server-side proxy to avoid GitHub API rate limits
+    const res = await fetch('/api/github/releases');
+    if (!res.ok) throw new Error(`Releases API error ${res.status}`);
     const releases = await res.json();
 
     // Filter out pre-releases and drafts

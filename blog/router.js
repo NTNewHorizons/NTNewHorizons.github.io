@@ -564,7 +564,7 @@ router.post('/post/:slug/comment', (req, res) => {
   if (!posts.find(p => p.slug === slug && p.published))
     return res.status(404).send('Post not found.');
 
-  const content = (req.body.content || '').trim();
+  const content = ((req.body && req.body.content) || '').trim();
   if (!content || content.length > 2000) {
     flashSet(req, 'Error: Comment must be 1\u20132000 characters.');
     return res.redirect(`/blog/post/${slug}#comments`);
@@ -659,10 +659,10 @@ ${topNav(req)}
 router.post('/register', async (req, res) => {
   if (isUser(req)) return res.redirect('/blog');
 
-  const email     = (req.body.email     || '').trim().toLowerCase();
-  const nickname  = (req.body.nickname  || '').trim();
-  const password  = (req.body.password  || '');
-  const password2 = (req.body.password2 || '');
+  const email     = ((req.body && req.body.email)     || '').trim().toLowerCase();
+  const nickname  = ((req.body && req.body.nickname)  || '').trim();
+  const password  = ((req.body && req.body.password)  || '');
+  const password2 = ((req.body && req.body.password2) || '');
 
   if (!isValidEmail(email)) { flashSet(req, 'Error: Please enter a valid email address.'); return res.redirect('/blog/register'); }
   if (!(await hasEmailDomain(email))) { flashSet(req, 'Error: Email domain does not exist or does not accept mail.'); return res.redirect('/blog/register'); }
@@ -756,8 +756,8 @@ ${topNav(req)}
 router.post('/login', async (req, res) => {
   if (isUser(req) || isAdmin(req)) return res.redirect('/blog');
 
-  const email    = (req.body.email    || '').trim().toLowerCase();
-  const password = (req.body.password || '');
+  const email    = ((req.body && req.body.email)    || '').trim().toLowerCase();
+  const password = ((req.body && req.body.password) || '');
   const FAIL     = 'Error: Invalid email or password.';
 
   // Check regular users first
@@ -886,7 +886,7 @@ ${topNav(req)}
 });
 
 router.all('/resend-verification', async (req, res) => {
-  const email = ((req.body && req.body.email) || req.query.email || '').trim().toLowerCase();
+  const email = ((req.body && req.body.email) || (req.query && req.query.email) || '').trim().toLowerCase();
   const flash = flashGet(req);
 
   if (!email) {
@@ -1029,7 +1029,7 @@ router.post('/profile/nickname', (req, res) => {
   const user = getCurrentUser(req);
   if (!user) { req.session.destroy(); return res.redirect('/blog/login'); }
 
-  const newNick = (req.body.nickname || '').trim();
+  const newNick = ((req.body && req.body.nickname) || '').trim();
 
   if (!isValidNickname(newNick)) { flashSet(req, 'Error: Nickname must be 1\u201330 characters (letters, numbers, spaces, _ -).'); return res.redirect('/blog/profile'); }
   if (daysSince(user.nicknameChangedAt) < NICK_COOLDOWN_DAYS) { flashSet(req, `Error: Nickname cooldown active - try again in ${nickTimeRemaining(user.nicknameChangedAt)}.`); return res.redirect('/blog/profile'); }
@@ -1057,9 +1057,9 @@ router.post('/profile/password', async (req, res) => {
   const user = getCurrentUser(req);
   if (!user) { req.session.destroy(); return res.redirect('/blog/login'); }
 
-  const currentPassword = req.body.currentPassword || '';
-  const newPassword     = req.body.newPassword     || '';
-  const newPassword2    = req.body.newPassword2    || '';
+  const currentPassword = (req.body && req.body.currentPassword) || '';
+  const newPassword     = (req.body && req.body.newPassword)     || '';
+  const newPassword2    = (req.body && req.body.newPassword2)    || '';
 
   if (!currentPassword) { flashSet(req, 'Error: Current password is required.'); return res.redirect('/blog/profile'); }
   if (newPassword.length < 8) { flashSet(req, 'Error: New password must be at least 8 characters.'); return res.redirect('/blog/profile'); }

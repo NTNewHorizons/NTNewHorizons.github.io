@@ -1,6 +1,6 @@
 # AGENTS.md - NTNewHorizons.github.io
 
-Public website for the **Nuclear Tech: New Horizons** Minecraft modpack.  
+Public website for **Nuclear Tech: New Horizons** Minecraft modpack.  
 Node.js/Express 5 + EJS. **No build, lint, typecheck, test, or format tooling.** No opencode config files exist.
 
 ## Commands
@@ -23,6 +23,7 @@ npm test                                # just echoes "Error: no test specified"
 | `styles/` | `shared-styles.css` global; `{page}-styles.css` per page. Blog CSS lives **in `blog/router.js`** as the `BLOG_CSS` template string - not in `styles/`. |
 | `scripts/` | Per-page JS plus `webmcp.js` (loaded on every EJS page via footer). No bundler. |
 | `resources/` | **Gitignored.** Favicon, screenshots, video, blog uploads. |
+| `blog-data/` | JSON flat files; blocked from static access at server.js:96-98. |
 
 ## Routes
 
@@ -46,17 +47,16 @@ npm test                                # just echoes "Error: no test specified"
 | `SESSION_SECRET` | Yes (dev fallback) | Dev fallback: `'ntnh-blog-change-this-secret-in-prod'` |
 | `MODDEX_API_KEY` | Yes | Bearer token for ModDex API (reviews proxy) |
 
-## Blog subsystem (`blog/router.js`, ~1464 lines)
+## Blog subsystem (`blog/router.js`, ~1681 lines)
 
-- **NOT EJS** - generates raw HTML via `page(title, body, ogMeta)` and `topNav(req)` helper functions. All blog CSS is a template string (`BLOG_CSS`) embedded in `router.js`, not in `styles/`.
-- **Session** - shares `express-session` with main Express app (mounted as middleware).
+- **NOT EJS** - generates raw HTML via `page(title, body, ogMeta)` and `topNav(req)` helpers. All blog CSS is a template string (`BLOG_CSS`) embedded in `router.js`.
+- **Session** - shares `express-session` with main Express app.
 - **Storage** - JSON flat files in `blog-data/`:
   - `posts.json` - **tracked in git** (published posts)
   - `admins.json`, `users.json`, `comments.json` - **gitignored**
-- `blog-data/` is blocked from direct static access (`server.js:93-95`).
 - Image uploads via `multer` (optional - degrades gracefully if not installed): 8 MB limit, image MIME only, stored in `resources/blog-uploads/`.
 - Blog posts are Markdown, rendered via `marked`.
-- Auth: email + bcryptjs. Admin panel at `/blog/admin`.
+- Auth: email + bcryptjs. Admin panel at `/blog/admin`. Email verification via Resend (optional, falls back to auto-login).
 
 ## Agent discovery features
 
@@ -71,8 +71,7 @@ All wired in `server.js`:
 
 ## Gotchas
 
-- **"Privacy Policy" links trigger a rickroll** - inline JS in `views/index.ejs` and `views/download.ejs` catches any `a[href*="privacy-policy"]` click.
-- **Cookie banner "Decline" is also a rickroll** - redirects to Wikipedia "Cookie" page.
+- **Cookie banner "Decline" redirects to Wikipedia "Cookie" page** - but only for real human clicks (`event.isTrusted`). DuckDuckGo/adblocker auto-clicks bypass the redirect and silently dismiss the banner.
 - `views/about.ejs` `<meta name="author">` contains a base64-encoded message.
 - `blog.db` - orphan SQLite file, unused (JSON only).
 - `README.md` is intentionally crude - not a documentation gap.

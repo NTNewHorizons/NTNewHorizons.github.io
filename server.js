@@ -148,6 +148,51 @@ app.get('/api/moddex/reviews', async (req, res) => {
   }
 });
 
+// ──────────────────────────────────────────────────────────
+// GITHUB RELEASES PROXY  (server-side to avoid browser rate limits)
+// ──────────────────────────────────────────────────────────
+
+let releasesCache = { data: null, fetchedAt: 0 };
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+app.get('/api/github/releases', async (req, res) => {
+  try {
+    if (releasesCache.data && Date.now() - releasesCache.fetchedAt < CACHE_TTL_MS) {
+      return res.json(releasesCache.data);
+    }
+
+    const headers = {
+      'Accept': 'application/json',
+      'User-Agent': 'NTNewHorizons-website/1.0 (release-proxy)',
+    };
+
+    const token = process.env.GITHUB_API_KEY || process.env.GITHUB_TOKEN || '';
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const url = 'https://api.github.com/repos/NTNewHorizons/NTNH/releases?per_page=100';
+    const response = await fetch(url, { headers });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`GitHub API ${response.status}: ${text.slice(0, 200)}`);
+    }
+
+    const data = await response.json();
+    releasesCache = { data, fetchedAt: Date.now() };
+    res.json(data);
+  } catch (err) {
+    console.error('GitHub releases proxy error:', err.message);
+
+    // Serve stale cache if available
+    if (releasesCache.data) {
+      console.warn('Serving stale GitHub releases cache');
+      return res.json(releasesCache.data);
+    }
+
+    res.status(502).json({ error: 'Failed to fetch releases' });
+  }
+});
+
 // BLOG ROUTES  (must come before express.static)
 // ──────────────────────────────────────────────────────────
 
