@@ -71,7 +71,7 @@ All wired in `server.js`:
 
 ## Gotchas
 
-- **No cookie consent banner** - the site only uses a strictly necessary session cookie on the blog (for auth). No tracking cookies are used.
+- **Joke cookie banner on non-blog pages** - Accept redirects to Wikipedia Cookie page, Decline redirects to Wikipedia Diabetes page. Close/X dismisses without redirect. The site uses no tracking cookies (only a strictly necessary session cookie on the blog).
 - `views/about.ejs` `<meta name="author">` contains a base64-encoded message.
 - `blog.db` - orphan SQLite file, unused (JSON only).
 - `README.md` is intentionally crude - not a documentation gap.
