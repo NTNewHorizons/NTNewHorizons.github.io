@@ -216,7 +216,6 @@ h3{font-variant:small-caps;}
 a{color:#FF8;text-decoration:none;}
 a:hover{color:#FF8;text-decoration:underline;}
 .return{padding:5px;border-style:outset;border-color:#FF8;background-color:#444;}
-.cookies{margin:auto;width:98%;background-color:#777;border-style:outset;border-color:#aaa;text-align:center;padding-top:10px;padding-bottom:10px;}
 .content{width:1000px;margin:auto;margin-top:40px;padding:20px;background-color:#777;border-style:outset;border-color:#aaa;}
 .blog-panel{width:900px;height:206px;margin:auto;margin-top:20px;color:#FFF;background-color:#444;border-style:inset;border-color:#aaa;overflow:hidden;position:relative;}
 .blog-panel.is-pinned{border-left:4px solid #FF8;box-shadow:inset 4px 0 12px rgba(255,204,0,0.08);}
@@ -383,6 +382,10 @@ function page(title, body, ogMeta) {
 </head>
 <body>
 ${body}
+<div style="margin-top:30px;padding:8px;text-align:center;font-size:12px;color:#888;border-top:1px solid #333;">
+  This blog uses a session cookie for authentication (strictly necessary). No tracking cookies are used.
+  <a href="/privacy-policy" style="color:#FF8;">Privacy Policy</a>
+</div>
 </body>
 </html>`;
 }

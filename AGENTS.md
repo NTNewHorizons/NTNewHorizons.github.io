@@ -71,7 +71,7 @@ All wired in `server.js`:
 
 ## Gotchas
 
-- **Cookie banner "Decline" redirects to Wikipedia "Cookie" page** - but only for real human clicks (`event.isTrusted`). DuckDuckGo/adblocker auto-clicks bypass the redirect and silently dismiss the banner.
+- **No cookie consent banner** - the site only uses a strictly necessary session cookie on the blog (for auth). No tracking cookies are used.
 - `views/about.ejs` `<meta name="author">` contains a base64-encoded message.
 - `blog.db` - orphan SQLite file, unused (JSON only).
 - `README.md` is intentionally crude - not a documentation gap.
