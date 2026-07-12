@@ -11,10 +11,10 @@ document.getElementById('currentYear').textContent = new Date().getFullYear();
   };
   document.getElementById('jokeBannerClose').addEventListener('click', dismiss);
   document.getElementById('jokeAccept').addEventListener('click', () => {
-    window.location.href = 'https://en.wikipedia.org/wiki/Cookie';
+    window.open('https://en.wikipedia.org/wiki/Cookie', '_blank');
   });
   document.getElementById('jokeDecline').addEventListener('click', () => {
-    window.location.href = 'https://en.wikipedia.org/wiki/Diabetes';
+    window.open('https://en.wikipedia.org/wiki/Diabetes', '_blank');
   });
 })();
 
