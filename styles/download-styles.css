@@ -191,13 +191,16 @@
 
 /* ─── Platform cards ─── */
 .dl-platforms {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .dl-card {
+  width: 220px;
+  flex-shrink: 0;
   padding: 1.25rem;
   text-align: center;
 }
