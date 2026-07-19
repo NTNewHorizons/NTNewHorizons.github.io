@@ -188,3 +188,52 @@
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+
+/* ─── Platform cards ─── */
+.dl-platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.dl-card {
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.dl-card-header {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dl-card-header i { color: var(--orange); }
+
+.dl-card-body {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dl-card-body a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.dl-card-body a:hover { text-decoration: underline; }
+
+.dl-card-body code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.06);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
