@@ -27,9 +27,6 @@
       { href: '#ch4', label: 'IV. Philosophy' },
       { href: '#ch5', label: 'V. Today' },
     ],
-    bufkapedia: [
-      { href: '#', label: 'Browse Articles' },
-    ],
   };
   const links = menuLinks[currentPage] || [];
 %>
@@ -49,7 +46,6 @@
       <li><a href="https://status.ntnewhorizons.com">Status</a></li>
       <li><a href="/#other">Other</a></li>
       <li><a href="/about" <%= currentPage === 'about' ? 'style="color:var(--orange);"' : '' %>>About</a></li>
-      <li><a href="/bufkapedia" <%= currentPage === 'bufkapedia' ? 'style="color:var(--orange);"' : '' %>>Bufkapedia</a></li>
     </ul>
 
     <div class="nav-icons" style="flex:1;justify-content:flex-end;">
@@ -97,7 +93,6 @@
     <a href="https://ntnewhorizons.com/blog" class="hamburger-global-link">Blog</a>
     <a href="https://status.ntnewhorizons.com" class="hamburger-global-link">Status</a>
     <a href="/about" class="hamburger-global-link">About</a>
-    <a href="/bufkapedia" class="hamburger-global-link">Bufkapedia</a>
   </div>
   <% if (links.length) { %>
     <div class="hamburger-divider"></div>
