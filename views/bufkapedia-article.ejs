@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= article.title %> - Bufkapedia</title>
+  <meta name="description" content="<%= article.description %>">
+  <link rel="icon" type="image/x-icon" href="../../resources/favicon.ico">
+
+  <meta property="og:site_name" content="Nuclear Tech: New Horizons">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="<%= article.title %> - Bufkapedia">
+  <meta property="og:description" content="<%= article.description %>">
+  <meta property="og:image" content="https://ntnewhorizons.com/resources/favicon.ico">
+  <meta property="og:url" content="https://ntnewhorizons.com/bufkapedia/article/<%= article.id %>">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= article.title %> - Bufkapedia">
+  <meta name="twitter:description" content="<%= article.description %>">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/shared-styles.css">
+  <link rel="stylesheet" href="../../styles/bufkapedia-styles.css">
+</head>
+<body class="bg-grid scanlines">
+
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <%- include('partials/header', { currentPage: 'bufkapedia' }) %>
+
+  <main>
+    <div class="bufka-wrap bufka-article-page">
+
+      <nav class="bufka-breadcrumb">
+        <a href="/bufkapedia"><i class="fas fa-arrow-left"></i> Back to Bufkapedia</a>
+      </nav>
+
+      <article class="bufka-article">
+        <h1 class="bufka-article-title"><%= article.title %></h1>
+        <p class="bufka-article-desc"><%= article.description %></p>
+        <div class="bufka-article-body markdown-body">
+          <%- article.contentHtml %>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <%- include('partials/footer', { scripts: ['scripts/webmcp.js'] }) %>
+
+</body>
+</html>

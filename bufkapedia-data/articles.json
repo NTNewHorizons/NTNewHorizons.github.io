@@ -1,0 +1,20 @@
+[
+  {
+    "id": "bufkapedia",
+    "title": "Bufkapedia",
+    "description": "Bufkapedia is the personal knowledge wiki of Bufka2011, serving as a public encyclopedia documenting knowledge, guides, and references related to Nuclear Tech: New Horizons and beyond.",
+    "content": "# Bufkapedia\n\n**Bufkapedia** is the personal knowledge wiki of **Bufka2011** (Alex), the lead developer of **Nuclear Tech: New Horizons**. It serves as a public encyclopedia documenting knowledge, guides, references, and personal notes.\n\n## Purpose\n\nBufkapedia was created as a central repository for knowledge that Bufka2011 wants to share publicly. It covers topics ranging from modpack development and Minecraft modding to personal interests and discoveries.\n\n## Features\n\n- **Articles** — In-depth entries with full Markdown content\n- **Search** — Full-text search across titles, descriptions, and article bodies\n- **Public access** — No authentication required to read\n\n## Technology\n\nBufkapedia is built into the NTNewHorizons website using the same Node.js/Express + EJS stack as the rest of the site. Articles are stored as JSON flat files and rendered as HTML.\n\n## Article priority\n\nWhen searching Bufkapedia, results are ranked by:\n1. **Title match** (highest priority)\n2. **Description match** (medium priority)\n3. **Article body match** (lowest priority)\n\n---\n\n*This article serves as the canonical reference for the Bufkapedia itself.*"
+  },
+  {
+    "id": "ntnewhorizons",
+    "title": "Nuclear Tech: New Horizons",
+    "description": "Nuclear Tech: New Horizons (NTNH) is a Minecraft modpack built around HBM's Nuclear Tech Mod, inspired by GregTech: New Horizons. It features guided progression, complex tech chains, and over 300 quests.",
+    "content": "# Nuclear Tech: New Horizons\n\n**Nuclear Tech: New Horizons** (abbreviated **NTNH**) is a Minecraft modpack centered on **HBM's Nuclear Tech Mod**, created by **Bufka2011**. It is inspired by **GregTech: New Horizons (GTNH)** but replaces GregTech with HBM's Nuclear Tech Mod as the core progression driver.\n\n## History\n\nThe project began on **September 11, 2023** as *NTM RP*, a roleplay-focused modpack. It went through six generations before being rebranded as *Nuclear Tech: New Horizons*.\n\n## Development\n\n- **Lead Developer**: Bufka2011 (Alex)\n- **Team**: Rerserder (Nikita), HiVerse, Xekitan, TinnPott\n- **Status**: Active development\n\n## Philosophy\n\nNTNH is completely free and open. No paywalls, no locked content. Built entirely on free, open-source mods.\n\n## Links\n\n- [Website](https://ntnewhorizons.com)\n- [Discord](https://discord.gg/wtNVzeE5QB)\n- [CurseForge](https://www.curseforge.com/minecraft/modpacks/ntnewhorizons)\n- [GitHub](https://github.com/NTNewHorizons)"
+  },
+  {
+    "id": "hbm-nuclear-tech-mod",
+    "title": "HBM's Nuclear Tech Mod",
+    "description": "HBM's Nuclear Tech Mod (NTM) is a Minecraft mod with over 10 years of active development, featuring deep industrial simulation, complex crafting chains, and an embedded storyline.",
+    "content": "# HBM's Nuclear Tech Mod\n\n**HBM's Nuclear Tech Mod** (often abbreviated as **NTM** or **HBM's NTM**) is a long-running Minecraft mod created by **HbmMods** (or **TheBobcat** / **HBM**) that has been in active development for over ten years.\n\n## Overview\n\nDespite its name, NTM is far more than a nuclear mod. It is a full industrial simulator featuring:\n\n- Complex chemical processing chains\n- Oil refining and petrochemical production\n- Advanced factory automation\n- Radiation mechanics and nuclear reactors\n- A hidden storyline and lore\n- Numerous easter eggs and references\n\n## Importance to NTNH\n\nNTNH is built entirely around NTM as its core progression mod, putting it in the spotlight in the same way GregTech is featured in GTNH.\n\n## Misconceptions\n\nMost people who have heard of NTM think it is just \"the mod where you blow things up with nuclear bombs.\" In reality, the explosive elements are a small part of what the mod offers. The engineering depth and lore are what make it truly special."
+  }
+]

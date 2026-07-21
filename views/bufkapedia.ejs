@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bufkapedia - Nuclear Tech: New Horizons</title>
+  <meta name="description" content="Bufkapedia - the personal knowledge wiki of Bufka2011. Public encyclopedia covering NTNH and beyond.">
+  <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+
+  <meta property="og:site_name" content="Nuclear Tech: New Horizons">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Bufkapedia - Knowledge Base">
+  <meta property="og:description" content="The personal knowledge wiki of Bufka2011.">
+  <meta property="og:image" content="https://ntnewhorizons.com/resources/favicon.ico">
+  <meta property="og:url" content="https://ntnewhorizons.com/bufkapedia">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Bufkapedia">
+  <meta name="twitter:description" content="The personal knowledge wiki of Bufka2011.">
+  <meta name="twitter:image" content="https://ntnewhorizons.com/resources/favicon.ico">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/shared-styles.css">
+  <link rel="stylesheet" href="styles/bufkapedia-styles.css">
+</head>
+<body class="bg-grid scanlines">
+
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <%- include('partials/header', { currentPage: 'bufkapedia' }) %>
+
+  <main>
+    <div class="bufka-wrap">
+
+      <header class="bufka-header">
+        <div class="bufka-logo">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h1 class="bufka-title">Bufkapedia</h1>
+        <p class="bufka-subtitle">The personal knowledge wiki of Bufka2011</p>
+      </header>
+
+      <form class="bufka-search" action="/bufkapedia" method="GET" role="search">
+        <div class="bufka-search-box">
+          <i class="fas fa-search bufka-search-icon"></i>
+          <input
+            type="text"
+            name="q"
+            class="bufka-search-input"
+            placeholder="Search articles..."
+            value="<%= typeof query !== 'undefined' ? query : '' %>"
+            autofocus
+          >
+          <button type="submit" class="bufka-search-btn">Search</button>
+        </div>
+      </form>
+
+      <% if (typeof query !== 'undefined' && query.length > 0) { %>
+        <div class="bufka-results-info">
+          Showing results for "<strong><%= query %></strong>"
+          <% if (results.length === 0) { %>
+            &mdash; no articles found.
+          <% } else { %>
+            &mdash; <%= results.length %> article<%= results.length !== 1 ? 's' : '' %> found.
+          <% } %>
+        </div>
+      <% } %>
+
+      <div class="bufka-articles">
+        <% (results || articles).forEach(function(article) { %>
+          <a href="/bufkapedia/article/<%= article.id %>" class="bufka-card">
+            <h2 class="bufka-card-title"><%= article.title %></h2>
+            <p class="bufka-card-desc"><%= article.description %></p>
+            <% if (article._score) { %>
+              <span class="bufka-card-score">Relevance: <%= Math.round(article._score * 100) %>%</span>
+            <% } %>
+          </a>
+        <% }); %>
+      </div>
+
+      <% if (articles.length === 0) { %>
+        <div class="bufka-empty">
+          <i class="fas fa-database"></i>
+          <p>No articles yet. The library is being written.</p>
+        </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('partials/footer', { scripts: ['scripts/webmcp.js'] }) %>
+
+</body>
+</html>

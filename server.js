@@ -7,6 +7,7 @@ const path    = require('path');
 const session = require('express-session');
 
 const TurndownService = require('turndown');
+const { marked } = require('marked');
 
 const app  = express();
 
@@ -94,6 +95,11 @@ app.use((req, res, next) => {
 
 // Prevent blog-data JSON files from being served as static files
 app.use('/blog-data', (req, res) => {
+  res.status(403).render('404', { currentPage: '404' });
+});
+
+// Prevent bufkapedia-data JSON files from being served as static files
+app.use('/bufkapedia-data', (req, res) => {
   res.status(403).render('404', { currentPage: '404' });
 });
 
@@ -198,6 +204,61 @@ app.get('/api/github/releases', async (req, res) => {
 
 const blogRouter = require('./blog/router');
 app.use('/blog', blogRouter);
+
+// ──────────────────────────────────────────────────────────
+// BUFKAPEDIA  (personal knowledge wiki)
+// ──────────────────────────────────────────────────────────
+
+marked.use({ gfm: true, breaks: true });
+
+const fs = require('fs');
+
+function loadBufkapediaArticles() {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'bufkapedia-data', 'articles.json'), 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+app.get('/bufkapedia', (req, res) => {
+  const articles = loadBufkapediaArticles();
+  const query = (req.query.q || '').trim().toLowerCase();
+
+  if (!query) {
+    return res.render('bufkapedia', { currentPage: 'bufkapedia', articles, results: [], query: '' });
+  }
+
+  const weighted = articles.map(a => {
+    let score = 0;
+    const title = (a.title || '').toLowerCase();
+    const desc = (a.description || '').toLowerCase();
+    const content = (a.content || '').toLowerCase();
+
+    if (title.includes(query)) score += 3;
+    if (desc.includes(query)) score += 2;
+    if (content.includes(query)) score += 1;
+
+    return { ...a, _score: score / 6 };
+  }).filter(a => a._score > 0);
+
+  weighted.sort((a, b) => b._score - a._score);
+
+  res.render('bufkapedia', { currentPage: 'bufkapedia', articles, results: weighted, query });
+});
+
+app.get('/bufkapedia/article/:id', (req, res) => {
+  const articles = loadBufkapediaArticles();
+  const article = articles.find(a => a.id === req.params.id);
+
+  if (!article) {
+    return res.status(404).render('404', { currentPage: '404' });
+  }
+
+  const contentHtml = marked.parse(article.content || '');
+  res.render('bufkapedia-article', { currentPage: 'bufkapedia', article: { ...article, contentHtml } });
+});
 
 // ──────────────────────────────────────────────────────────
 // PAGE ROUTES  (EJS templates with shared header/footer)

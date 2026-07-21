@@ -18,5 +18,8 @@ echo "✅ npm install done."
 echo "Restarting PM2 process 'ntnewHorizons'..."
 pm2 restart ntnewHorizons --update-env
 
+echo "Saving PM2 process list for reboot resurrection..."
+pm2 save
+
 echo "✅ Deployment finished successfully at $(date)"
 echo "========================================"
