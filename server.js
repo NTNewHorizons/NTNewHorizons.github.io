@@ -9,6 +9,7 @@ const session = require('express-session');
 const TurndownService = require('turndown');
 
 const app  = express();
+app.disable('x-powered-by'); // don't advertise the framework
 
 const PORT = 3000;
 
@@ -44,6 +45,7 @@ app.use(session({
   cookie: {
     secure:   process.env.NODE_ENV === 'production',
     httpOnly: true,
+    sameSite: 'lax',                       // CSRF hardening (browser default, made explicit)
     maxAge:   24 * 60 * 60 * 1000 // 1 day
   }
 }));
@@ -76,7 +78,7 @@ app.use((req, res, next) => {
     res.render = function (view, options, done) {
       if (!done) {
         done = (err, html) => {
-          if (err) return res.status(500).send(err);
+          if (err) return res.status(500).send('Internal Server Error');
           res.set('Content-Type', 'text/markdown');
           res.set('X-Markdown-Tokens', 'turndown');
           res.send(turndown.turndown(html));
@@ -95,6 +97,21 @@ app.use((req, res, next) => {
 // Prevent blog-data JSON files from being served as static files
 app.use('/blog-data', (req, res) => {
   res.status(403).render('404', { currentPage: '404' });
+});
+
+// Block sensitive root files (app source / config / ops docs) from static serving.
+// Kept public on purpose: auth.md, AGENTS.md, README.md (agent-facing docs),
+// sitemap.xml, robots.txt, servers.json, static media.
+const BLOCKED_ROOT_FILES = new Set([
+  'server.js', 'package.json', 'package-lock.json',
+  'ecosystem.config.js', 'deploy.sh', 'TODO.md',
+]);
+app.use((req, res, next) => {
+  const name = path.basename(decodeURIComponent(req.path));
+  if (BLOCKED_ROOT_FILES.has(name)) {
+    return res.status(404).render('404', { currentPage: '404' });
+  }
+  next();
 });
 
 // ──────────────────────────────────────────────────────────

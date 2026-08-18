@@ -16,7 +16,7 @@ npm install --omit=dev
 echo "✅ npm install done."
 
 echo "Restarting PM2 process 'ntnewHorizons'..."
-pm2 restart ntnewHorizons --update-env
+NODE_ENV=production pm2 restart ntnewHorizons --update-env
 
 echo "✅ Deployment finished successfully at $(date)"
 echo "========================================"

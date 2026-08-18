@@ -20,7 +20,7 @@ npm test                                # just echoes "Error: no test specified"
 | `server.js` | Express 5 on port 3000. `trust proxy` for nginx. Blog mounted at `/blog`. Static from project root via `express.static` - dotfiles excluded, `.html` extension optional. |
 | `views/*.ejs` | Main pages use `partials/header.ejs` + `partials/footer.ejs`. **Exception:** `views/privacy-policy.ejs` and `views/terms-of-service.ejs` are standalone (no partials, load `shared-styles.css` directly). |
 | `views/404.ejs` | Uses partials but has an inline particle script **after** `</html>` (footer already closed the doc). Known quirk. |
-| `styles/` | `shared-styles.css` global; `{page}-styles.css` per page. Blog CSS lives **in `blog/router.js`** as the `BLOG_CSS` template string - not in `styles/`. |
+| `styles/` | `shared-styles.css` global; `{page}-styles.css` per page. Blog CSS lives **in `blog/render.js`** as the `BLOG_CSS` template string - not in `styles/`. |
 | `scripts/` | Per-page JS plus `webmcp.js` (loaded on every EJS page via footer). No bundler. |
 | `resources/` | **Gitignored.** Favicon, screenshots, video, blog uploads. |
 | `blog-data/` | JSON flat files; blocked from static access at server.js:96-98. |
@@ -32,7 +32,7 @@ npm test                                # just echoes "Error: no test specified"
 | `/`, `/index` | `views/index.ejs` |
 | `/about`, `/download`, `/guide` | EJS per page |
 | `/privacy-policy`, `/terms-of-service` | Standalone EJS (no partials) |
-| `/blog/*` | `blog/router.js` - **raw HTML generation, NOT EJS** |
+| `/blog/*` | `blog/router.js` - thin assembler mounting `blog/routes/*`. **Raw HTML generation, NOT EJS** |
 | `/api/moddex/reviews` | Proxy → ModDex API (paginates all pages). Requires `MODDEX_API_KEY`. |
 | `/.well-known/*` | JSON metadata routes in `server.js`. All placeholder/mock - no real OAuth. |
 | `/auth.md` | Static file (agent registration docs on site root). |
@@ -47,16 +47,39 @@ npm test                                # just echoes "Error: no test specified"
 | `SESSION_SECRET` | Yes (dev fallback) | Dev fallback: `'ntnh-blog-change-this-secret-in-prod'` |
 | `MODDEX_API_KEY` | Yes | Bearer token for ModDex API (reviews proxy) |
 
-## Blog subsystem (`blog/router.js`, ~1681 lines)
+## Blog subsystem (`blog/`, ~1687 lines split across modules)
 
-- **NOT EJS** - generates raw HTML via `page(title, body, ogMeta)` and `topNav(req)` helpers. All blog CSS is a template string (`BLOG_CSS`) embedded in `router.js`.
+**NOT EJS** - generates raw HTML. Split into focused modules for readability:
+
+| File | Contents |
+|---|---|
+| `router.js` | Thin assembler: mounts the four `routes/*` sub-routers + catch-all 404. |
+| `routes/public.js` | Blog index, post pages, add/delete comments. |
+| `routes/auth.js` | Register, login, logout, email verification, resend. |
+| `routes/profile.js` | Profile page, nickname change (7-day cooldown), password change. |
+| `routes/admin.js` | Admin login, dashboard (posts+users tabs), post editor (Markdown toolbar, live preview, cover/image upload), delete post/user. |
+| `render.js` | `page(title, body, ogMeta)` shell, `topNav(req)` nav bar, `blogImageEl`, `flashHtml`, and the full `BLOG_CSS` template string. |
+| `helpers.js` | escape/slug/flash utils, session helpers (`isAdmin`/`isUser`/`getCurrentUser`), email+nickname validation, Resend email sender, nickname cooldown, `sortPosts` (pinned-first). |
+| `data.js` | JSON flat-file storage layer: `readData(file)` / `writeData(file, data)` over `blog-data/`. |
+| `uploads.js` | multer setup (optional - degrades gracefully if not installed): 8 MB limit, image MIME only, stored in `resources/blog-uploads/`. |
+| `markdown.js` | Single place where `marked` is configured (`gfm`, `breaks`). |
+
+Other notes:
 - **Session** - shares `express-session` with main Express app.
 - **Storage** - JSON flat files in `blog-data/`:
   - `posts.json` - **tracked in git** (published posts)
   - `admins.json`, `users.json`, `comments.json` - **gitignored**
-- Image uploads via `multer` (optional - degrades gracefully if not installed): 8 MB limit, image MIME only, stored in `resources/blog-uploads/`.
 - Blog posts are Markdown, rendered via `marked`.
-- Auth: email + bcryptjs. Admin panel at `/blog/admin`. Email verification via Resend (optional, falls back to auto-login).
+- Auth: email + bcryptjs. Admin panel at `/blog/admin`. Email verification via Resend (optional; without Resend, accounts are stored unverified and an admin must activate them - no auto-login).
+
+## Security hardening (2026-08-18)
+
+- **nginx** (`/etc/nginx/sites-enabled/ntnewhorizons`) adds: CSP (default-src 'self'; allows cdn.jsdelivr.net scripts, cdnjs/fonts.googleapis styles, fonts.gstatic, YouTube embeds), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, HSTS (max-age=31536000, no includeSubDomains), `Referrer-Policy: strict-origin-when-cross-origin`.
+- **NODE_ENV=production** in `ecosystem.config.js` + `deploy.sh` (`NODE_ENV=production pm2 restart ... --update-env`) — flips session cookie to `secure`, disables Express dev stack traces.
+- `server.js` blocks root files from static serving: `server.js`, `package.json`, `package-lock.json`, `ecosystem.config.js`, `deploy.sh`, `TODO.md` (404). `auth.md`, `AGENTS.md`, `README.md` stay public (agent-facing).
+- Blog uploads: **SVG is rejected** (stored-XSS vector), and file content is validated against magic bytes (`isRealImage` in `blog/routes/admin.js`).
+- `app.disable('x-powered-by')` in server.js.
+- No CSRF tokens (none installed); relied on `sameSite: 'lax'` cookie. In-app rate limiting: none (fail2ban `ntnh-login` jail covers blog login at nginx).
 
 ## Agent discovery features
 
@@ -76,7 +99,7 @@ All wired in `server.js`:
 - `blog.db` - orphan SQLite file, unused (JSON only).
 - `README.md` is intentionally crude - not a documentation gap.
 - `add-admin.js` password is visible during input; server restart required.
-- Express session cookie: `secure: false` (TLS terminated at nginx), `httpOnly: true`, 1-day expiry.
+- Express session cookie: `secure: true` (when `NODE_ENV=production`), `httpOnly: true`, `sameSite: 'lax'`, 1-day expiry.
 
 ## Deployment
 
