@@ -709,22 +709,25 @@ router.post('/register', async (req, res) => {
     }
     res.redirect('/blog/verify-sent');
   } else {
-    // Fallback: auto-login (no Resend configured)
+    // No Resend configured — still require verification, store as unverified
+    const verificationToken = crypto.randomBytes(32).toString('hex');
     const newUser = {
-      id:                crypto.randomBytes(12).toString('hex'),
+      id:                     crypto.randomBytes(12).toString('hex'),
       email,
       nickname,
       passwordHash,
-      registeredAt:      new Date().toISOString(),
-      nicknameChangedAt: null,
+      verified:               false,
+      verificationToken,
+      verificationTokenExpiresAt: new Date(Date.now() + VERIFICATION_EXPIRY_HOURS * 3600000).toISOString(),
+      registeredAt:           new Date().toISOString(),
+      nicknameChangedAt:      null,
     };
 
     users.push(newUser);
     writeData('users.json', users);
 
-    req.session.user = { id: newUser.id };
-    flashSet(req, `Welcome, ${nickname}! Your account has been created.`);
-    res.redirect('/blog');
+    flashSet(req, 'Account created, but email verification is not configured. Contact an admin to activate your account.');
+    res.redirect('/blog/verify-sent');
   }
 });
 
@@ -770,7 +773,7 @@ router.post('/login', async (req, res) => {
   if (user) {
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) { flashSet(req, FAIL); return res.redirect('/blog/login'); }
-    if (user.verified === false) {
+    if (user.verified !== true) {
       flashSet(req, 'Error: Please verify your email before logging in. <a href="/blog/verify-sent">Resend verification email</a>.');
       return res.redirect('/blog/login');
     }
