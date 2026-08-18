@@ -1,4 +1,4 @@
-/* ─── Hero ─── */
+/* Hero */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -41,32 +41,18 @@
 .hero-title .line-1 {
   display: block;
   background: linear-gradient(90deg, #fff8f0 0%, rgba(255,255,255,0.5) 25%, #fff 50%, rgba(255,255,255,0.5) 75%, #fff8f0 100%);
-  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: titleShimmer1 8s linear infinite;
-}
-
-@keyframes titleShimmer1 {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
 }
 
 .hero-title .line-2 {
   display: block;
   background: linear-gradient(90deg, var(--red) 0%, var(--orange) 25%, var(--yellow) 50%, var(--orange) 75%, var(--red) 100%);
-  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   filter: drop-shadow(0 0 28px rgba(255,80,0,0.55));
-  animation: titleShimmer2 7s linear infinite;
-}
-
-@keyframes titleShimmer2 {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
 }
 
 .hero-subtitle {
@@ -79,17 +65,10 @@
 
 .shimmer-name {
   background: linear-gradient(90deg, var(--orange) 0%, var(--yellow) 25%, #fff 50%, var(--yellow) 75%, var(--orange) 100%);
-  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: nameShimmer 6s linear infinite;
   font-weight: 600;
-}
-
-@keyframes nameShimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
 }
 
 .hero-actions {
@@ -103,7 +82,7 @@
 .hero-badges {
   display: flex;
   gap: 0.6rem;
-  flex-wrap: justify;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -122,17 +101,17 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  animation: scrollBounce 2s ease-in-out infinite;
+  animation: hintBlink 2s step-end infinite;
 }
 
 .scroll-hint .arrow { font-size: 1rem; }
 
-@keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
-  50%       { transform: translateX(-50%) translateY(6px); opacity: 1; }
+@keyframes hintBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.15; }
 }
 
-/* ─── Stats bar ─── */
+/* Stats bar */
 .stats-bar {
   position: relative;
   z-index: 1;
@@ -188,7 +167,7 @@
   .stat-moddex img { height: 40px !important; }
 }
 
-/* ─── Section ─── */
+/* Section */
 .section {
   position: relative;
   z-index: 1;
@@ -198,7 +177,7 @@
 .section-inner { max-width: 1100px; margin: 0 auto; }
 .section-header { text-align: center; margin-bottom: 4rem; }
 
-/* ─── Feature grid ─── */
+/* Feature grid */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -216,7 +195,7 @@
 .feature-icon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: 6px;
   background: rgba(255,80,0,0.08);
   border: 1px solid var(--border);
   display: flex;
@@ -248,16 +227,15 @@
   line-height: 1.65;
 }
 
-/* ─── Tech tree visual ─── */
+/* Tech tree visual */
 .tech-showcase {
   background: rgba(10,3,0,0.75);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 2.5rem;
   margin-top: 3rem;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(6px);
 }
 
 .tech-showcase::before {
@@ -266,16 +244,9 @@
   top: 0; left: 0; right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--red), var(--orange), var(--yellow), var(--orange), var(--red), transparent);
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-/* ─── Tech Progression - Single Row (Desktop) ─── */
+/* Tech Progression - Single Row (Desktop) */
 .tech-stages {
   display: flex;
   gap: 0.75rem;
@@ -312,7 +283,7 @@
   pointer-events: none;
 }
 
-/* ─── Tech Progression - Carousel (Mobile, ≤768px) ─── */
+/* Tech Progression - Carousel (Mobile, ≤768px) */
 @media (max-width: 768px) {
   .tech-stages {
     display: flex;
@@ -342,7 +313,7 @@
   .progression-cards { grid-template-columns: 1fr !important; }
 }
 
-/* ─── Tech Progression Progress Bar (mobile only) ─── */
+/* Tech Progression Progress Bar (mobile only) */
 .tech-progress-bar {
   display: none;
 }
@@ -403,7 +374,7 @@
   margin-top: 0.3rem;
 }
 
-/* ─── CTA / Community section ─── */
+/* CTA / Community section */
 .cta-section {
   position: relative;
   z-index: 1;
@@ -425,11 +396,15 @@
 
 .cta-title {
   font-family: 'Chakra Petch', sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: 2.25rem;
   font-weight: 700;
   line-height: 1.15;
   margin-bottom: 1.25rem;
   color: var(--text-bright);
+}
+
+@media (max-width: 640px) {
+  .cta-title { font-size: 1.75rem; }
 }
 
 .cta-sub {
@@ -439,22 +414,21 @@
   margin-bottom: 2.5rem;
 }
 
-/* ─── Download section ─── */
+/* Download section */
 .download-box {
   background: rgba(10,3,0,0.80);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(8px);
 }
 
 .download-box::after {
   content: '';
   position: absolute;
   inset: -1px;
-  border-radius: 16px;
+  border-radius: 8px;
   background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow));
   opacity: 0.08;
   z-index: -1;
@@ -498,7 +472,7 @@
   overflow: hidden;
   background: #050100;
   border: 1px solid var(--border);
-  box-shadow: 0 0 60px rgba(255,60,0,0.08), 0 24px 64px rgba(0,0,0,0.6);
+  box-shadow: 0 0 60px rgba(255,60,0,0.08), 0 6px 24px rgba(0,0,0,0.6);
   outline: none;
   cursor: grab;
 }
@@ -562,7 +536,7 @@
   pointer-events: none;
 }
 
-/* ─── Arrows ─── */
+/* Arrows */
 .slider-arrow {
   position: absolute;
   top: 50%;
@@ -579,7 +553,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.25s;
   opacity: 0;
 }
@@ -601,7 +574,7 @@
 .slider-arrow-prev { left: 1.25rem; }
 .slider-arrow-next { right: 1.25rem; }
 
-/* ─── Info card - bottom-right overlay ─── */
+/* Info card - bottom-right overlay */
 .slider-info-card {
   position: absolute;
   bottom: 2.75rem;
@@ -609,11 +582,10 @@
   z-index: 10;
   background: rgba(5,1,0,0.88);
   border: 1px solid var(--border-hot);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 0.85rem 1.1rem;
   min-width: 170px;
   max-width: min(300px, 45%);
-  backdrop-filter: blur(12px);
   box-shadow: 0 0 24px rgba(255,80,0,0.18);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
@@ -651,7 +623,7 @@
   line-height: 1.55;
 }
 
-/* ─── Dot indicators ─── */
+/* Dot indicators */
 .slider-dots {
   position: absolute;
   bottom: 1rem;
@@ -683,7 +655,7 @@
 
 .slider-dot:hover:not(.active) { background: rgba(255,255,255,0.5); }
 
-/* ─── Auto-advance progress bar ─── */
+/* Auto-advance progress bar */
 .slider-progress-bar {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -699,7 +671,7 @@
   box-shadow: 0 0 6px rgba(255,106,0,0.5);
 }
 
-/* ─── Counter badge (top-left) ─── */
+/* Counter badge (top-left) */
 .slider-counter {
   position: absolute;
   top: 1rem;
@@ -710,13 +682,12 @@
   letter-spacing: 0.12em;
   color: rgba(255,255,255,0.45);
   background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(6px);
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
   pointer-events: none;
 }
 
-/* ─── Error / empty state ─── */
+/* Error / empty state */
 .slider-error {
   display: flex;
   flex-direction: column;
@@ -782,7 +753,7 @@
    SUPPORT / KO-FI SECTION
    ═══════════════════════════════════════════════════ */
 
-/* ─── Nav: Support link highlight ─── */
+/* Nav: Support link highlight */
 .nav-link-support {
   color: var(--yellow) !important;
   position: relative;
@@ -820,7 +791,7 @@
   color: #ffe566 !important;
 }
 
-/* ─── Support section layout ─── */
+/* Support section layout */
 .support-section {
   position: relative;
   z-index: 1;
@@ -848,7 +819,7 @@
   }
 }
 
-/* ─── Reason list (left column) ─── */
+/* Reason list (left column) */
 .support-reasons {
   display: flex;
   flex-direction: column;
@@ -865,7 +836,7 @@
   width: 42px;
   height: 42px;
   flex-shrink: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   background: rgba(255, 204, 0, 0.07);
   border: 1px solid rgba(255, 204, 0, 0.2);
   display: flex;
@@ -890,23 +861,22 @@
   line-height: 1.65;
 }
 
-/* ─── Ko-fi card (right column) ─── */
+/* Ko-fi card (right column) */
 .kofi-card {
   position: sticky;
   top: 90px;
 }
 
 .kofi-card-inner {
-  background: rgba(10, 5, 0, 0.88);
+  background: #0d0600;
   border: 1px solid rgba(255, 204, 0, 0.22);
-  border-radius: 18px;
+  border-radius: 8px;
   padding: 2.25rem 2rem;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
   box-shadow:
     0 0 60px rgba(255, 170, 0, 0.08),
-    0 24px 48px rgba(0, 0, 0, 0.5);
+    0 6px 24px rgba(0, 0, 0, 0.5);
 }
 
 .kofi-card-inner::before {
@@ -914,15 +884,8 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  border-radius: 18px 18px 0 0;
+  border-radius: 8px 8px 0 0;
   background: linear-gradient(90deg, transparent, var(--yellow), var(--orange), var(--yellow), transparent);
-  background-size: 200% auto;
-  animation: kofiShimmer 4s linear infinite;
-}
-
-@keyframes kofiShimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
 }
 
 .kofi-card-inner::after {
@@ -940,7 +903,7 @@
   margin-bottom: 1.75rem;
 }
 
-/* ─── Animated mug ─── */
+/* Animated mug */
 .kofi-mug-wrap {
   position: relative;
   display: inline-flex;
@@ -954,12 +917,6 @@
   font-size: 2.6rem;
   line-height: 1;
   filter: drop-shadow(0 0 12px rgba(255, 200, 0, 0.5));
-  animation: mugFloat 3s ease-in-out infinite;
-}
-
-@keyframes mugFloat {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-5px); }
 }
 
 .kofi-steam {
@@ -1018,7 +975,7 @@
   margin: 0 auto;
 }
 
-/* ─── Ko-fi button ─── */
+/* Ko-fi button */
 .btn-kofi {
   display: flex;
   align-items: center;
@@ -1036,32 +993,24 @@
   cursor: pointer;
   border: none;
   background: linear-gradient(135deg, #d4a017, #f0c040, #ffe066, #f0c040, #d4a017);
-  background-size: 200% auto;
   color: #1a0f00;
   box-shadow:
     0 0 28px rgba(255, 200, 0, 0.4),
     0 4px 16px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s, transform 0.2s, filter 0.3s;
-  animation: kofiBtn 5s linear infinite;
   margin-bottom: 1.5rem;
-}
-
-@keyframes kofiBtn {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
 }
 
 .btn-kofi:hover {
   box-shadow:
     0 0 44px rgba(255, 210, 0, 0.65),
     0 6px 24px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
   filter: brightness(1.08);
 }
 
 .btn-kofi:active { transform: translateY(0); }
 
-/* ─── Transparency notes ─── */
+/* Transparency notes */
 .kofi-transparency {
   display: flex;
   flex-direction: column;
@@ -1087,7 +1036,7 @@
   flex-shrink: 0;
 }
 
-/* ─── Bottom alt-support callout ─── */
+/* Bottom alt-support callout */
 .support-alt {
   margin-top: 3.5rem;
   text-align: center;
@@ -1102,7 +1051,7 @@
 .support-alt a { transition: color 0.2s; }
 .support-alt a:hover { color: var(--yellow) !important; }
 
-/* ─── Video Teaser Section ─── */
+/* Video Teaser Section */
 .video-outer {
   max-width: 860px;
   margin: 0 auto;
@@ -1110,7 +1059,7 @@
 
 .video-frame {
   position: relative;
-  border-radius: 14px;
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid var(--border-hot);
   aspect-ratio: 16 / 9;
@@ -1118,7 +1067,7 @@
   box-shadow:
     0 0 0 1px rgba(255, 80, 0, 0.08),
     0 0 60px rgba(255, 60, 0, 0.10),
-    0 32px 80px rgba(0, 0, 0, 0.7);
+    0 8px 32px rgba(0, 0, 0, 0.7);
 }
 
 /* Top gradient bar - reuses the shimmer keyframe already defined in shared-styles.css */
@@ -1131,8 +1080,6 @@
   background: linear-gradient(90deg,
     transparent, var(--red), var(--orange), var(--yellow),
     var(--orange), var(--red), transparent);
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
 }
 
 .video-thumb {
@@ -1200,8 +1147,8 @@
 }
 
 @keyframes ringPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.35; }
-  50%       { transform: scale(1.18); opacity: 0.75; }
+  0%   { transform: scale(1);    opacity: 0.6; }
+  100% { transform: scale(1.6);  opacity: 0; }
 }
 
 .video-thumb:hover .video-play-btn {
@@ -1263,7 +1210,7 @@
   border: none;
 }
 
-/* ─── Project Activity Bar ─── */
+/* Project Activity Bar */
 .activity-bar {
   display: flex;
   align-items: center;
@@ -1271,9 +1218,8 @@
   gap: 0;
   background: rgba(10, 3, 0, 0.88);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: hidden;
-  backdrop-filter: blur(8px);
   position: relative;
   transition: border-color 0.3s;
 }
@@ -1487,7 +1433,7 @@
 }
 
 .review-text {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-mid);
   line-height: 1.65;
   display: -webkit-box;

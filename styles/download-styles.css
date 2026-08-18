@@ -1,4 +1,4 @@
-/* ─── Download page hero ─── */
+/* Download page hero */
 .dl-hero {
   position: relative;
   z-index: 1;
@@ -25,7 +25,7 @@
   line-height: 1.65;
 }
 
-/* ─── Releases container ─── */
+/* Releases container */
 .releases-wrap {
   position: relative;
   z-index: 1;
@@ -34,17 +34,16 @@
   margin: 0 auto;
 }
 
-/* ─── Release card ─── */
+/* Release card */
 .release-card {
   background: rgba(10,3,0,0.80);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 2rem;
   margin-bottom: 1.5rem;
   transition: border-color 0.3s;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(6px);
 }
 
 .release-card::before {
@@ -100,7 +99,7 @@
 .release-body::-webkit-scrollbar-track { background: transparent; }
 .release-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ─── Assets grid ─── */
+/* Assets grid */
 .assets-section h4 {
   font-family: 'Chakra Petch', sans-serif;
   font-size: 0.85rem;
@@ -137,7 +136,7 @@
 .asset-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .asset-size { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-mid); flex-shrink: 0; opacity: 0.75; }
 
-/* ─── Release actions ─── */
+/* Release actions */
 .release-actions {
   display: flex;
   flex-wrap: wrap;
@@ -167,13 +166,13 @@
 .release-btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text-bright); border-color: rgba(255,255,255,0.2); }
 
 .release-btn-blue {
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.3);
-  color: #60a5fa;
+  background: rgba(255,106,0,0.12);
+  border: 1px solid rgba(255,106,0,0.35);
+  color: var(--orange);
 }
-.release-btn-blue:hover { background: rgba(59,130,246,0.2); }
+.release-btn-blue:hover { background: rgba(255,106,0,0.2); }
 
-/* ─── Loading / error states ─── */
+/* Loading / error states */
 .state-center {
   text-align: center;
   padding: 4rem 2rem;
@@ -189,7 +188,7 @@
   to   { transform: rotate(360deg); }
 }
 
-/* ─── Platform cards ─── */
+/* Platform cards */
 .dl-platforms {
   display: flex;
   flex-wrap: wrap;

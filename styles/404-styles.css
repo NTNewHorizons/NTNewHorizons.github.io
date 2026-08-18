@@ -1,4 +1,4 @@
-/* ─── 404 Canvas ─── */
+/* 404 Canvas */
 .page-404 {
   position: relative;
   z-index: 1;
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-/* ─── Reactor core visual ─── */
+/* Reactor core visual */
 .reactor-wrap {
   position: relative;
   width: 220px;
@@ -152,7 +152,7 @@
   to   { transform: rotate(360deg); }
 }
 
-/* ─── Error code ─── */
+/* Error code */
 .error-code {
   font-family: 'Chakra Petch', sans-serif;
   font-size: clamp(6rem, 18vw, 12rem);
@@ -215,7 +215,7 @@
   margin: 0 auto 2.5rem;
 }
 
-/* ─── Terminal readout ─── */
+/* Terminal readout */
 .terminal-box {
   background: rgba(5, 1, 0, 0.85);
   border: 1px solid var(--border);
@@ -226,7 +226,6 @@
   margin: 0 auto 2.5rem;
   text-align: left;
   position: relative;
-  backdrop-filter: blur(8px);
 }
 
 .terminal-box::before {
@@ -289,7 +288,7 @@
   50%       { opacity: 0; }
 }
 
-/* ─── Action buttons ─── */
+/* Action buttons */
 .error-actions {
   display: flex;
   gap: 1rem;
@@ -297,7 +296,7 @@
   justify-content: center;
 }
 
-/* ─── Floating debris particles ─── */
+/* Floating debris particles */
 .particle-field {
   position: fixed;
   inset: 0;
