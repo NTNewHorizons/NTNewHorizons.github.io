@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nuclear Tech: New Horizons - NTM Modpack | Minecraft 1.7.10</title>
-  <meta name="description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10. A real fork of NTM: Space - 300+ quests, custom machines, from flint tools to interstellar engineering.">
+  <meta name="description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10.">
   <meta name="keywords" content="HBM nuclear tech modpack, NTM modpack 1.7.10, nuclear minecraft modpack, Nuclear Tech New Horizons, NTNH, HBM NTM modpack">
   <link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
@@ -12,12 +12,12 @@
   <meta property="og:site_name" content="Nuclear Tech: New Horizons">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Nuclear Tech: New Horizons - NTM Modpack | Minecraft 1.7.10">
-  <meta property="og:description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10. A real fork of NTM: Space - 300+ quests, custom machines, from flint tools to interstellar engineering.">
+  <meta property="og:description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10.">
   <meta property="og:image" content="https://ntnewhorizons.com/resources/favicon.ico">
   <meta property="og:url" content="https://ntnewhorizons.com">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Nuclear Tech: New Horizons - NTM Modpack | Minecraft 1.7.10">
-  <meta name="twitter:description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10. A real fork of NTM: Space - 300+ quests, custom machines, from flint tools to interstellar engineering.">
+  <meta name="twitter:description" content="Free HBM's Nuclear Tech modpack for Minecraft 1.7.10.">
   <meta name="twitter:image" content="https://ntnewhorizons.com/resources/favicon.ico">
 
   <!-- Font Awesome -->
@@ -94,10 +94,33 @@
 
     function nextBg() { showBg(pickNext()); }
 
-    bhVideo.addEventListener('ended', nextBg);
+    // Crossfade ~2.5s before video ends (not after)
+    var bhSeekFired = false;
+    bhVideo.addEventListener('timeupdate', function() {
+      if (bhSeekFired) return;
+      if (bhVideo.duration && bhVideo.duration - bhVideo.currentTime < 2.5) {
+        bhSeekFired = true;
+        nextBg();
+      }
+    });
 
     function onYtState(e) {
-      if (e.data === YT.PlayerState.ENDED) nextBg();
+      if (e.data === YT.PlayerState.PLAYING) {
+        // Poll current time to crossfade before YT video ends
+        var ytCheck = setInterval(function() {
+          if (!ytPlayer || !ytPlayer.getDuration || !ytPlayer.getCurrentTime) return;
+          var dur = ytPlayer.getDuration();
+          var cur = ytPlayer.getCurrentTime();
+          if (dur && dur - cur < 2.5) {
+            clearInterval(ytCheck);
+            nextBg();
+          }
+        }, 250);
+      }
+      if (e.data === YT.PlayerState.ENDED) {
+        // Safety: if we somehow missed the window
+        nextBg();
+      }
     }
 
     function initYt() {
