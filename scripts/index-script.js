@@ -64,23 +64,9 @@ const counterObserver = new IntersectionObserver(
 
 document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
 
-// Typing effect for hero subtitle
+// Hero subtitle (rendered statically - no typing effect)
 const subtitleEl = document.getElementById('heroSubtitle');
-if (subtitleEl) {
-  const text = subtitleEl.dataset.text;
-  subtitleEl.textContent = '';
-  subtitleEl.style.borderRight = '2px solid var(--orange)';
-
-  let i = 0;
-  const typeInterval = setInterval(() => {
-    subtitleEl.textContent += text[i];
-    i++;
-    if (i >= text.length) {
-      clearInterval(typeInterval);
-      setTimeout(() => { subtitleEl.style.borderRight = 'none'; }, 800);
-    }
-  }, 22);
-}
+if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
 
 // ═══ Screenshot Slider ═══
 (function () {
@@ -476,83 +462,5 @@ if (subtitleEl) {
   })();
   }
 
-// ─── Blackhole background video ───
-(function () {
-  var video = document.getElementById('blackholeVideo');
-  if (!video) return;
 
-  function onCanPlay() {
-    video.play()['catch'](function () {});
-    video.classList.add('video-loaded');
-  }
-
-  if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-    onCanPlay();
-  } else {
-    video.addEventListener('canplay', onCanPlay, { once: true });
-    video.addEventListener('error', function () {
-      video.classList.add('video-loaded');
-    }, { once: true });
-  }
-})();
-
-  // ─── Project Activity (GitHub API) ───────────────────
-(function () {
-  const dot     = document.getElementById('activityDot');
-  const label   = document.getElementById('activityLabel');
-  const elCommit  = document.getElementById('act-commit');
-  const elRelease = document.getElementById('act-release');
-  const elPRs     = document.getElementById('act-prs');
-  const elStars   = document.getElementById('act-stars');
-
-  if (!dot) return;
-
-  const REPO    = 'NTNewHorizons/NTNH';
-  const HEADERS = { 'Accept': 'application/vnd.github.v3+json' };
-
-  function timeAgo(isoDate) {
-    if (!isoDate) return '-';
-    const days = Math.floor((Date.now() - new Date(isoDate)) / 86400000);
-    if (days === 0) return 'Today';
-    if (days === 1) return 'Yesterday';
-    if (days < 7)  return days + 'd ago';
-    if (days < 30) return Math.floor(days / 7) + 'w ago';
-    return Math.floor(days / 30) + 'mo ago';
-  }
-
-  Promise.all([
-    fetch(`https://api.github.com/repos/${REPO}`,                         { headers: HEADERS }).then(r => r.json()),
-    fetch(`https://api.github.com/repos/${REPO}/commits?per_page=1`,      { headers: HEADERS }).then(r => r.json()),
-    fetch(`https://api.github.com/repos/${REPO}/releases?per_page=1`,     { headers: HEADERS }).then(r => r.json()),
-    fetch(`https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100`, { headers: HEADERS }).then(r => r.json()),
-  ]).then(([repo, commits, releases, openPRs]) => {
-
-    const lastCommitDate = commits[0]?.commit?.author?.date;
-    const daysSince = Math.floor((Date.now() - new Date(lastCommitDate)) / 86400000);
-
-    // Colour the health dot
-    if (daysSince < 7) {
-      dot.className = 'activity-dot';               // green (default)
-      label.textContent = 'Active Development';
-    } else if (daysSince < 30) {
-      dot.className = 'activity-dot dot-yellow';
-      label.textContent = 'Recently Updated';
-    } else {
-      dot.className = 'activity-dot dot-red';
-      label.textContent = 'Slow Period';
-    }
-
-    elCommit.textContent  = timeAgo(lastCommitDate);
-    elRelease.textContent = releases[0]?.tag_name ?? '-';
-    elPRs.textContent     = Array.isArray(openPRs) ? openPRs.length : '-';
-    elStars.textContent   = typeof repo.stargazers_count === 'number'
-      ? repo.stargazers_count.toLocaleString()
-      : '-';
-
-  }).catch(() => {
-    // Fail silently - the bar just stays in its placeholder state
-    label.textContent = 'GitHub';
-    if (dot) dot.style.display = 'none';
-  });
-})();
 })();

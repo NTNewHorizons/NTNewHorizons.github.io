@@ -7,8 +7,6 @@
   justify-content: center;
   padding: 6rem 2rem 4rem;
   text-align: center;
-  position: relative;
-  z-index: 1;
 }
 
 .hero-eyebrow {
@@ -24,7 +22,7 @@
 }
 
 .hero-eyebrow::before, .hero-eyebrow::after {
-  content: '◆';
+  content: '\25C6';
   font-size: 0.5rem;
   opacity: 0.5;
 }
@@ -55,20 +53,20 @@
   filter: drop-shadow(0 0 28px rgba(255,80,0,0.55));
 }
 
+.hero-title-anim::cue {
+  display: none;
+}
+
+.hero-title-anim[style] {
+  mix-blend-mode: screen;
+}
+
 .hero-subtitle {
   max-width: 640px;
   font-size: 1.05rem;
   color: var(--text-mid);
   line-height: 1.7;
   margin-bottom: 2.5rem;
-}
-
-.shimmer-name {
-  background: linear-gradient(90deg, var(--orange) 0%, var(--yellow) 25%, #fff 50%, var(--yellow) 75%, var(--orange) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 600;
 }
 
 .hero-actions {
@@ -78,14 +76,6 @@
   justify-content: center;
   margin-bottom: 3rem;
 }
-
-.hero-badges {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 /* Scroll indicator */
 .scroll-hint {
   position: absolute;
@@ -101,14 +91,14 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  animation: hintBlink 2s step-end infinite;
+  animation: hintFade 2.4s ease-in-out infinite;
 }
 
 .scroll-hint .arrow { font-size: 1rem; }
 
-@keyframes hintBlink {
+@keyframes hintFade {
   0%, 100% { opacity: 1; }
-  50%      { opacity: 0.15; }
+  50%      { opacity: 0.35; }
 }
 
 /* Stats bar */
@@ -135,10 +125,7 @@
   font-family: 'Chakra Petch', sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--red), var(--orange));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--orange);
   display: block;
   line-height: 1;
   margin-bottom: 0.35rem;
@@ -425,12 +412,7 @@
 }
 
 .download-box::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow));
-  opacity: 0.08;
+  content: none;
   z-index: -1;
 }
 
@@ -468,7 +450,7 @@
   width: 100%;
   aspect-ratio: 16 / 7;
   min-height: 260px;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
   background: #050100;
   border: 1px solid var(--border);
@@ -481,7 +463,7 @@
 
 .screenshot-slider:focus-visible {
   border-color: var(--border-hot);
-  box-shadow: 0 0 0 2px var(--orange), 0 24px 64px rgba(0,0,0,0.6);
+  box-shadow: 0 0 0 2px var(--orange), 0 6px 24px rgba(0,0,0,0.55);
 }
 
 /* Viewport - clips the sliding track */
@@ -1210,138 +1192,6 @@
   border: none;
 }
 
-/* Project Activity Bar */
-.activity-bar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0;
-  background: rgba(10, 3, 0, 0.88);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-  transition: border-color 0.3s;
-}
-
-.activity-bar:hover {
-  border-color: var(--border-hot);
-}
-
-.activity-bar::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 106, 0, 0.4), transparent);
-}
-
-.activity-pulse-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 1.1rem 1.75rem;
-  flex-shrink: 0;
-}
-
-.activity-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 8px rgba(74, 222, 128, 0.8);
-  flex-shrink: 0;
-  animation: dotBlink 2s ease-in-out infinite;
-}
-
-.activity-dot.dot-yellow {
-  background: var(--yellow);
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
-}
-
-.activity-dot.dot-red {
-  background: var(--red);
-  box-shadow: 0 0 8px rgba(255, 34, 0, 0.8);
-  animation: none;
-}
-
-@keyframes dotBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-}
-
-.activity-label {
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-bright);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-/* Vertical divider between cells */
-.act-divv {
-  width: 1px;
-  align-self: stretch;
-  background: var(--border);
-  flex-shrink: 0;
-}
-
-.activity-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.1rem 1.5rem;
-  gap: 0.22rem;
-  flex: 1;
-  min-width: 110px;
-}
-
-.act-val {
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--orange);
-  line-height: 1;
-}
-
-.act-key {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.act-gh-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1.1rem 1.75rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--text-mid);
-  text-decoration: none;
-  flex-shrink: 0;
-  transition: color 0.2s, background 0.2s;
-  white-space: nowrap;
-}
-
-.act-gh-link:hover {
-  color: var(--orange);
-  background: var(--red-glow);
-}
-
-/* Mobile stacking */
-@media (max-width: 780px) {
-  .activity-bar      { flex-direction: column; }
-  .act-divv          { width: 100%; height: 1px; align-self: auto; }
-  .activity-stat     { width: 100%; flex-direction: row; justify-content: space-between; min-width: 0; }
-  .activity-pulse-wrap { width: 100%; }
-  .act-gh-link       { width: 100%; justify-content: center; border-top: 1px solid var(--border); }
-}
 
 /* ═══ ModDex Reviews Section ═══ */
 .reviews-container {

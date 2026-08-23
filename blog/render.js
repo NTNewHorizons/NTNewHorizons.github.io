@@ -117,7 +117,7 @@ a:hover{color:#FF8;text-decoration:underline;}
 .admin-panel{display:none;}
 .admin-panel.active{display:block;}
 
-/* ── Markdown toolbar ── */
+/* Markdown toolbar */
 .md-toolbar{display:flex;flex-wrap:wrap;gap:3px;padding:7px 8px;background:#1a0800;border:1px solid #555;border-bottom:none;border-radius:5px 5px 0 0;align-items:center;}
 .md-toolbar-sep{width:1px;background:#444;margin:0 4px;align-self:stretch;min-height:18px;}
 .md-group{display:flex;gap:2px;flex-wrap:wrap;align-items:center;}
