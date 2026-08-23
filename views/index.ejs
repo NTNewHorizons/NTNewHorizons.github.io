@@ -103,6 +103,13 @@
         nextBg();
       }
     });
+    bhVideo.addEventListener('ended', function() {
+      if (!bhSeekFired) nextBg();
+      bhSeekFired = false;
+    });
+    bhVideo.addEventListener('playing', function() {
+      bhSeekFired = false;
+    });
 
     function onYtState(e) {
       if (e.data === YT.PlayerState.PLAYING) {
@@ -210,6 +217,8 @@
       </div>
     </div>
 
+
+
     <div class="divider"></div>
 
     <!-- ═══ FEATURES ═══ -->
@@ -219,8 +228,8 @@
           <p class="section-label" style="justify-content:center;">Features</p>
           <h2 class="section-title">What's in the pack</h2>
           <p style="margin-top:1rem;color:var(--text-mid);max-width:580px;margin-left:auto;margin-right:auto;line-height:1.65;">
-            NT:NH is a free modpack built around HBM's Nuclear Tech Mod. It started as a fork of NTM: Space (which itself forked HBM's original NTM) and grew into its own thing:
-            factory automation, hidden world lore, and plenty of dumb easter eggs. We edit the mods themselves, not just the config files.
+            NT:NH is a free modpack built around HBM's Nuclear Tech Mod. It started as a small pack for a couple of friends and grew into its own thing: huge community, plenty of mods and a lot of stuff that devs add randomly. Uhh we really got no restrains on that one :D
+            More about us - <a href="/about" style="color:var(--orange);">click</a>
           </p>
         </div>
 
@@ -229,13 +238,13 @@
           <div class="card reveal-child">
             <div class="feature-icon"><i class="fas fa-scroll"></i></div>
             <p class="feature-title">300+ quests</p>
-            <p class="feature-desc">The quest book walks you from flint tools to interstellar engineering and explains how things work, but there's plenty it doesn't tell you. Hidden lore, secret machines, stuff we won't spoil here.</p>
+            <p class="feature-desc">The quest book walks you from flint tools to interstellar engineering and explains how things work, but there's plenty it doesn't tell you. Hidden lore, secret items, stuff we won't spoil here.</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.06s">
             <div class="feature-icon"><i class="fas fa-code-branch"></i></div>
             <p class="feature-title">Custom NTM Fork</p>
-            <p class="feature-desc">We edit the mod code itself: new machines, tweaked recipes, balance fixes, silly easter eggs. Useful stuff, stupid stuff, whatever we feel like.</p>
+            <p class="feature-desc">We edit the mods themselves: new machines, tweaked recipes, bug fixes, silly easter eggs. Useful stuff, stupid stuff, whatever we feel like.</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.12s">
@@ -247,7 +256,7 @@
           <div class="card reveal-child" style="transition-delay:0.18s">
             <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
             <p class="feature-title">For Newcomers &amp; Veterans</p>
-            <p class="feature-desc">New to NTM? The quest book explains everything step by step. Been around a while? We reworked mechanics, raised the difficulty, and added machines you haven't seen before.</p>
+            <p class="feature-desc">New to NTM? The quest book explains everything step by step. Been around a while? We've reworked mechanics, raised the difficulty, and added new machines you can play around with in your factory</p>
           </div>
 
           <div class="card reveal-child" style="transition-delay:0.24s">
@@ -314,7 +323,7 @@
     <!-- ═══ SCREENSHOT SLIDER ═══ -->
     <section id="screenshots" class="section" style="padding-top:4rem;padding-bottom:4rem;">
       <div class="section-inner">
-        <div class="section-header reveal"
+        <div class="section-header reveal">
           <p class="section-label" style="justify-content:center;">In-Game Screenshots</p>
           <h2 class="section-title">See It In Action</h2>
           <p style="margin-top:0.75rem;color:var(--text-mid);">
@@ -373,7 +382,7 @@
           <p class="section-label" style="justify-content:center;margin-bottom:0.75rem;">Official Teaser</p>
           <h2 class="section-title">Watch the Teaser</h2>
           <p style="margin-top:0.75rem;color:var(--text-mid);">
-            Two minutes. That's all it takes.
+            This trailer is lowkey peam, check it out!
           </p>
         </div>
 
@@ -409,81 +418,6 @@
     </section>
 
     <!-- ═══ PROGRESSION SHOWCASE ═══ -->
-    <section id="progression" class="section" style="padding-top:4rem;">
-      <div class="section-inner">
-        <div class="section-header reveal"
-          <p class="section-label" style="justify-content:center;">Tech Progression</p>
-          <h2 class="section-title">From Stone to the Stars</h2>
-          <p style="margin-top:0.75rem;color:var(--text-mid);max-width:540px;margin-left:auto;margin-right:auto;line-height:1.65;">
-            HBM's Nuclear Tech Mod has a reputation. Nukes, right? Yes. But that's like saying Factorio is about biters.
-            NT:NH takes you from chipping flint to building matter-energy converters. Eight tiers. No shortcuts. Bring a notebook.
-          </p>
-        </div>
-
-        <div class="tech-showcase reveal" style="transition-delay:0.15s">
-          <div class="tech-stages" id="techStages">
-            <div class="tech-stage" data-stage="0">
-              <span class="tech-stage-icon">&#x26CF;</span>
-              <p class="tech-stage-name">Stone Age</p>
-              <p class="tech-stage-sub">Flint &middot; Survival Basics &middot; Exploration</p>
-            </div>
-            <div class="tech-stage" data-stage="1">
-              <span class="tech-stage-icon">&#x1F527;</span>
-              <p class="tech-stage-name">Forging Age</p>
-              <p class="tech-stage-sub">Burner Press &middot; Blast Furnace &middot; Steel</p>
-            </div>
-            <div class="tech-stage" data-stage="2">
-              <span class="tech-stage-icon">&#x2668;</span>
-              <p class="tech-stage-name">Steam Age</p>
-              <p class="tech-stage-sub">Stirling &middot; Boilers &middot; First Power</p>
-            </div>
-            <div class="tech-stage" data-stage="3">
-              <span class="tech-stage-icon">&#x2699;</span>
-              <p class="tech-stage-name">Machine Age</p>
-              <p class="tech-stage-sub">Assembly &middot; Circuits &middot; Automation</p>
-            </div>
-            <div class="tech-stage" data-stage="4">
-              <span class="tech-stage-icon">&#x1F6E2;</span>
-              <p class="tech-stage-name">Oil Age</p>
-              <p class="tech-stage-sub">Derrick &middot; Refinery &middot; Petrochemicals</p>
-            </div>
-            <div class="tech-stage" data-stage="5">
-              <span class="tech-stage-icon">&#x2622;</span>
-              <p class="tech-stage-name">Nuclear Age</p>
-              <p class="tech-stage-sub">RBMK &middot; PWR &middot; Fusion Reactors</p>
-            </div>
-            <div class="tech-stage" data-stage="6">
-              <span class="tech-stage-icon">&#x1F680;</span>
-              <p class="tech-stage-name">Space Age</p>
-              <p class="tech-stage-sub">Orbital Stations &middot; Planets &middot; Interplanetary</p>
-            </div>
-            <div class="tech-stage" data-stage="7">
-              <span class="tech-stage-icon">&#x221E;</span>
-              <p class="tech-stage-name">The Beyond</p>
-              <p class="tech-stage-sub">DFC &middot; FEnSU &middot; Dineutronium</p>
-            </div>
-          </div>
-          <div class="tech-progress-bar" id="techProgressBar" aria-hidden="true"></div>
-        </div>
-
-        <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;" class="reveal progression-cards">
-          <div class="card" style="transition-delay:0.1s">
-            <p class="feature-title" style="margin-bottom:0.75rem;">&#x1F4E6; Not a Quest Pack. A Fork.</p>
-            <p class="feature-desc">
-              Most "NTM modpacks" are configs and quests on top of the stock mod. NT:NH is an actual code fork of NTM: Space (JameH2's fork of HBM's original): new machines, custom recipes, balance changes, whole mechanics that don't exist in the base mod.
-            </p>
-          </div>
-          <div class="card" style="transition-delay:0.2s">
-            <p class="feature-title" style="margin-bottom:0.75rem;">&#x1F465; New Blood. Old Guard.</p>
-            <p class="feature-desc">
-              <strong>New to NTM?</strong> The quest book walks you through everything.
-              <strong>Veteran?</strong> Progression is reworked, difficulty is higher, and there's custom content here that isn't in any other pack.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </section>
 
 
     <!-- ═══ DOWNLOAD ═══ -->
