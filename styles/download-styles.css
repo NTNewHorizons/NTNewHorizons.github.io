@@ -46,18 +46,7 @@
   overflow: hidden;
 }
 
-.release-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--orange), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .release-card:hover { border-color: var(--border-hot); }
-.release-card:hover::before { opacity: 1; }
 
 .release-header {
   display: flex;

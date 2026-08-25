@@ -148,16 +148,6 @@
   overflow: hidden;
 }
 
-.community-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--card-accent, linear-gradient(90deg, var(--red), var(--orange)));
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
 .community-card:hover {
   border-color: var(--border-hot);
   box-shadow: 0 0 20px rgba(255,80,0,0.12);
