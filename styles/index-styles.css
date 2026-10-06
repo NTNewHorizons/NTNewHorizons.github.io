@@ -27,15 +27,50 @@
   opacity: 0.5;
 }
 
+.hero-logo-wrap {
+  position: relative;
+  width: min(90vw, 900px);
+  margin-bottom: 1.75rem;
+}
+
 .hero-logo {
   display: block;
-  width: min(90vw, 900px);
+  width: 100%;
   height: auto;
-  margin-bottom: 1.75rem;
   opacity: 0;
   transform: translateY(14px);
   animation: heroLogoIn 2.4s ease-out 0.3s forwards;
 }
+
+.hero-logo-fallback {
+  margin: 0;
+  color: var(--text-bright);
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+}
+
+.hero-splash {
+  position: absolute;
+  right: 3%;
+  bottom: 4%;
+  z-index: 1;
+  color: #ffff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.6rem, 1.3vw, 0.95rem);
+  line-height: 1.6;
+  white-space: nowrap;
+  text-align: center;
+  text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+  transform-origin: center;
+  transform: rotate(-20deg);
+  will-change: transform;
+}
+
+.hero-splash.is-visible { opacity: 0.95; }
 
 @keyframes heroLogoIn {
   to {
@@ -45,10 +80,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo {
-    animation: none;
-    opacity: 1;
-    transform: none;
+  .hero-logo { animation: none; opacity: 1; transform: none; }
+  .hero-splash { transition: none; }
+}
+
+@media (max-width: 640px) {
+  .hero-splash {
+    right: 1%;
+    bottom: 0;
+    font-size: clamp(0.48rem, 2.2vw, 0.72rem);
   }
 }
 

@@ -1,5 +1,115 @@
-// Set footer year
 document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+const heroLogo = document.querySelector('.hero-logo');
+if (heroLogo) {
+  const fallbackHeroLogo = () => {
+    if (!heroLogo.dataset.remoteFallback) {
+      heroLogo.dataset.remoteFallback = 'true';
+      heroLogo.src = 'https://ntnewhorizons.com/resources/hero-title.png';
+      return;
+    }
+    heroLogo.hidden = true;
+    const fallbackTitle = document.querySelector('.hero-logo-fallback');
+    if (fallbackTitle) fallbackTitle.hidden = false;
+  };
+  heroLogo.addEventListener('error', fallbackHeroLogo);
+  if (heroLogo.complete && !heroLogo.naturalWidth) fallbackHeroLogo();
+}
+
+const heroSplash = document.getElementById('heroSplash');
+if (heroSplash) {
+  let splashTextReady = false;
+  let splashLogoReady = !heroLogo;
+  const revealSplash = () => {
+    if (splashTextReady && splashLogoReady) heroSplash.classList.add('is-visible');
+  };
+
+  const onHeroLogoReady = () => {
+    const animation = heroLogo.getAnimations
+      ? heroLogo.getAnimations().find(item => item.animationName === 'heroLogoIn')
+      : null;
+    const markLogoReady = () => {
+      splashLogoReady = true;
+      revealSplash();
+    };
+
+    if (animation && animation.playState !== 'finished') {
+      animation.finished.then(markLogoReady, markLogoReady);
+    } else {
+      markLogoReady();
+    }
+  };
+
+  if (heroLogo) {
+    heroLogo.addEventListener('load', onHeroLogoReady);
+    heroLogo.addEventListener('error', () => {
+      if (heroLogo.hidden) {
+        splashLogoReady = true;
+        revealSplash();
+      }
+    });
+    if (heroLogo.complete && heroLogo.naturalWidth) onHeroLogoReady();
+    else if (heroLogo.hidden) onHeroLogoReady();
+  }
+
+  const splashMeasure = document.createElement('canvas').getContext('2d');
+  const fitSplashText = () => {
+    const logoWrap = heroSplash.closest('.hero-logo-wrap');
+    if (!splashMeasure || !logoWrap || !heroSplash.textContent) return;
+
+    heroSplash.style.removeProperty('font-size');
+    const styles = getComputedStyle(heroSplash);
+    splashMeasure.font = styles.font;
+    const textWidth = splashMeasure.measureText(heroSplash.textContent).width;
+    const angle = 20 * Math.PI / 180;
+    const lineHeight = parseFloat(styles.lineHeight);
+    const baseOverhang = (
+      textWidth * Math.sin(angle) + lineHeight * Math.cos(angle) - lineHeight
+    ) / 2;
+    const actionsTop = document.querySelector('.hero-actions').getBoundingClientRect().top;
+    const logoBottom = logoWrap.getBoundingClientRect().bottom;
+    const bottom = parseFloat(styles.bottom) || 0;
+    const availableOverhang = actionsTop - logoBottom + bottom - 3;
+    const widthFit = logoWrap.clientWidth * 0.8 / textWidth;
+    const heightFit = baseOverhang > 0 ? availableOverhang / baseOverhang : 1;
+    const fit = Math.max(0, Math.min(1, widthFit, heightFit));
+    heroSplash.style.fontSize = `${parseFloat(styles.fontSize) * fit}px`;
+  };
+
+  fetch('/splash.txt')
+    .then(response => {
+      if (!response.ok) throw new Error('Unable to load splash text');
+      return response.text();
+    })
+    .then(text => {
+      const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      heroSplash.textContent = lines.length
+        ? lines[Math.floor(Math.random() * lines.length)]
+        : 'Nuclear Tech: New Horizons';
+      fitSplashText();
+      splashTextReady = true;
+      revealSplash();
+    })
+    .catch(() => {
+      heroSplash.textContent = 'Nuclear Tech: New Horizons';
+      fitSplashText();
+      splashTextReady = true;
+      revealSplash();
+    });
+
+  window.addEventListener('resize', fitSplashText);
+  if (document.fonts) document.fonts.ready.then(fitSplashText);
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const animateSplash = now => {
+      const phase = ((now % 1000) / 1000) * Math.PI * 2;
+      const scale = (1.8 - Math.abs(Math.sin(phase)) * 0.1) / 1.8;
+      heroSplash.style.transform = `rotate(-20deg) scale(${scale})`;
+      requestAnimationFrame(animateSplash);
+    };
+    requestAnimationFrame(animateSplash);
+  }
+}
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(a => {
