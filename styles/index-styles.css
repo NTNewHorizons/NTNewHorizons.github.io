@@ -1039,6 +1039,9 @@
   display: flex;
   gap: 1rem;
   width: max-content;
+}
+
+.reviews-viewport.is-visible .reviews-track {
   animation: reviews-scroll var(--scroll-duration, 30s) linear infinite;
   will-change: transform;
 }

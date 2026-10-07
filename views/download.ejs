@@ -19,12 +19,26 @@
   <meta name="twitter:description" content="Download Nuclear Tech: New Horizons - all official releases, changelogs, and assets.">
   <meta name="twitter:image" content="https://ntnewhorizons.com/resources/favicon.ico">
 
+  <script>
+    (function() {
+      var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      var lowResource = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
+        || (navigator.deviceMemory && navigator.deviceMemory <= 4)
+        || (connection && connection.saveData)
+        || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (lowResource) document.documentElement.classList.add('performance-lite');
+    })();
+  </script>
+
   <!-- Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <!-- Marked.js -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 
   <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/shared-styles.css">
   <link rel="stylesheet" href="styles/download-styles.css">
 </head>
@@ -32,7 +46,7 @@
 
   <!-- Black hole background -->
   <div class="blackhole-bg bg-active" aria-hidden="true">
-    <video muted playsinline preload="auto" loop autoplay poster="/resources/blackhole_poster.jpg" disablepictureinpicture>
+    <video muted playsinline preload="none" loop poster="/resources/blackhole_poster.jpg" disablepictureinpicture>
       <source src="/resources/blackhole.webm" type="video/webm">
       <source src="/resources/blackhole_web.mp4" type="video/mp4">
     </video>

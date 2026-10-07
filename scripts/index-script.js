@@ -100,7 +100,7 @@ if (heroSplash) {
   window.addEventListener('resize', fitSplashText);
   if (document.fonts) document.fonts.ready.then(fitSplashText);
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!document.documentElement.classList.contains('performance-lite')) {
     const animateSplash = now => {
       const phase = ((now % 1000) / 1000) * Math.PI * 2;
       const scale = (1.8 - Math.abs(Math.sin(phase)) * 0.1) / 1.8;
@@ -116,7 +116,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    if (target) {
+      target.scrollIntoView({
+        behavior: document.documentElement.classList.contains('performance-lite') ? 'auto' : 'smooth'
+      });
+    }
   });
 });
 
@@ -146,6 +150,10 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 function animateCounter(el) {
   const target = parseInt(el.dataset.count, 10);
   const suffix = el.dataset.suffix || '';
+  if (document.documentElement.classList.contains('performance-lite')) {
+    el.textContent = target + suffix;
+    return;
+  }
   const duration = 1400;
   const start = performance.now();
 
@@ -202,6 +210,7 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
   let paused    = false;
   let busy      = false; // block overlapping transitions
   let track     = null;
+  const autoAdvance = !document.documentElement.classList.contains('performance-lite');
 
   // ── Parse both JSON formats ──
   function parse(data) {
@@ -228,9 +237,10 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
       slide.className = 'slider-slide';
 
       const img = document.createElement('img');
-      img.src       = 'resources/screenshots/' + s.file;
+      img.dataset.src = 'resources/screenshots/' + s.file;
       img.alt       = s.title || 'Screenshot ' + (i + 1);
-      img.loading   = i === 0 ? 'eager' : 'lazy';
+      img.loading   = 'lazy';
+      img.decoding  = 'async';
       img.draggable = false;
       slide.appendChild(img);
       track.appendChild(slide);
@@ -244,9 +254,18 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
     });
 
     viewport.appendChild(track);
+    loadSlide(0);
     updateTrack(0, false);
     updateMeta(0);
     startAuto();
+  }
+
+  function loadSlide(idx) {
+    const img = track && track.children[idx] && track.children[idx].querySelector('img');
+    if (img && !img.hasAttribute('src')) {
+      img.loading = 'eager';
+      img.src = img.dataset.src;
+    }
   }
 
   // ── Move track (instant or animated) ──
@@ -287,6 +306,7 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
     busy = true;
     current = target;
 
+    loadSlide(current);
     updateTrack(current, true);
     updateMeta(current);
 
@@ -297,6 +317,7 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
   // ── Auto-advance with glowing progress bar ──
   function startAuto() {
     clearTimeout(autoTimer);
+    if (!autoAdvance || paused) return;
 
     progressFill.style.transition = 'none';
     progressFill.style.width = '0%';
@@ -375,25 +396,39 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
   });
 
   // ── Fetch list.json and initialise ──
-  fetch('resources/screenshots/list.json')
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(data => {
-      const items = parse(data);
-      if (!items.length) throw new Error('empty list');
-      build(items);
-    })
-    .catch(err => {
-      console.warn('[Slider] Could not load screenshots:', err);
-      viewport.innerHTML = `
-        <div class="slider-error">
-          <i class="fas fa-image"></i>
-          No screenshots found.<br>
-          <span style="opacity:0.55;">
-            Add PNG files to <code>resources/screenshots/</code>
-            and list them in <code>resources/screenshots/list.json</code>.
-          </span>
-        </div>`;
-    });
+  function loadScreenshots() {
+    fetch('resources/screenshots/list.json')
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(data => {
+        const items = parse(data);
+        if (!items.length) throw new Error('empty list');
+        build(items);
+      })
+      .catch(err => {
+        console.warn('[Slider] Could not load screenshots:', err);
+        viewport.innerHTML = `
+          <div class="slider-error">
+            <i class="fas fa-image"></i>
+            No screenshots found.<br>
+            <span style="opacity:0.55;">
+              Add PNG files to <code>resources/screenshots/</code>
+              and list them in <code>resources/screenshots/list.json</code>.
+            </span>
+          </div>`;
+      });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const sliderLoader = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        sliderLoader.disconnect();
+        loadScreenshots();
+      }
+    }, { rootMargin: '300px' });
+    sliderLoader.observe(sliderEl);
+  } else {
+    loadScreenshots();
+  }
 
 // ─── Video: click-to-load (privacy-friendly) ─────────
 (function () {
@@ -414,30 +449,34 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
     iframe.allowFullscreen = true;
     frame.appendChild(iframe);
     thumb.remove();
+
+    if (window.YT && window.YT.Player) {
+      setTrailerVolume();
+      return;
+    }
+
+    const onReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof onReady === 'function') onReady();
+      setTrailerVolume();
+    };
+    if (!document.getElementById('youtube-iframe-api')) {
+      const tag = document.createElement('script');
+      tag.id = 'youtube-iframe-api';
+      tag.src = 'https://www.youtube.com/iframe_api';
+      tag.onerror = () => {
+        console.warn('[Teaser video] Could not load YouTube IFrame API.');
+        tag.remove();
+      };
+      document.head.appendChild(tag);
+    }
   });
 
-  // Load YouTube IFrame API, then set volume to 25%
-  var tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  var firstScript = document.getElementsByTagName('script')[0];
-  firstScript.parentNode.insertBefore(tag, firstScript);
-
-  var player;
-  window.onYouTubeIframeAPIReady = function () {
-    var el = document.getElementById('trailerPlayer');
-    if (!el) {
-      // Poll until the iframe exists
-      var wait = setInterval(function () {
-        el = document.getElementById('trailerPlayer');
-        if (el) {
-          clearInterval(wait);
-          player = new YT.Player('trailerPlayer', { events: { 'onReady': function (e) { e.target.setVolume(25); } } });
-        }
-      }, 200);
-    } else {
-      player = new YT.Player('trailerPlayer', { events: { 'onReady': function (e) { e.target.setVolume(25); } } });
-    }
-  };
+  function setTrailerVolume() {
+    new YT.Player('trailerPlayer', {
+      events: { onReady: event => event.target.setVolume(25) }
+    });
+  }
 })();
 
 
@@ -510,19 +549,38 @@ if (subtitleEl) subtitleEl.textContent = subtitleEl.dataset.text;
     return div.innerHTML;
   }
 
-  fetch('/api/moddex/reviews')
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(data => {
-      const reviews = (data.data || [])
-        .filter(r => r.rating >= 3.5 && r.content)
-        .sort((a, b) => b.rating - a.rating);
-      render(reviews);
-    })
-    .catch(err => {
-      console.warn('[Reviews]', err);
-      if (loading) loading.style.display = 'none';
-      track.innerHTML = '<div class="reviews-error"><i class="fas fa-triangle-exclamation"></i>Could not load reviews.<br><span style="opacity:0.55;">Make sure MODDEX_API_KEY is set on the server.</span></div>';
-    });
+  function loadReviews() {
+    fetch('/api/moddex/reviews')
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(data => {
+        const reviews = (data.data || [])
+          .filter(r => r.rating >= 3.5 && r.content)
+          .sort((a, b) => b.rating - a.rating);
+        render(reviews);
+      })
+      .catch(err => {
+        console.warn('[Reviews]', err);
+        if (loading) loading.style.display = 'none';
+        track.innerHTML = '<div class="reviews-error"><i class="fas fa-triangle-exclamation"></i>Could not load reviews.<br><span style="opacity:0.55;">Make sure MODDEX_API_KEY is set on the server.</span></div>';
+      });
+  }
+
+  if ('IntersectionObserver' in window) {
+    let reviewsLoaded = false;
+    const reviewsObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        viewport.classList.toggle('is-visible', entry.isIntersecting);
+        if (entry.isIntersecting && !reviewsLoaded) {
+          reviewsLoaded = true;
+          loadReviews();
+        }
+      });
+    }, { rootMargin: '200px' });
+    reviewsObserver.observe(viewport);
+  } else {
+    viewport.classList.add('is-visible');
+    loadReviews();
+  }
 })();
 
 

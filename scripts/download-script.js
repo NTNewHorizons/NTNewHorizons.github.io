@@ -1,6 +1,22 @@
 // Set footer year
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+const backgroundVideo = document.querySelector('.blackhole-bg video');
+if (backgroundVideo && !document.documentElement.classList.contains('performance-lite')) {
+  const playBackground = () => {
+    if (!document.hidden) {
+      backgroundVideo.play().catch(error => {
+        console.warn('[Background video] Playback was blocked:', error);
+      });
+    }
+  };
+  playBackground();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) backgroundVideo.pause();
+    else playBackground();
+  });
+}
+
 // Configure marked
 marked.setOptions({ breaks: true, gfm: true, smartypants: true });
 

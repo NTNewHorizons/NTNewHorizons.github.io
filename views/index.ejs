@@ -20,8 +20,22 @@
   <meta name="twitter:description" content="A free, progressive questing modpack for Minecraft 1.7.10. Discover HBM's Nuclear Tech Mod through 300+ quests, factories, reactors, and space exploration.">
   <meta name="twitter:image" content="https://ntnewhorizons.com/resources/favicon.ico">
 
+  <script>
+    (function() {
+      var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      var lowResource = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
+        || (navigator.deviceMemory && navigator.deviceMemory <= 4)
+        || (connection && connection.saveData)
+        || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (lowResource) document.documentElement.classList.add('performance-lite');
+    })();
+  </script>
+
   <!-- Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <!-- Styles -->
@@ -32,7 +46,7 @@
 
   <!-- Black hole background -->
   <div class="blackhole-bg" aria-hidden="true" id="blackholeContainer">
-    <video muted playsinline preload="auto" id="blackholeVideo" poster="/resources/blackhole_poster.jpg">
+    <video muted playsinline preload="none" id="blackholeVideo" poster="/resources/blackhole_poster.jpg">
       <source src="/resources/blackhole.webm" type="video/webm">
       <source src="/resources/blackhole_web.mp4" type="video/mp4">
     </video>
@@ -52,6 +66,19 @@
     var bhBg = document.getElementById('blackholeContainer');
     var ytBg = document.getElementById('youtubeBg');
     var busy = false;
+    var ytCheck = null;
+    var ytApiTagId = 'youtube-iframe-api';
+
+    if (document.documentElement.classList.contains('performance-lite')) {
+      bhBg.classList.add('bg-active');
+      return;
+    }
+
+    function playBlackhole() {
+      bhVideo.play().catch(function(error) {
+        console.warn('[Background video] Playback was blocked:', error);
+      });
+    }
 
     function pickNext() {
       var pool = [];
@@ -76,9 +103,13 @@
       }
 
       setTimeout(function() {
+        if (document.hidden) {
+          busy = false;
+          return;
+        }
         if (VIDEOS[idx] === 'blackhole') {
           bhVideo.currentTime = 0;
-          bhVideo.play();
+          playBlackhole();
           bhBg.classList.add('bg-active');
         } else if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
           ytPlayer.loadVideoById(VIDEOS[idx]);
@@ -86,7 +117,7 @@
         } else {
           currentIdx = 0;
           bhVideo.currentTime = 0;
-          bhVideo.play();
+          playBlackhole();
           bhBg.classList.add('bg-active');
         }
         busy = false;
@@ -114,16 +145,20 @@
 
     function onYtState(e) {
       if (e.data === YT.PlayerState.PLAYING) {
-        // Poll current time to crossfade before YT video ends
-        var ytCheck = setInterval(function() {
+        if (ytCheck) clearInterval(ytCheck);
+        ytCheck = setInterval(function() {
           if (!ytPlayer || !ytPlayer.getDuration || !ytPlayer.getCurrentTime) return;
           var dur = ytPlayer.getDuration();
           var cur = ytPlayer.getCurrentTime();
           if (dur && dur - cur < 2.5) {
             clearInterval(ytCheck);
+            ytCheck = null;
             nextBg();
           }
         }, 250);
+      } else if (ytCheck) {
+        clearInterval(ytCheck);
+        ytCheck = null;
       }
       if (e.data === YT.PlayerState.ENDED) {
         // Safety: if we somehow missed the window
@@ -131,11 +166,8 @@
       }
     }
 
-    function initYt() {
-      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
-        setTimeout(initYt, 300);
-        return;
-      }
+    function createYtPlayer() {
+      if (ytPlayer || typeof YT === 'undefined' || typeof YT.Player === 'undefined') return;
       ytPlayer = new YT.Player('ytBgPlayer', {
         videoId: 'a9n6abjdiKI',
         playerVars: {
@@ -150,14 +182,61 @@
         }
       });
     }
+
+    function initYt() {
+      if (typeof YT !== 'undefined' && typeof YT.Player !== 'undefined') {
+        createYtPlayer();
+        return;
+      }
+
+      if (!document.getElementById(ytApiTagId)) {
+        var tag = document.createElement('script');
+        tag.id = ytApiTagId;
+        tag.src = 'https://www.youtube.com/iframe_api';
+        tag.onerror = function() {
+          console.warn('[Background video] Could not load YouTube IFrame API.');
+          tag.remove();
+        };
+        document.head.appendChild(tag);
+      }
+      var onReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function() {
+        if (typeof onReady === 'function') onReady();
+        createYtPlayer();
+      };
+    }
     initYt();
 
     setTimeout(function() {
       currentIdx = 0;
-      bhVideo.currentTime = 0;
-      bhVideo.play();
       bhBg.classList.add('bg-active');
+      if (!document.hidden) {
+        bhVideo.currentTime = 0;
+        playBlackhole();
+      }
     }, 300);
+
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        bhVideo.pause();
+        if (ytCheck) {
+          clearInterval(ytCheck);
+          ytCheck = null;
+        }
+        if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+      } else if (VIDEOS[currentIdx] === 'blackhole') {
+        bhBg.classList.add('bg-active');
+        playBlackhole();
+      } else if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
+        ytBg.classList.add('bg-active');
+        ytPlayer.loadVideoById(VIDEOS[currentIdx]);
+      } else if (currentIdx !== -1) {
+        currentIdx = 0;
+        bhBg.classList.add('bg-active');
+        bhVideo.currentTime = 0;
+        playBlackhole();
+      }
+    });
   })();
   </script>
 
@@ -631,7 +710,7 @@
             <div class="card" style="padding:1.25rem;">
               <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.4rem;">
                 <i class="fas fa-server" style="color:var(--orange);font-size:1.3rem;"></i>
-                <strong style="color:var(--text-bright);font-family:'Chakra Petch',sans-serif;">Hosted with Wabbanode</strong>
+                <strong style="color:var(--text-bright);font-family:'Chakra Petch',sans-serif;">Hosting with Wabbanode</strong>
               </div>
               <p style="font-size:0.875rem;color:var(--text-mid);margin:0;line-height:1.55;">
                 Need a dedicated server for your friends? We partner with <a href="https://wabbanode.com/" target="_blank" rel="noopener noreferrer" style="color:var(--orange);">Wabbanode</a>. Code <strong style="color:var(--text-bright);">NTNH</strong> gets you 25% off your first month, and we get a small commission to help with development. No pressure - use it only if you need a server.
