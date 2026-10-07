@@ -61,7 +61,6 @@
   line-height: 1.6;
   white-space: nowrap;
   text-align: center;
-  text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
   opacity: 0;
   transition: opacity 0.9s ease;
   pointer-events: none;
